@@ -182,15 +182,11 @@ class ImageData {
         },
     };
 
-    static COIN = [
-        '../assets/sprites/8_coin/coin_1.png',
-        '../assets/sprites/8_coin/coin_2.png',
-    ];
+    static COIN = ['../assets/sprites/8_coin/coin_1.png', '../assets/sprites/8_coin/coin_2.png'];
 
     static SCREENS = {
-        start = '../assets/sprites/9_intro_outro_screens/start/startscreen_1.png',
-        gameOver = '../assets/sprites/You won, you lost/Game Over.png',
-        won = '../assets/sprites/You won, you lost/You won A.png',
-    }
-
+        start: '../assets/sprites/9_intro_outro_screens/start/startscreen_1.png',
+        gameOver: '../assets/sprites/You won, you lost/Game Over.png',
+        won: '../assets/sprites/You won, you lost/You won A.png',
+    };
 }
