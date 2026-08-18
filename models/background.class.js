@@ -10,6 +10,5 @@ class Background extends DrawableObject {
         this.h = hCanvas;
         // shift draw position by canvas width after all layers have been planted
         this.x = Math.floor(Math.floor(Background.wIndex++ / this.LAYERS) * this.w);
-        console.log(this.x);
     }
 }

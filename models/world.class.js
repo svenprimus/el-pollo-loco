@@ -3,10 +3,6 @@ class World {
     ctx;
     cameraX = 0;
     level;
-    hero = new Hero();
-    enemies;
-    clouds;
-    backgrounds;
     statusBar = new StatusBar();
 
     constructor(canvas) {
@@ -16,15 +12,15 @@ class World {
         // this.canvas.width = window.innerWidth * 0.8; 
         this.loadLevel();
         this.draw();
-        this.hero.world = this;
+        this.level.hero.world = this;
         this.checkCollisions();
     }
 
     checkCollisions() {
         setStoppableInterval(() => {
             this.level.enemies.forEach((enemy) => {
-                if (this.hero.isColliding(enemy)) {
-                    this.hero.hit(enemy.atk);
+                if (this.level.hero.isColliding(enemy)) {
+                    this.level.hero.hit(enemy.atk);
                 }
             });
         }, 200);
@@ -41,9 +37,11 @@ class World {
         // this.addToMap(this.statusBar);
         // this.ctx.translate(this.cameraX, 0);
 
-        this.addToMap(this.hero);
+        this.addToMap(this.level.hero);
+        this.addToMap(this.level.enemies);
+        this.addToMap(this.level.boss);
+
         this.addToMap(this.level.clouds);
-        // this.addToMap(this.level.enemies);
         this.ctx.translate(-this.cameraX, 0);
 
         const self = this;
@@ -76,7 +74,7 @@ class World {
         }
 
         drawble.draw(this.ctx);
-        // drawble.drawFrame(this.ctx);
+        drawble.drawFrame(this.ctx);
 
         if (drawble.reverseDirection) {
             this.flipImageBack(drawble);
@@ -104,8 +102,5 @@ class World {
 
     loadLevel() {
         this.level = createLevel_1(this.canvas.width, this.canvas.height);
-        this.enemies = this.level.enemies;
-        this.clouds = this.level.clouds;
-        this.backgrounds = this.level.backgrounds;
     }
 }

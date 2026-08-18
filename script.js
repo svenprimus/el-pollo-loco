@@ -6,7 +6,6 @@ function init() {
     const canvas = document.getElementById('canvas');
     world = new World(canvas);
     world.draw();
-    console.log('My Character: ', world.hero);
 }
 
 function setStoppableInterval(fn, time) {

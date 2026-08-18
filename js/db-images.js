@@ -1,5 +1,7 @@
 class ImageLib {
     static HERO = {
+        wNatural: 610,
+        hNatural: 1200,
         idle: [
             '../assets/sprites/2_character_pepe/1_idle/idle/I-1.png',
             '../assets/sprites/2_character_pepe/1_idle/idle/I-2.png',
@@ -61,6 +63,8 @@ class ImageLib {
 
     static ENEMY = {
         mob_1: {
+            wNatural: 248,
+            hNatural: 243,
             walk: [
                 '../assets/sprites/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
                 '../assets/sprites/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
@@ -69,6 +73,8 @@ class ImageLib {
             dead: ['../assets/sprites/3_enemies_chicken/chicken_normal/2_dead/dead.png'],
         },
         mob_2: {
+            wNatural: 236,
+            hNatural: 210,
             walk: [
                 '../assets/sprites/3_enemies_chicken/chicken_small/1_walk/1_w.png',
                 '../assets/sprites/3_enemies_chicken/chicken_small/1_walk/2_w.png',
@@ -77,6 +83,8 @@ class ImageLib {
             dead: ['../assets/sprites/3_enemies_chicken/chicken_normal/1_walk/1_w.png'],
         },
         boss_1: {
+            wNatural: 1045,
+            hNatural: 1217,
             walk: [
                 '../assets/sprites/4_enemie_boss_chicken/1_walk/G1.png',
                 '../assets/sprites/4_enemie_boss_chicken/1_walk/G2.png',

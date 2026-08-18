@@ -1,10 +1,16 @@
 function createLevel_1(wCanvas, hCanvas) {
     // prettier-ignore
     return new Level(
+        new Hero(wCanvas, hCanvas),
+        new Boss(wCanvas, hCanvas),
         [
-            new Enemy(), 
-            new Enemy(), 
-            new Enemy(),
+            new Chicken(wCanvas, hCanvas), 
+            new Chicken(wCanvas, hCanvas), 
+            new Chicken(wCanvas, hCanvas),
+            new Chick(wCanvas, hCanvas),
+            new Chick(wCanvas, hCanvas),
+            new Chick(wCanvas, hCanvas),
+            new Chick(wCanvas, hCanvas),
         ],
         [
             new Cloud(ImageLib.BG.clouds[0], wCanvas, hCanvas), 

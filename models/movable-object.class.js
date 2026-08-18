@@ -6,9 +6,11 @@ class MovableObject extends DrawableObject {
     atk = 10;
     lastHit = 0;
     reverseDirection = false; // TODO: move to DrawableObject?
+    groundFromBottom = 0;
 
-    constructor() {
+    constructor(hCanvas) {
         super();
+        this.groundFromBottom = hCanvas * 0.11;
     }
 
     /**
@@ -49,7 +51,7 @@ class MovableObject extends DrawableObject {
      * @returns True if object is by definition in the air.
      */
     isAboveGround() {
-        return this.y > 180;
+        return (this.y + this.h) > groundFromBottom;
     }
 
     /**
