@@ -1,4 +1,4 @@
-class ImageData {
+class ImageLib {
     static HERO = {
         idle: [
             '../assets/sprites/2_character_pepe/1_idle/idle/I-1.png',
@@ -122,12 +122,12 @@ class ImageData {
             '../assets/sprites/5_background/layers/1_first_layer/2.png',
         ],
         layer_2: [
-            '../assets/sprites/5_background/layers/1_second_layer/1.png',
-            '../assets/sprites/5_background/layers/1_second_layer/2.png',
+            '../assets/sprites/5_background/layers/2_second_layer/1.png',
+            '../assets/sprites/5_background/layers/2_second_layer/2.png',
         ],
         layer_3: [
-            '../assets/sprites/5_background/layers/1_third_layer/1.png',
-            '../assets/sprites/5_background/layers/1_third_layer/2.png',
+            '../assets/sprites/5_background/layers/3_third_layer/1.png',
+            '../assets/sprites/5_background/layers/3_third_layer/2.png',
         ],
         clouds: [
             '../assets/sprites/5_background/layers/4_clouds/1.png',

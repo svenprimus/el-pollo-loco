@@ -2,26 +2,29 @@ class World {
     canvas;
     ctx;
     cameraX = 0;
-    level = level_1;
+    level;
     hero = new Hero();
-    enemies = this.level.enemies;
-    clouds = this.level.clouds;
-    backgrounds = this.level.backgrounds;
+    enemies;
+    clouds;
+    backgrounds;
     statusBar = new StatusBar();
 
     constructor(canvas) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
+        // TODO we could do this, but requires reload as it is
+        // this.canvas.width = window.innerWidth * 0.8; 
+        this.loadLevel();
         this.draw();
         this.hero.world = this;
-        // this.checkCollisions();
+        this.checkCollisions();
     }
 
     checkCollisions() {
         setStoppableInterval(() => {
             this.level.enemies.forEach((enemy) => {
                 if (this.hero.isColliding(enemy)) {
-                    this.character.hit(enemy.atk);
+                    this.hero.hit(enemy.atk);
                 }
             });
         }, 200);
@@ -31,7 +34,7 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.translate(this.cameraX, 0);
-        // this.addToMap(this.level.backgrounds);
+        this.addToMap(this.level.backgrounds);
 
         // this.ctx.translate(-this.cameraX, 0);
         // Space for fixed objects
@@ -39,7 +42,7 @@ class World {
         // this.ctx.translate(this.cameraX, 0);
 
         this.addToMap(this.hero);
-        // this.addToMap(this.level.clouds);
+        this.addToMap(this.level.clouds);
         // this.addToMap(this.level.enemies);
         this.ctx.translate(-this.cameraX, 0);
 
@@ -73,7 +76,7 @@ class World {
         }
 
         drawble.draw(this.ctx);
-        drawble.drawFrame(this.ctx);
+        // drawble.drawFrame(this.ctx);
 
         if (drawble.reverseDirection) {
             this.flipImageBack(drawble);
@@ -89,7 +92,6 @@ class World {
         this.ctx.translate(drawble.w, 0);
         this.ctx.scale(-1, 1);
         drawble.x *= -1;
-
     }
 
     /**
@@ -98,5 +100,12 @@ class World {
     flipImageBack() {
         drawble.x *= -1;
         this.ctx.restore();
+    }
+
+    loadLevel() {
+        this.level = createLevel_1(this.canvas.width, this.canvas.height);
+        this.enemies = this.level.enemies;
+        this.clouds = this.level.clouds;
+        this.backgrounds = this.level.backgrounds;
     }
 }

@@ -93,7 +93,7 @@ class MovableObject extends DrawableObject {
      */
     hit(damage) {
         this.hp = Math.min(this.hp - damage, 0);
-        this.lastHit = new Date.getTime();
+        this.lastHit = (new Date).getTime();
     }
 
     /**
