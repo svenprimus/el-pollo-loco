@@ -1,5 +1,5 @@
 class MovableObject extends DrawableObject {
-    speed = 0.15;
+    speedX = 0.15;
     speedY = 0;
     acceleration = 2.5;
     hp = 100;
@@ -16,10 +16,14 @@ class MovableObject extends DrawableObject {
     /**
      * Start animation of current animation sequence given by images-attribute.
      */
-    animate() {
+    animate(images, frequency = 10, fn = null) {
         setStoppableInterval(() => {
-            this.playAnimation(this.images);
-        }, 100);
+            if (fn !== null) {
+                fn();
+            } else {
+                this.playAnimation(images);
+            }
+        }, 1000 / frequency);
     }
 
     /**
@@ -33,7 +37,7 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Change vertical position by speed and acceleration. The speed gets reduced by acceleration.
+     * Change vertical position by speedX and acceleration. The speedX gets reduced by acceleration.
      */
     applyGravity() {
         const gravityInterval = setStoppableInterval(() => {
@@ -51,21 +55,34 @@ class MovableObject extends DrawableObject {
      * @returns True if object is by definition in the air.
      */
     isAboveGround() {
-        return (this.y + this.h) > groundFromBottom;
+        return this.y + this.h > groundFromBottom;
     }
 
     /**
-     * Adds 'speed' to x position.
+     * Adds 'speedX' to x position.
      */
     moveRight() {
-        this.x += this.speed;
+        this.x += this.speedX;
     }
 
     /**
-     * Reduce 'speed' from x position.
+     * Reduce 'speedX' from x position.
      */
     moveLeft() {
-        this.x -= this.speed;
+        this.x -= this.speedX;
+    }
+
+    /**
+     * Moves the object to the left and eventually executes extra function.
+     * @param {function} fn to execute in between after every move
+     */
+    moveLeftSteady(fn = null) {
+        setStoppableInterval(() => {
+            this.moveLeft();
+            if (fn !== null) {
+                fn();
+            }
+        }, 1000 / FPS);
     }
 
     /**
@@ -95,7 +112,7 @@ class MovableObject extends DrawableObject {
      */
     hit(damage) {
         this.hp = Math.min(this.hp - damage, 0);
-        this.lastHit = (new Date).getTime();
+        this.lastHit = new Date().getTime();
     }
 
     /**

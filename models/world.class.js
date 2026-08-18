@@ -13,6 +13,7 @@ class World {
         this.loadLevel();
         this.draw();
         this.level.hero.world = this;
+        this.level.clouds.world = this;
         this.checkCollisions();
     }
 
@@ -89,13 +90,12 @@ class World {
         this.ctx.save();
         this.ctx.translate(drawble.w, 0);
         this.ctx.scale(-1, 1);
-        drawble.x *= -1;
     }
 
     /**
      * Restore image direction horizontally.
      */
-    flipImageBack() {
+    flipImageBack(drawble) {
         drawble.x *= -1;
         this.ctx.restore();
     }

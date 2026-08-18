@@ -15,7 +15,6 @@ class DrawableObject {
      */
     loadImage(path) {
         this.img = this.getNewImage(path);
-        return this.img;
     }
 
     /**
