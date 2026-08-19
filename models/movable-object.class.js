@@ -7,7 +7,8 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
     reverseDirection = false; // TODO: move to DrawableObject?
     groundFromBottom = 0;
-
+    idAnimate;
+    animateFreq;
     constructor(hCanvas) {
         super();
         this.groundFromBottom = hCanvas * 0.11;
@@ -17,7 +18,8 @@ class MovableObject extends DrawableObject {
      * Start animation of current animation sequence given by images-attribute.
      */
     animate(images, frequency = 10, fn = null) {
-        setStoppableInterval(() => {
+        this.animateFreq = frequency;
+        this.idAnimate = setStoppableInterval(() => {
             if (fn !== null) {
                 fn();
             } else {
@@ -26,12 +28,44 @@ class MovableObject extends DrawableObject {
         }, 1000 / frequency);
     }
 
+    restartAnimate(images, frequency = 10, fn = null) {
+        if (clearStoppableInterval(this.idAnimate)) {
+            this.animate(images, frequency, fn);
+        }
+    }
+
+    /**
+     * If the frequency differs from previous frequency, the animation will be restartet.
+     * An initial image is loaded before animation starts. This can set initial state of transition, e.g. walk -> stand
+     * @param {array} images 
+     * @param {number} idFirst 
+     * @param {number} frequency 
+     * @param {function} fn 
+     */
+    restartAnimateIfChangedFrequency(images, idFirst, frequency = 10, fn = null) {
+        if (this.animateFreq !== frequency && intervalIds.indexOf(this.idAnimate) > 0) {
+            this.playSingleImage(images, idFirst);
+            this.restartAnimate(images, frequency, fn);
+        }
+    }
+
     /**
      * Iterate and set img-attribute repeatedly through sequence of images.
      * @param {array} images - Sequence of image paths for current animation
      */
     playAnimation(images) {
         this.imgCurrent = (this.imgCurrent + 1) % images.length;
+        const path = images[this.imgCurrent];
+        this.img = this.imgCache[path];
+    }
+
+    /**
+     * Load a single image from array into current img.
+     * @param {array} images 
+     * @param {number} index 
+     */
+    playSingleImage(images, index) {
+        this.imgCurrent = index;
         const path = images[this.imgCurrent];
         this.img = this.imgCache[path];
     }
@@ -77,12 +111,13 @@ class MovableObject extends DrawableObject {
      * @param {function} fn to execute in between after every move
      */
     moveLeftSteady(fn = null) {
-        setStoppableInterval(() => {
+        const id = setStoppableInterval(() => {
             this.moveLeft();
             if (fn !== null) {
                 fn();
             }
         }, 1000 / FPS);
+        return id;
     }
 
     /**

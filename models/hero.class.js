@@ -10,7 +10,8 @@ class Hero extends MovableObject {
         this.y = hCanvas - this.h - this.groundFromBottom;
         this.x = wCanvas / 8;
         this.speedX = 15;
-        this.animate(ImageLib.HERO.idle, FPS, () => this.resolveControl());
+        this.animate(ImageLib.HERO.idle, FPS);
+        setStoppableInterval(() => this.resolveControl(), FPS);
     }
 
     loadImagesToCache() {
@@ -24,18 +25,19 @@ class Hero extends MovableObject {
 
     resolveControl() {
         let isIdle = false;
-        // TODO funktion aufteilen in PlayAnimation und Zustand verändern 03-14
         if (Keyboard.UP) {
             // jump();
         } else if (Keyboard.ATTACK) {
             // attack();
         } else if (Keyboard.RIGHT) {
             this.reverseDirection = false;
-            this.playAnimation(ImageLib.HERO.walk);
+            this.setAnimation(ImageLib.HERO.walk, FPS);
+
             this.moveRight();
         } else if (Keyboard.LEFT) {
             this.reverseDirection = true;
-            this.playAnimation(ImageLib.HERO.walk);
+            this.setAnimation(ImageLib.HERO.walk, FPS);
+
             this.moveLeft();
         } else if (Keyboard.DOWN) {
             // placeholder
@@ -45,15 +47,25 @@ class Hero extends MovableObject {
                 this.startIdleTime = new Date().getTime();
             }
             const timeNow = new Date().getTime();
+
             if (timeNow - this.startIdleTime > 10000) {
-                this.playAnimation(ImageLib.HERO.idleLong);
+                this.setAnimation(ImageLib.HERO.idleLong, 5);
             } else {
-                this.playAnimation(ImageLib.HERO.idle);
+                this.setAnimation(ImageLib.HERO.idle, 5);
             }
         }
 
         if (false === isIdle) {
             this.startIdleTime = 0;
         }
+    }
+
+    /**
+     * Play the given animation, if frequency is unchanged, otherwise restart animation with new frequency
+     * @param {array} images
+     * @param {number} frequency
+     */
+    setAnimation(images, frequency) {
+        this.restartAnimateIfChangedFrequency(images, 0, frequency);
     }
 }

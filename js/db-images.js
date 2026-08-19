@@ -71,6 +71,11 @@ class ImageLib {
                 '../assets/sprites/3_enemies_chicken/chicken_normal/1_walk/3_w.png',
             ],
             dead: ['../assets/sprites/3_enemies_chicken/chicken_normal/2_dead/dead.png'],
+            jump: [
+                '../assets/sprites/3_enemies_chicken/chicken_normal/3_jump/1_j.png',
+                '../assets/sprites/3_enemies_chicken/chicken_normal/3_jump/2_j.png',
+                '../assets/sprites/3_enemies_chicken/chicken_normal/3_jump/3_j.png',
+            ],
         },
         mob_2: {
             wNatural: 236,

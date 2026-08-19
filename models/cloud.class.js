@@ -15,7 +15,6 @@ class Cloud extends MovableObject {
     loopThroughCanvas() {
         if (this.x + this.w < 0) {
             this.x = world.cameraX + world.canvas.width + this.w;
-            console.log("reset to ", this.x);
         }
     }
 }
