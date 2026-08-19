@@ -18,7 +18,7 @@ class Chick extends Enemy {
     }
 
     statusHandler() {
-        if (this.isDead() || this.x < 0) {
+        if (this.isDead() || this.x + this.w < 0) {
             clearStoppableInterval(this.idAnimate);
             clearStoppableInterval(this.idHandler);
         } else {

@@ -32,12 +32,10 @@ class Hero extends MovableObject {
         } else if (Keyboard.RIGHT) {
             this.reverseDirection = false;
             this.setAnimation(ImageLib.HERO.walk, FPS);
-
             this.moveRight();
         } else if (Keyboard.LEFT) {
             this.reverseDirection = true;
             this.setAnimation(ImageLib.HERO.walk, FPS);
-
             this.moveLeft();
         } else if (Keyboard.DOWN) {
             // placeholder

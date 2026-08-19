@@ -20,13 +20,17 @@ class MovableObject extends DrawableObject {
      */
     animate(images, frequency = 10, fn = null) {
         this.animateFreq = frequency;
-        this.idAnimate = setStoppableInterval(() => {
-            if (fn !== null) {
-                fn();
-            } else {
-                this.playAnimation(images);
-            }
-        }, 1000 / frequency, this);
+        this.idAnimate = setStoppableInterval(
+            () => {
+                if (fn !== null) {
+                    fn();
+                } else {
+                    this.playAnimation(images);
+                }
+            },
+            1000 / frequency,
+            this
+        );
     }
 
     restartAnimate(images, frequency = 10, fn = null) {
@@ -36,7 +40,7 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * If the frequency differs from previous frequency, the animation will be restartet.
+     * If the frequency or images differ from previous ones, the animation will be restartet.
      * An initial image is loaded before animation starts. This can set initial state of transition, e.g. walk -> stand
      * @param {array} images
      * @param {number} idFirst
@@ -44,7 +48,10 @@ class MovableObject extends DrawableObject {
      * @param {function} fn
      */
     restartAnimateIfChangedFrequency(images, idFirst, frequency = 10, fn = null) {
-        if ((this.animateFreq !== frequency && isIntervalSet(this.idAnimate))) {
+        if (
+            (this.animateFreq !== frequency && isIntervalSet(this.idAnimate)) ||
+            this.img !== this.imgCache[images[this.imgCurrent]]
+        ) {
             this.playSingleImage(images, idFirst);
             this.restartAnimate(images, frequency, fn);
         }
@@ -75,14 +82,18 @@ class MovableObject extends DrawableObject {
      * Change vertical position by speedX and acceleration. The speedX gets reduced by acceleration.
      */
     applyGravity() {
-        const gravityInterval = setStoppableInterval(() => {
-            if (this.isAboveGround() || speedY > 0) {
-                this.y -= this.speedY;
-                this.speedY -= this.acceleration;
-            } else {
-                clearInterval(gravityInterval);
-            }
-        }, 1000 / FPS, this);
+        const gravityInterval = setStoppableInterval(
+            () => {
+                if (this.isAboveGround() || speedY > 0) {
+                    this.y -= this.speedY;
+                    this.speedY -= this.acceleration;
+                } else {
+                    clearInterval(gravityInterval);
+                }
+            },
+            1000 / FPS,
+            this
+        );
     }
 
     /**
@@ -112,12 +123,16 @@ class MovableObject extends DrawableObject {
      * @param {function} fn to execute in between after every move
      */
     moveLeftSteady(fn = null) {
-        const id = setStoppableInterval(() => {
-            this.moveLeft();
-            if (fn !== null) {
-                fn();
-            }
-        }, 1000 / FPS, this);
+        const id = setStoppableInterval(
+            () => {
+                this.moveLeft();
+                if (fn !== null) {
+                    fn();
+                }
+            },
+            1000 / FPS,
+            this
+        );
         return id;
     }
 
