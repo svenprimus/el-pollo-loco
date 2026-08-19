@@ -14,7 +14,7 @@ class Chicken extends Enemy {
 
         this.moveLeftSteady();
         this.animate(ImageLib.ENEMY.mob_1.walk, this.speedX * 5);
-        this.idHandler = setStoppableInterval(() => this.statusHandler(), FPS);
+        this.idHandler = setStoppableInterval(() => this.statusHandler(), FPS, this);
     }
 
     statusHandler() {

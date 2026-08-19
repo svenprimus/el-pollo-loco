@@ -9,6 +9,7 @@ class MovableObject extends DrawableObject {
     groundFromBottom = 0;
     idAnimate;
     animateFreq;
+
     constructor(hCanvas) {
         super();
         this.groundFromBottom = hCanvas * 0.11;
@@ -25,7 +26,7 @@ class MovableObject extends DrawableObject {
             } else {
                 this.playAnimation(images);
             }
-        }, 1000 / frequency);
+        }, 1000 / frequency, this);
     }
 
     restartAnimate(images, frequency = 10, fn = null) {
@@ -37,13 +38,13 @@ class MovableObject extends DrawableObject {
     /**
      * If the frequency differs from previous frequency, the animation will be restartet.
      * An initial image is loaded before animation starts. This can set initial state of transition, e.g. walk -> stand
-     * @param {array} images 
-     * @param {number} idFirst 
-     * @param {number} frequency 
-     * @param {function} fn 
+     * @param {array} images
+     * @param {number} idFirst
+     * @param {number} frequency
+     * @param {function} fn
      */
     restartAnimateIfChangedFrequency(images, idFirst, frequency = 10, fn = null) {
-        if (this.animateFreq !== frequency && intervalIds.indexOf(this.idAnimate) > 0) {
+        if ((this.animateFreq !== frequency && isIntervalSet(this.idAnimate))) {
             this.playSingleImage(images, idFirst);
             this.restartAnimate(images, frequency, fn);
         }
@@ -61,8 +62,8 @@ class MovableObject extends DrawableObject {
 
     /**
      * Load a single image from array into current img.
-     * @param {array} images 
-     * @param {number} index 
+     * @param {array} images
+     * @param {number} index
      */
     playSingleImage(images, index) {
         this.imgCurrent = index;
@@ -81,7 +82,7 @@ class MovableObject extends DrawableObject {
             } else {
                 clearInterval(gravityInterval);
             }
-        }, 1000 / FPS);
+        }, 1000 / FPS, this);
     }
 
     /**
@@ -116,7 +117,7 @@ class MovableObject extends DrawableObject {
             if (fn !== null) {
                 fn();
             }
-        }, 1000 / FPS);
+        }, 1000 / FPS, this);
         return id;
     }
 

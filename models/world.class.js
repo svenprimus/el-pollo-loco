@@ -9,7 +9,7 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         // TODO we could do this, but requires reload as it is
-        // this.canvas.width = window.innerWidth * 0.8; 
+        // this.canvas.width = window.innerWidth * 0.8;
         this.loadLevel();
         this.draw();
         this.level.hero.world = this;

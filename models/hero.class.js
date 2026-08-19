@@ -11,7 +11,7 @@ class Hero extends MovableObject {
         this.x = wCanvas / 8;
         this.speedX = 15;
         this.animate(ImageLib.HERO.idle, FPS);
-        setStoppableInterval(() => this.resolveControl(), FPS);
+        setStoppableInterval(() => this.resolveControl(), FPS, this);
     }
 
     loadImagesToCache() {
