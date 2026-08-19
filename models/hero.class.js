@@ -1,7 +1,7 @@
 class Hero extends MovableObject {
     world;
     startIdleTime = 0;
-
+    cameraOffset = 0;
     constructor(wCanvas, hCanvas) {
         super(hCanvas).loadImage(ImageLib.HERO.idle[0]);
         this.loadImagesToCache();
@@ -9,6 +9,7 @@ class Hero extends MovableObject {
         this.w = ImageLib.HERO.wNatural / (ImageLib.HERO.hNatural / this.h);
         this.y = hCanvas - this.h - this.groundFromBottom;
         this.x = wCanvas / 8;
+        this.cameraOffset = this.x;
         this.speedX = 15;
         this.animate(ImageLib.HERO.idle, FPS);
         setStoppableInterval(() => this.resolveControl(), FPS, this);
@@ -33,10 +34,12 @@ class Hero extends MovableObject {
             this.reverseDirection = false;
             this.setAnimation(ImageLib.HERO.walk, FPS);
             this.moveRight();
+            this.world.cameraX = -this.x + this.cameraOffset;
         } else if (Keyboard.LEFT) {
             this.reverseDirection = true;
             this.setAnimation(ImageLib.HERO.walk, FPS);
             this.moveLeft();
+            this.world.cameraX = -this.x + this.cameraOffset;
         } else if (Keyboard.DOWN) {
             // placeholder
         } else {

@@ -12,9 +12,8 @@ class Chicken extends Enemy {
         this.x = wCanvas / 3 + Math.random() * wCanvas;
         this.speedX = Math.random() * 2; // this is walking speed, not the animation speed
 
-        this.moveLeftSteady();
         this.animate(ImageLib.ENEMY.mob_1.walk, this.speedX * 5);
-        this.idHandler = setStoppableInterval(() => this.statusHandler(), FPS, this);
+        this.idHandler = this.moveLeftSteady(() => this.statusHandler(), FPS, this);
     }
 
     statusHandler() {
