@@ -38,6 +38,7 @@ export class Hero extends MovableObject {
         this.loadImages(ImageLib.HERO.jump);
         this.loadImages(ImageLib.HERO.hurt);
         this.loadImages(ImageLib.HERO.dead);
+        this.loadImages(ImageLib.HERO.drink);
     }
 
     resolveControl() {
@@ -81,7 +82,7 @@ export class Hero extends MovableObject {
             this.moveLeft();
             this.world.cameraX = -this.x + this.cameraOffset;
         } else if (Controls.DOWN) {
-            // placeholder
+            this.setAnimation(ImageLib.HERO.drink, 5);
         } else if (!this.isAboveGround()) {
             isIdle = true;
             if (this.startIdleTime === 0) {
