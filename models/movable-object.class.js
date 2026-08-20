@@ -6,13 +6,13 @@ class MovableObject extends DrawableObject {
     atk = 10;
     lastHit = 0;
     reverseDirection = false; // TODO: move to DrawableObject?
-    groundFromBottom = 0;
+    ground = 0;
     idAnimate;
     animateFreq;
 
     constructor(hCanvas) {
         super(hCanvas);
-        this.groundFromBottom = hCanvas * 0.11;
+        this.ground = hCanvas - hCanvas * 0.11;
     }
 
     /**
@@ -82,13 +82,11 @@ class MovableObject extends DrawableObject {
      * Change vertical position by speedX and acceleration. The speedX gets reduced by acceleration.
      */
     applyGravity() {
-        const gravityInterval = setStoppableInterval(
+        setStoppableInterval(
             () => {
-                if (this.isAboveGround() || speedY > 0) {
+                if (this.isAboveGround() || this.speedY > 0) {
                     this.y -= this.speedY;
                     this.speedY -= this.acceleration;
-                } else {
-                    clearInterval(gravityInterval);
                 }
             },
             1000 / FPS,
@@ -101,7 +99,7 @@ class MovableObject extends DrawableObject {
      * @returns True if object is by definition in the air.
      */
     isAboveGround() {
-        return this.y + this.h > groundFromBottom;
+        return this.y + this.h < this.ground;
     }
 
     /**

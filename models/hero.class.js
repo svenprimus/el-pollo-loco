@@ -10,10 +10,11 @@ class Hero extends MovableObject {
         this.speedX = 15;
         this.animate(ImageLib.HERO.idle, FPS);
         setStoppableInterval(() => this.resolveControl(), FPS, this);
+        this.applyGravity();
     }
 
     place(wCanvas, hCanvas) {
-        this.y = hCanvas - this.h - this.groundFromBottom;
+        this.y = this.ground - this.h;
         this.x = wCanvas / 8;
         this.cameraOffset = this.x;
     }
@@ -29,8 +30,25 @@ class Hero extends MovableObject {
 
     resolveControl() {
         let isIdle = false;
-        if (Keyboard.UP) {
-            // jump();
+        if (Keyboard.UP && Keyboard.RIGHT && !this.isAboveGround()) {
+            this.setAnimation(ImageLib.HERO.jump, 10);
+            this.jump();
+            this.reverseDirection = false;
+            if (this.isBeforeEnd()) {
+                this.moveRight();
+                this.world.cameraX = -this.x + this.cameraOffset;
+            }
+        } else if (Keyboard.UP && Keyboard.LEFT && !this.isAboveGround()) {
+            this.setAnimation(ImageLib.HERO.jump, 10);
+            this.jump();
+            this.reverseDirection = true;
+            if (this.isAfterStart()) {
+                this.moveLeft();
+                this.world.cameraX = -this.x + this.cameraOffset;
+            }
+        } else if (Keyboard.UP && !this.isAboveGround()) {
+            this.setAnimation(ImageLib.HERO.jump, 10);
+            this.jump();
         } else if (Keyboard.ATTACK) {
             // attack();
         } else if (Keyboard.RIGHT && this.isBeforeEnd()) {
@@ -45,7 +63,7 @@ class Hero extends MovableObject {
             this.world.cameraX = -this.x + this.cameraOffset;
         } else if (Keyboard.DOWN) {
             // placeholder
-        } else {
+        } else if (!this.isAboveGround()) {
             isIdle = true;
             if (this.startIdleTime === 0) {
                 this.startIdleTime = new Date().getTime();
@@ -78,6 +96,9 @@ class Hero extends MovableObject {
      * @param {number} frequency
      */
     setAnimation(images, frequency) {
-        this.restartAnimateIfChangedFrequency(images, 0, frequency);
+        if (!this.isAboveGround()) {
+            this.restartAnimateIfChangedFrequency(images, 0, frequency);
+            //TODO animations into order... if hurt, dead, aboveground, etc
+        }
     }
 }

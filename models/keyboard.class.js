@@ -10,6 +10,7 @@ window.addEventListener('keydown', (e) => {
     switch (e.code) {
         case 'KeyW':
         case 'ArrowUp':
+        case 'Space':
             Keyboard.UP = true;
             break;
         case 'KeyS':
@@ -24,8 +25,8 @@ window.addEventListener('keydown', (e) => {
         case 'ArrowRight':
             Keyboard.RIGHT = true;
             break;
-        case 'Space':
         case 'ControlRight':
+        case 'KeyE':
             Keyboard.ATTACK = true;
             break;
     }
@@ -35,6 +36,7 @@ window.addEventListener('keyup', (e) => {
     switch (e.code) {
         case 'KeyW':
         case 'ArrowUp':
+        case 'Space':
             Keyboard.UP = false;
             break;
         case 'KeyS':
@@ -49,8 +51,8 @@ window.addEventListener('keyup', (e) => {
         case 'ArrowRight':
             Keyboard.RIGHT = false;
             break;
-        case 'Space':
         case 'ControlRight':
+        case 'KeyE':
             Keyboard.ATTACK = false;
             break;
     }

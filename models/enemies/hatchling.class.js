@@ -1,4 +1,4 @@
-class Chick extends Enemy {
+class Hatchling extends Enemy {
     static spread = -1;
     constructor(wCanvas, hCanvas) {
         super(wCanvas, hCanvas).loadImage(ImageLib.ENEMY.mob_2.walk[2]);
@@ -13,10 +13,10 @@ class Chick extends Enemy {
 
     place(wCanvas, hCanvas) {
         const sections = Math.floor(Level.END / World.BG_WIDTH);
-        Chick.spread = (Chick.spread + 2) >= sections ? 1 : (Chick.spread + 2) % sections;
+        Hatchling.spread = Hatchling.spread + 2 >= sections ? 1 : (Hatchling.spread + 2) % sections;
 
-        this.x = Chick.spread * World.BG_WIDTH + (Math.random() * 50) + 0.8 * World.BG_WIDTH;
-        this.y = hCanvas - this.h - this.groundFromBottom - Math.random() * 15;
+        this.x = Hatchling.spread * World.BG_WIDTH + Math.random() * 50 + 0.8 * World.BG_WIDTH;
+        this.y = this.ground - this.h - Math.random() * 15;
     }
 
     loadImagesToCache() {

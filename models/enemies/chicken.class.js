@@ -13,13 +13,14 @@ class Chicken extends Enemy {
 
         this.animate(ImageLib.ENEMY.mob_1.walk, this.speedX * 5);
         this.idHandler = this.moveLeftSteady(() => this.statusHandler(), FPS, this);
+        this.applyGravity();
     }
 
     place(wCanvas, hCanvas) {
         const sections = Math.floor(Level.END / World.BG_WIDTH);
         const section = Chicken.spread++ % sections;
         this.x = section * World.BG_WIDTH + Math.random() * World.BG_WIDTH;
-        this.y = hCanvas - this.h - this.groundFromBottom - Math.random() * 15;
+        this.y = this.ground - this.h - Math.random() * 15;
     }
 
     statusHandler() {
@@ -34,6 +35,7 @@ class Chicken extends Enemy {
     randomJump() {
         if (Math.random() > 0.99 && false === this.isJumping) {
             this.speedX = 4;
+            this.speedY = 20;
             this.isJumping = true;
             this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.jump, 0, this.speedX * 5);
             this.startResetTimeout();

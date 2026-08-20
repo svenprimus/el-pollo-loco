@@ -10,8 +10,8 @@ class Boss extends Enemy {
     }
 
     place(wCanvas, hCanvas) {
-        this.x = Level.END - this.w - wCanvas * 0.05;
-        this.y = hCanvas - this.h - this.groundFromBottom + 15;
+        this.x = Level.END - this.w - wCanvas - wCanvas * 0.05;
+        this.y = this.ground - this.h + 10;
     }
 
     loadImagesToCache() {
