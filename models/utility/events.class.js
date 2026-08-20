@@ -1,4 +1,4 @@
-import {Game} from "./game.class.js";
+import { Game } from './game.class.js';
 
 export class Events {
     static init() {
@@ -14,13 +14,16 @@ export class Events {
 
     static pauseGame = () => {
         Game.pause();
+        document.getElementById('btn-pause').blur();
     };
 
     static resumeGame = () => {
         Game.resume();
+        document.getElementById('btn-resume').blur();
     };
 
     static restartGame = () => {
         Game.restart();
+        document.getElementById('btn-restart').blur(); // un-focus button, so that space (jump) will not restart again
     };
 }
