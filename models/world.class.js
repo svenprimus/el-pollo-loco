@@ -4,10 +4,13 @@ class World {
     cameraX = 0;
     level;
     statusBar = new StatusBar();
+    static BG_WIDTH = 0; // width of one background (can be larger than canvas width)
 
     constructor(canvas) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
+        World.BG_WIDTH = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / canvas.height);
+
         // TODO we could do this, but requires reload as it is
         // this.canvas.width = window.innerWidth * 0.9;
         // this.canvas.height = window.innerHeight * 0.9;

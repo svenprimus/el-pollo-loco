@@ -2,12 +2,14 @@ class DrawableObject {
     img;
     imgCache = {};
     imgCurrent = 0;
-    x = 120;
-    y = 280;
+    x = 0;
+    y = 0;
     w = 150;
     h = 100;
 
-    constructor() {}
+    constructor(hCanvas) {
+        this.y = hCanvas; // initially place objects below viewable range
+    }
 
     /**
      * Load image into cache.

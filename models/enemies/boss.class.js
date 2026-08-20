@@ -5,11 +5,13 @@ class Boss extends Enemy {
 
         this.h = hCanvas / 1.8;
         this.w = ImageLib.ENEMY.boss_1.wNatural / (ImageLib.ENEMY.boss_1.hNatural / this.h);
-        this.y = hCanvas - this.h - this.groundFromBottom + 15;
 
-        // TODO: spawn point relative to hero
-        this.x = wCanvas - this.w;
         this.animate(ImageLib.ENEMY.boss_1.alert, 5);
+    }
+
+    place(wCanvas, hCanvas) {
+        this.x = Level.END - this.w - wCanvas * 0.05;
+        this.y = hCanvas - this.h - this.groundFromBottom + 15;
     }
 
     loadImagesToCache() {

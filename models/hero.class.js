@@ -7,12 +7,15 @@ class Hero extends MovableObject {
         this.loadImagesToCache();
         this.h = hCanvas / 2;
         this.w = ImageLib.HERO.wNatural / (ImageLib.HERO.hNatural / this.h);
-        this.y = hCanvas - this.h - this.groundFromBottom;
-        this.x = wCanvas / 8;
-        this.cameraOffset = this.x;
         this.speedX = 15;
         this.animate(ImageLib.HERO.idle, FPS);
         setStoppableInterval(() => this.resolveControl(), FPS, this);
+    }
+
+    place(wCanvas, hCanvas) {
+        this.y = hCanvas - this.h - this.groundFromBottom;
+        this.x = wCanvas / 8;
+        this.cameraOffset = this.x;
     }
 
     loadImagesToCache() {
@@ -30,12 +33,12 @@ class Hero extends MovableObject {
             // jump();
         } else if (Keyboard.ATTACK) {
             // attack();
-        } else if (Keyboard.RIGHT) {
+        } else if (Keyboard.RIGHT && this.isBeforeEnd()) {
             this.reverseDirection = false;
             this.setAnimation(ImageLib.HERO.walk, FPS);
             this.moveRight();
             this.world.cameraX = -this.x + this.cameraOffset;
-        } else if (Keyboard.LEFT) {
+        } else if (Keyboard.LEFT && this.isAfterStart()) {
             this.reverseDirection = true;
             this.setAnimation(ImageLib.HERO.walk, FPS);
             this.moveLeft();
@@ -59,6 +62,14 @@ class Hero extends MovableObject {
         if (false === isIdle) {
             this.startIdleTime = 0;
         }
+    }
+
+    isAfterStart() {
+        return this.x > Level.START + this.cameraOffset + this.speedX;
+    }
+
+    isBeforeEnd() {
+        return this.x < Level.END - this.world.canvas.width + this.cameraOffset - this.speedX;
     }
 
     /**

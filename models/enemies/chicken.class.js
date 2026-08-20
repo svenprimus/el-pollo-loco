@@ -1,4 +1,5 @@
 class Chicken extends Enemy {
+    static spread = 0;
     isJumping = false;
     idHandler;
 
@@ -8,16 +9,21 @@ class Chicken extends Enemy {
 
         this.h = hCanvas / 8;
         this.w = ImageLib.ENEMY.mob_1.wNatural / (ImageLib.ENEMY.mob_1.hNatural / this.h);
-        this.y = hCanvas - this.h - this.groundFromBottom - Math.random() * 15;
-        this.x = wCanvas / 3 + Math.random() * wCanvas;
         this.speedX = Math.random() * 2; // this is walking speed, not the animation speed
 
         this.animate(ImageLib.ENEMY.mob_1.walk, this.speedX * 5);
         this.idHandler = this.moveLeftSteady(() => this.statusHandler(), FPS, this);
     }
 
+    place(wCanvas, hCanvas) {
+        const sections = Math.floor(Level.END / World.BG_WIDTH);
+        const section = Chicken.spread++ % sections;
+        this.x = section * World.BG_WIDTH + Math.random() * World.BG_WIDTH;
+        this.y = hCanvas - this.h - this.groundFromBottom - Math.random() * 15;
+    }
+
     statusHandler() {
-        if (this.isDead() || this.x + this.w < 0) {
+        if (this.isDead() || this.x + this.w < Level.START) {
             clearStoppableInterval(this.idAnimate);
             clearStoppableInterval(this.idHandler);
         } else {

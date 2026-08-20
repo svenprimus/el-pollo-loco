@@ -11,7 +11,7 @@ class MovableObject extends DrawableObject {
     animateFreq;
 
     constructor(hCanvas) {
-        super();
+        super(hCanvas);
         this.groundFromBottom = hCanvas * 0.11;
     }
 
