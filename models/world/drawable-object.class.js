@@ -6,9 +6,11 @@ export class DrawableObject {
     y = 0;
     w = 150;
     h = 100;
-    static FPS;
+    hCanvas = 0;
+    
     constructor(hCanvas) {
         this.y = hCanvas; // initially place objects below viewable range
+        this.hCanvas = hCanvas;
     }
 
     /**
@@ -46,11 +48,13 @@ export class DrawableObject {
      * @param {context} ctx - 2d context of canvas
      */
     drawFrame(ctx) {
-        ctx.beginPath();
-        ctx.llineWidth = '2';
-        ctx.strokeStyle = 'blue';
-        ctx.rect(this.x, this.y, this.w, this.h);
-        ctx.stroke();
+        if (this.hpMax > 0) {
+            ctx.beginPath();
+            ctx.llineWidth = '2';
+            ctx.strokeStyle = 'blue';
+            ctx.rect(this.x, this.y, this.w, this.h);
+            ctx.stroke();
+        }
     }
 
     /**

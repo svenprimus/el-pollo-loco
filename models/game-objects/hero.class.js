@@ -9,7 +9,12 @@ export class Hero extends MovableObject {
     world;
     startIdleTime = 0;
     cameraOffset = 0;
-    constructor(wCanvas, hCanvas) {
+
+    hp = 100;
+    hpMax = 100;
+    atk = 50;
+
+    constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.HERO.idle[0]);
         this.loadImagesToCache();
         this.h = hCanvas / 2;
@@ -37,7 +42,14 @@ export class Hero extends MovableObject {
 
     resolveControl() {
         let isIdle = false;
-        if (Controls.UP && Controls.RIGHT) {
+        this.world.cameraY = this.world.cameraY;
+
+        if (this.isDead()) {
+            this.setAnimation(ImageLib.HERO.dead, 10);
+            this.fallOut();
+        } else if (this.isHurt()) {
+            this.setAnimation(ImageLib.HERO.hurt, 10);
+        } else if (Controls.UP && Controls.RIGHT) {
             this.setAnimation(ImageLib.HERO.jump, 10);
             this.jump(30);
             this.reverseDirection = false;

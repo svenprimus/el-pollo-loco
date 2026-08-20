@@ -9,9 +9,12 @@ export class Chicken extends Enemy {
     static spread = 0;
     isJumping = false;
     idHandler;
+    hp = 50;
+    hpMax = 50;
+    atk = 10;
 
-    constructor(wCanvas, hCanvas) {
-        super(wCanvas, hCanvas).loadImage(ImageLib.ENEMY.mob_1.walk[2]);
+    constructor(hCanvas) {
+        super(hCanvas).loadImage(ImageLib.ENEMY.mob_1.walk[2]);
         this.loadImagesToCache();
         Chicken.spread = 0;
         this.h = hCanvas / 8;

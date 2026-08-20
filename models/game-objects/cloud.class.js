@@ -8,8 +8,8 @@ export class Cloud extends MovableObject {
     h = 1080 / 4;
     world;
 
-    constructor(path, wCanvas, hCanvas) {
-        super().loadImage(path);
+    constructor(path, hCanvas) {
+        super(hCanvas).loadImage(path);
         Cloud.wIndex = null;
         this.moveLeftSteady(() => this.loopThroughCanvas());
         this.speedX = Math.random() * 0.5;
@@ -28,7 +28,7 @@ export class Cloud extends MovableObject {
 
     loopThroughCanvas() {
         if (this.x + this.w < Level.START) {
-            this.x = world.cameraX + world.canvas.width + this.w;
+            this.x = this.world.cameraX + world.canvas.width + this.w;
         }
     }
 }

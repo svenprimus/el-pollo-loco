@@ -14,16 +14,24 @@ export class Events {
 
     static pauseGame = () => {
         Game.pause();
-        document.getElementById('btn-pause').blur();
+        Events.unfocusButton('btn-pause');
     };
 
     static resumeGame = () => {
         Game.resume();
-        document.getElementById('btn-resume').blur();
+        Events.unfocusButton('btn-resume');
     };
 
     static restartGame = () => {
         Game.restart();
-        document.getElementById('btn-restart').blur(); // un-focus button, so that space (jump) will not restart again
+        Events.unfocusButton('btn-restart');
     };
+
+    /**
+     * un-focus button, so that e.g. space (jump) will not restart again
+     * @param {string} button - id
+     */
+    static unfocusButton(button) {
+        document.getElementById(button).blur(); 
+    }
 }

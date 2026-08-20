@@ -6,8 +6,12 @@ import { World } from '../../world/world.class.js';
 
 export class Hatchling extends Enemy {
     static spread = -1;
-    constructor(wCanvas, hCanvas) {
-        super(wCanvas, hCanvas).loadImage(ImageLib.ENEMY.mob_2.walk[2]);
+    hp = 20;
+    hpMax = 20;
+    atk = 2;
+
+    constructor(hCanvas) {
+        super(hCanvas).loadImage(ImageLib.ENEMY.mob_2.walk[2]);
         this.loadImagesToCache();
         Hatchling.spread = -1;
 

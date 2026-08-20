@@ -3,8 +3,12 @@ import { ImageLib } from '../../utility/image-lib.class.js';
 import { Level } from '../../world/level.class.js';
 
 export class Boss extends Enemy {
-    constructor(wCanvas, hCanvas) {
-        super(wCanvas, hCanvas).loadImage(ImageLib.ENEMY.boss_1.walk[0]);
+    hp = 500;
+    hpMax = 500;
+    atk = 20;
+
+    constructor(hCanvas) {
+        super(hCanvas).loadImage(ImageLib.ENEMY.boss_1.walk[0]);
         this.loadImagesToCache();
 
         this.h = hCanvas / 1.8;
@@ -14,7 +18,7 @@ export class Boss extends Enemy {
     }
 
     place(wCanvas, hCanvas) {
-        this.x = Level.END - this.w - wCanvas - wCanvas * 0.05;
+        this.x = Level.END - wCanvas;
         this.y = this.ground - this.h + 10;
     }
 

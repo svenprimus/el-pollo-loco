@@ -6,8 +6,10 @@ export class MovableObject extends DrawableObject {
     speedX = 0.15;
     speedY = 0;
     acceleration = 2.5;
-    hp = 100;
-    atk = 10;
+    died = false;
+    hp;
+    hpMax;
+    atk;
     lastHit = 0;
     reverseDirection = false; // TODO: move to DrawableObject?
     ground = 0;
@@ -88,14 +90,22 @@ export class MovableObject extends DrawableObject {
     applyGravity() {
         TimingHub.setInterval(
             () => {
-                if (this.isAboveGround() || this.speedY > 0) {
+                if ((this.isAboveGround() || this.isDead() || this.jumpStarted()) && this.isInsideCanvas()) {
                     this.y -= this.speedY;
                     this.speedY -= this.acceleration;
+                    // console.log('Speed ' ,this.speedY, ' y ', this.y, this.isInsideCanvas());
                 }
             },
             1000 / Game.FPS,
             this
         );
+    }
+
+    fallOut() {
+        if (false === this.died) {
+            this.died = true;
+            this.speedY = 20;
+        }
     }
 
     /**
@@ -104,6 +114,14 @@ export class MovableObject extends DrawableObject {
      */
     isAboveGround() {
         return this.y + this.h < this.ground;
+    }
+
+    jumpStarted() {
+        return this.speedY > 0;
+    }
+
+    isInsideCanvas() {
+        return (this.y + this.h) > 0 && this.y < this.hCanvas;
     }
 
     /**
@@ -166,8 +184,13 @@ export class MovableObject extends DrawableObject {
      * @param {number} damage - damage from hit
      */
     hit(damage) {
-        this.hp = Math.min(this.hp - damage, 0);
+        this.hp = Math.max(this.hp - damage, 0);
         this.lastHit = new Date().getTime();
+    }
+
+    isHurt() {
+        const timePassed = new Date().getTime() - this.lastHit;
+        return timePassed < 500;
     }
 
     /**

@@ -8,7 +8,7 @@ export class Background extends DrawableObject {
     y = 0;
 
     constructor(path, hCanvas) {
-        super().loadImage(path);
+        super(hCanvas).loadImage(path);
         Background.wIndex = null;
         Background.LAYERS = null;
         this.w = 1920 / (1080 / hCanvas);
