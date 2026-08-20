@@ -1,0 +1,32 @@
+import { Enemy } from './enemy.class.js';
+import { ImageLib } from '../../utility/image-lib.class.js';
+import { Level } from '../../world/level.class.js';
+
+export class Boss extends Enemy {
+    hp = 500;
+    hpMax = 500;
+    atk = 20;
+
+    constructor(hCanvas) {
+        super(hCanvas).loadImage(ImageLib.ENEMY.boss_1.walk[0]);
+        this.loadImagesToCache();
+
+        this.h = hCanvas / 1.8;
+        this.w = ImageLib.ENEMY.boss_1.wNatural / (ImageLib.ENEMY.boss_1.hNatural / this.h);
+
+        this.animate(ImageLib.ENEMY.boss_1.alert, 5);
+    }
+
+    place(wCanvas, hCanvas) {
+        this.x = Level.END - wCanvas;
+        this.y = this.ground - this.h + 10;
+    }
+
+    loadImagesToCache() {
+        this.loadImages(ImageLib.ENEMY.boss_1.walk);
+        this.loadImages(ImageLib.ENEMY.boss_1.alert);
+        this.loadImages(ImageLib.ENEMY.boss_1.attack);
+        this.loadImages(ImageLib.ENEMY.boss_1.hurt);
+        this.loadImages(ImageLib.ENEMY.boss_1.dead);
+    }
+}
