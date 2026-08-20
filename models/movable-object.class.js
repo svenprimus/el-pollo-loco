@@ -137,8 +137,10 @@ class MovableObject extends DrawableObject {
     /**
      * Add value to 'speedY'.
      */
-    jump() {
-        this.speedY = 30;
+    jump(impulse) {
+        if (false === this.isAboveGround()) {
+            this.speedY = impulse;
+        }
     }
 
     /**

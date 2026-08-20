@@ -30,25 +30,25 @@ class Hero extends MovableObject {
 
     resolveControl() {
         let isIdle = false;
-        if (Keyboard.UP && Keyboard.RIGHT && !this.isAboveGround()) {
+        if (Keyboard.UP && Keyboard.RIGHT) {
             this.setAnimation(ImageLib.HERO.jump, 10);
-            this.jump();
+            this.jump(30);
             this.reverseDirection = false;
             if (this.isBeforeEnd()) {
                 this.moveRight();
                 this.world.cameraX = -this.x + this.cameraOffset;
             }
-        } else if (Keyboard.UP && Keyboard.LEFT && !this.isAboveGround()) {
+        } else if (Keyboard.UP && Keyboard.LEFT) {
             this.setAnimation(ImageLib.HERO.jump, 10);
-            this.jump();
+            this.jump(30);
             this.reverseDirection = true;
             if (this.isAfterStart()) {
                 this.moveLeft();
                 this.world.cameraX = -this.x + this.cameraOffset;
             }
-        } else if (Keyboard.UP && !this.isAboveGround()) {
+        } else if (Keyboard.UP) {
             this.setAnimation(ImageLib.HERO.jump, 10);
-            this.jump();
+            this.jump(30);
         } else if (Keyboard.ATTACK) {
             // attack();
         } else if (Keyboard.RIGHT && this.isBeforeEnd()) {

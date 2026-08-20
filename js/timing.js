@@ -1,3 +1,7 @@
+const intervalIds = [];
+const timeoutIds = [];
+let timeoutsBackup = [];
+let intervalBackup = [];
 
 /**
  * Sets an interval that can be paused and resumed.
