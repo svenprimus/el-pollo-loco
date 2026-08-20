@@ -6,7 +6,7 @@ class Chicken extends Enemy {
     constructor(wCanvas, hCanvas) {
         super(wCanvas, hCanvas).loadImage(ImageLib.ENEMY.mob_1.walk[2]);
         this.loadImagesToCache();
-
+        Chicken.spread = 0;
         this.h = hCanvas / 8;
         this.w = ImageLib.ENEMY.mob_1.wNatural / (ImageLib.ENEMY.mob_1.hNatural / this.h);
         this.speedX = Math.random() * 2; // this is walking speed, not the animation speed

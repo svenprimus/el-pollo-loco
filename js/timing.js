@@ -8,7 +8,7 @@ let intervalBackup = [];
  * @param {function} fn - function to execute
  * @param {number} time - interval in ms
  * @param {moveableObject} obj - moveableObject that wants should be resumeable
- * @returns 
+ * @returns
  */
 function setStoppableInterval(fn, time, obj = null) {
     const id = setInterval(fn, time);
@@ -50,6 +50,12 @@ function pauseGame() {
     for (let i = intervalIds.length; i > 0; i--) {
         clearStoppableInterval(intervalIds[i - 1].id);
     }
+}
+
+function clearGame() {
+    pauseGame();
+    timeoutsBackup = [];
+    intervalBackup = [];
 }
 
 function resumeGame() {

@@ -6,7 +6,7 @@ class Cloud extends MovableObject {
 
     constructor(path, wCanvas, hCanvas) {
         super().loadImage(path);
-
+        Cloud.wIndex = null;
         this.moveLeftSteady(() => this.loopThroughCanvas());
         this.speedX = Math.random() * 0.5;
     }

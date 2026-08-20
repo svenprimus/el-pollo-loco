@@ -6,3 +6,10 @@ function init() {
     world = new World(canvas);
     world.draw();
 }
+
+function restartGame() {
+    clearGame();
+    const canvas = document.getElementById('canvas');
+    world = new World(canvas);
+    world.draw();
+}

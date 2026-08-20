@@ -3,7 +3,8 @@ class Hatchling extends Enemy {
     constructor(wCanvas, hCanvas) {
         super(wCanvas, hCanvas).loadImage(ImageLib.ENEMY.mob_2.walk[2]);
         this.loadImagesToCache();
-
+        Hatchling.spread = -1;
+        
         this.h = hCanvas / 16;
         this.w = ImageLib.ENEMY.mob_2.wNatural / (ImageLib.ENEMY.mob_2.hNatural / this.h);
         this.speedX = Math.random() * 2;
