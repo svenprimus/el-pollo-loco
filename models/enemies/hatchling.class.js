@@ -4,7 +4,7 @@ class Hatchling extends Enemy {
         super(wCanvas, hCanvas).loadImage(ImageLib.ENEMY.mob_2.walk[2]);
         this.loadImagesToCache();
         Hatchling.spread = -1;
-        
+
         this.h = hCanvas / 16;
         this.w = ImageLib.ENEMY.mob_2.wNatural / (ImageLib.ENEMY.mob_2.hNatural / this.h);
         this.speedX = Math.random() * 2;
@@ -27,8 +27,8 @@ class Hatchling extends Enemy {
 
     statusHandler() {
         if (this.isDead() || this.x + this.w < Level.START) {
-            clearStoppableInterval(this.idAnimate);
-            clearStoppableInterval(this.idHandler);
+            TimingHub.stopInterval(this.idAnimate);
+            TimingHub.stopInterval(this.idHandler);
         } else {
             this.randomFury();
         }
@@ -38,7 +38,7 @@ class Hatchling extends Enemy {
         if (Math.random() > 0.99) {
             this.speedX = 4;
             this.restartAnimate(ImageLib.ENEMY.mob_2.walk, this.speedX * 5);
-            setStoppableTimeout(() => {
+            TimingHub.setTimeout(() => {
                 this.speedX = Math.random() * 2;
                 this.restartAnimate(ImageLib.ENEMY.mob_2.walk, this.speedX * 5);
             }, 750);

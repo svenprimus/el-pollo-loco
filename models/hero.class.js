@@ -9,7 +9,7 @@ class Hero extends MovableObject {
         this.w = ImageLib.HERO.wNatural / (ImageLib.HERO.hNatural / this.h);
         this.speedX = 15;
         this.animate(ImageLib.HERO.idle, FPS);
-        setStoppableInterval(() => this.resolveControl(), FPS, this);
+        TimingHub.setInterval(() => this.resolveControl(), FPS, this);
         this.applyGravity();
     }
 

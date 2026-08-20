@@ -25,8 +25,8 @@ class Chicken extends Enemy {
 
     statusHandler() {
         if (this.isDead() || this.x + this.w < Level.START) {
-            clearStoppableInterval(this.idAnimate);
-            clearStoppableInterval(this.idHandler);
+            TimingHub.stopInterval(this.idAnimate);
+            TimingHub.stopInterval(this.idHandler);
         } else {
             this.randomJump();
         }
@@ -43,7 +43,7 @@ class Chicken extends Enemy {
     }
 
     startResetTimeout() {
-        setStoppableTimeout(() => {
+        TimingHub.setTimeout(() => {
             this.speedX = Math.random() * 2;
             this.isJumping = false;
             this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.walk, 2, this.speedX * 5);

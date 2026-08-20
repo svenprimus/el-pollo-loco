@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="./style.css" />
 
         <script src="./js/db-images.js"></script>
+        <script src="./models/timing-hub.class.js"></script>
         <script src="./models/world.class.js"></script>
         <script src="./models/drawable-object.class.js"></script>
         <script src="./models/movable-object.class.js"></script>
@@ -22,20 +23,20 @@
         <script src="./models/enemies/chicken.class.js"></script>
         <script src="./models/enemies/hatchling.class.js"></script>
         <script src="./models/hero.class.js"></script>
+        <script src="./models/game.class.js"></script>
 
         <script src="./levels/level-1.js"></script>
 
         <script src="./js/fullscreen.js"></script>
-        <script src="./js/timing.js" defer></script>
         <script src="./script.js" defer></script>
     </head>
     <body onload="init()">
         <div id="game-wrapper" class="game-wrapper">
             <h1>El Pollo Loco</h1>
             <canvas id="canvas" width="720" height="480"></canvas>
-            <button onclick="pauseGame()">Pause</button>
-            <button onclick="resumeGame()">Resume</button>
-            <button onclick="restartGame()">Restart</button>
+            <button onclick="pause()">Pause</button>
+            <button onclick="resume()">Resume</button>
+            <button onclick="restart()">Restart</button>
         </div>
     </body>
 </html>

@@ -20,7 +20,7 @@ class MovableObject extends DrawableObject {
      */
     animate(images, frequency = 10, fn = null) {
         this.animateFreq = frequency;
-        this.idAnimate = setStoppableInterval(
+        this.idAnimate = TimingHub.setInterval(
             () => {
                 if (fn !== null) {
                     fn();
@@ -34,7 +34,7 @@ class MovableObject extends DrawableObject {
     }
 
     restartAnimate(images, frequency = 10, fn = null) {
-        if (clearStoppableInterval(this.idAnimate)) {
+        if (TimingHub.stopInterval(this.idAnimate)) {
             this.animate(images, frequency, fn);
         }
     }
@@ -49,7 +49,7 @@ class MovableObject extends DrawableObject {
      */
     restartAnimateIfChangedFrequency(images, idFirst, frequency = 10, fn = null) {
         if (
-            (this.animateFreq !== frequency && isIntervalSet(this.idAnimate)) ||
+            (this.animateFreq !== frequency && TimingHub.isIntervalSet(this.idAnimate)) ||
             this.img !== this.imgCache[images[this.imgCurrent]]
         ) {
             this.playSingleImage(images, idFirst);
@@ -82,7 +82,7 @@ class MovableObject extends DrawableObject {
      * Change vertical position by speedX and acceleration. The speedX gets reduced by acceleration.
      */
     applyGravity() {
-        setStoppableInterval(
+        TimingHub.setInterval(
             () => {
                 if (this.isAboveGround() || this.speedY > 0) {
                     this.y -= this.speedY;
@@ -121,7 +121,7 @@ class MovableObject extends DrawableObject {
      * @param {function} fn to execute in between after every move
      */
     moveLeftSteady(fn = null) {
-        const id = setStoppableInterval(
+        const id = TimingHub.setInterval(
             () => {
                 this.moveLeft();
                 if (fn !== null) {

@@ -22,7 +22,7 @@ class World {
     }
 
     checkCollisions() {
-        setStoppableInterval(() => {
+        TimingHub.setInterval(() => {
             this.level.enemies.forEach((enemy) => {
                 if (this.level.hero.isColliding(enemy)) {
                     this.level.hero.hit(enemy.atk);
