@@ -29,7 +29,11 @@ export class Chicken extends Enemy {
     place(wCanvas, hCanvas) {
         const sections = Math.floor(Level.END / World.BG_WIDTH);
         const section = Chicken.spread++ % sections;
-        this.x = section * World.BG_WIDTH + Math.random() * World.BG_WIDTH;
+        if (0 === section) {
+            this.x = World.BG_WIDTH / 2 + Math.random() * World.BG_WIDTH;
+        } else {
+            this.x = section * World.BG_WIDTH + Math.random() * World.BG_WIDTH;
+        }
         this.y = this.ground - this.h - Math.random() * 15;
     }
 
