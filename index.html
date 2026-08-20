@@ -6,37 +6,15 @@
         <title>El Pollo Loco</title>
         <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.svg" />
         <link rel="stylesheet" href="./style.css" />
-
-        <script src="./js/db-images.js"></script>
-        <script src="./models/timing-hub.class.js"></script>
-        <script src="./models/world.class.js"></script>
-        <script src="./models/drawable-object.class.js"></script>
-        <script src="./models/movable-object.class.js"></script>
-        <script src="./models/keyboard.class.js"></script>
-        <script src="./models/level.class.js"></script>
-        <script src="./models/hitable-object.class.js"></script>
-        <script src="./models/status-bar.class.js"></script>
-        <script src="./models/background.class.js"></script>
-        <script src="./models/cloud.class.js"></script>
-        <script src="./models/enemy.class.js"></script>
-        <script src="./models/enemies/boss.class.js"></script>
-        <script src="./models/enemies/chicken.class.js"></script>
-        <script src="./models/enemies/hatchling.class.js"></script>
-        <script src="./models/hero.class.js"></script>
-        <script src="./models/game.class.js"></script>
-
-        <script src="./levels/level-1.js"></script>
-
-        <script src="./js/fullscreen.js"></script>
-        <script src="./script.js" defer></script>
+        <script type="module" src="./script.js" defer></script>
     </head>
-    <body onload="init()">
+    <body>
         <div id="game-wrapper" class="game-wrapper">
             <h1>El Pollo Loco</h1>
             <canvas id="canvas" width="720" height="480"></canvas>
-            <button onclick="pause()">Pause</button>
-            <button onclick="resume()">Resume</button>
-            <button onclick="restart()">Restart</button>
+            <button id="btn-pause">Pause</button>
+            <button id="btn-resume">Resume</button>
+            <button id="btn-restart">Restart</button>
         </div>
     </body>
 </html>

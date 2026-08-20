@@ -1,18 +1,3 @@
-const FPS = 25;
-let world;
+import {Events} from "./models/utility/events.class.js";
 
-function init() {
-    Game.start();
-}
-
-function restart() {
-    Game.restart();
-}
-
-function pause() {
-    Game.pause();
-}
-
-function resume() {
-    Game.resume();
-}
+Events.init();

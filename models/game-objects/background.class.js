@@ -1,4 +1,6 @@
-class Background extends DrawableObject {
+import { DrawableObject } from '../world/drawable-object.class.js';
+
+export class Background extends DrawableObject {
     static wIndex = null;
     static LAYERS = null;
     static NATURAL_WIDTH = 1920;

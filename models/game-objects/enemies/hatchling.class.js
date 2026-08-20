@@ -1,4 +1,10 @@
-class Hatchling extends Enemy {
+import { Enemy } from './enemy.class.js';
+import { TimingHub } from '../../utility/timing-hub.class.js';
+import { ImageLib } from '../../utility/image-lib.class.js';
+import { Level } from '../../world/level.class.js';
+import { World } from '../../world/world.class.js';
+
+export class Hatchling extends Enemy {
     static spread = -1;
     constructor(wCanvas, hCanvas) {
         super(wCanvas, hCanvas).loadImage(ImageLib.ENEMY.mob_2.walk[2]);

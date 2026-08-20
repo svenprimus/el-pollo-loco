@@ -1,4 +1,11 @@
-class Chicken extends Enemy {
+import { Enemy } from './enemy.class.js';
+import { Game } from '../../utility/game.class.js';
+import { TimingHub } from '../../utility/timing-hub.class.js';
+import { ImageLib } from '../../utility/image-lib.class.js';
+import { Level } from '../../world/level.class.js';
+import { World } from '../../world/world.class.js';
+
+export class Chicken extends Enemy {
     static spread = 0;
     isJumping = false;
     idHandler;
@@ -12,7 +19,7 @@ class Chicken extends Enemy {
         this.speedX = Math.random() * 2; // this is walking speed, not the animation speed
 
         this.animate(ImageLib.ENEMY.mob_1.walk, this.speedX * 5);
-        this.idHandler = this.moveLeftSteady(() => this.statusHandler(), FPS, this);
+        this.idHandler = this.moveLeftSteady(() => this.statusHandler(), Game.FPS, this);
         this.applyGravity();
     }
 

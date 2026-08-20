@@ -1,4 +1,4 @@
-class TimingHub {
+export class TimingHub {
     static intervalIds = [];
     static timeoutIds = [];
     static timeoutsBackup = [];
@@ -54,7 +54,7 @@ class TimingHub {
     }
 
     static clearGame() {
-        pause();
+        TimingHub.pause();
         TimingHub.timeoutsBackup = [];
         TimingHub.intervalBackup = [];
     }

@@ -1,4 +1,11 @@
-class Hero extends MovableObject {
+import { MovableObject } from '../world/movable-object.class.js';
+import { Level } from '../world/level.class.js';
+import { ImageLib } from '../utility/image-lib.class.js';
+import { Game } from '../utility/game.class.js';
+import { TimingHub } from '../utility/timing-hub.class.js';
+import { Controls } from '../utility/controls.class.js';
+
+export class Hero extends MovableObject {
     world;
     startIdleTime = 0;
     cameraOffset = 0;
@@ -8,8 +15,8 @@ class Hero extends MovableObject {
         this.h = hCanvas / 2;
         this.w = ImageLib.HERO.wNatural / (ImageLib.HERO.hNatural / this.h);
         this.speedX = 15;
-        this.animate(ImageLib.HERO.idle, FPS);
-        TimingHub.setInterval(() => this.resolveControl(), FPS, this);
+        this.animate(ImageLib.HERO.idle, Game.FPS);
+        TimingHub.setInterval(() => this.resolveControl(), Game.FPS, this);
         this.applyGravity();
     }
 
@@ -30,7 +37,7 @@ class Hero extends MovableObject {
 
     resolveControl() {
         let isIdle = false;
-        if (Keyboard.UP && Keyboard.RIGHT) {
+        if (Controls.UP && Controls.RIGHT) {
             this.setAnimation(ImageLib.HERO.jump, 10);
             this.jump(30);
             this.reverseDirection = false;
@@ -38,7 +45,7 @@ class Hero extends MovableObject {
                 this.moveRight();
                 this.world.cameraX = -this.x + this.cameraOffset;
             }
-        } else if (Keyboard.UP && Keyboard.LEFT) {
+        } else if (Controls.UP && Controls.LEFT) {
             this.setAnimation(ImageLib.HERO.jump, 10);
             this.jump(30);
             this.reverseDirection = true;
@@ -46,22 +53,22 @@ class Hero extends MovableObject {
                 this.moveLeft();
                 this.world.cameraX = -this.x + this.cameraOffset;
             }
-        } else if (Keyboard.UP) {
+        } else if (Controls.UP) {
             this.setAnimation(ImageLib.HERO.jump, 10);
             this.jump(30);
-        } else if (Keyboard.ATTACK) {
+        } else if (Controls.ATTACK) {
             // attack();
-        } else if (Keyboard.RIGHT && this.isBeforeEnd()) {
+        } else if (Controls.RIGHT && this.isBeforeEnd()) {
             this.reverseDirection = false;
-            this.setAnimation(ImageLib.HERO.walk, FPS);
+            this.setAnimation(ImageLib.HERO.walk, Game.FPS);
             this.moveRight();
             this.world.cameraX = -this.x + this.cameraOffset;
-        } else if (Keyboard.LEFT && this.isAfterStart()) {
+        } else if (Controls.LEFT && this.isAfterStart()) {
             this.reverseDirection = true;
-            this.setAnimation(ImageLib.HERO.walk, FPS);
+            this.setAnimation(ImageLib.HERO.walk, Game.FPS);
             this.moveLeft();
             this.world.cameraX = -this.x + this.cameraOffset;
-        } else if (Keyboard.DOWN) {
+        } else if (Controls.DOWN) {
             // placeholder
         } else if (!this.isAboveGround()) {
             isIdle = true;

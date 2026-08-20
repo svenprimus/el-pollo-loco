@@ -1,4 +1,4 @@
-class DrawableObject {
+export class DrawableObject {
     img;
     imgCache = {};
     imgCurrent = 0;
@@ -6,7 +6,7 @@ class DrawableObject {
     y = 0;
     w = 150;
     h = 100;
-
+    static FPS;
     constructor(hCanvas) {
         this.y = hCanvas; // initially place objects below viewable range
     }
@@ -46,13 +46,11 @@ class DrawableObject {
      * @param {context} ctx - 2d context of canvas
      */
     drawFrame(ctx) {
-        if (this instanceof Hero || this instanceof Enemy) {
-            ctx.beginPath();
-            ctx.llineWidth = '2';
-            ctx.strokeStyle = 'blue';
-            ctx.rect(this.x, this.y, this.w, this.h);
-            ctx.stroke();
-        }
+        ctx.beginPath();
+        ctx.llineWidth = '2';
+        ctx.strokeStyle = 'blue';
+        ctx.rect(this.x, this.y, this.w, this.h);
+        ctx.stroke();
     }
 
     /**

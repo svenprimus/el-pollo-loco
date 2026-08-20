@@ -1,4 +1,4 @@
-class ImageLib {
+export class ImageLib {
     static HERO = {
         wNatural: 610,
         hNatural: 1200,

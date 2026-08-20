@@ -1,4 +1,8 @@
-class Boss extends Enemy {
+import { Enemy } from './enemy.class.js';
+import { ImageLib } from '../../utility/image-lib.class.js';
+import { Level } from '../../world/level.class.js';
+
+export class Boss extends Enemy {
     constructor(wCanvas, hCanvas) {
         super(wCanvas, hCanvas).loadImage(ImageLib.ENEMY.boss_1.walk[0]);
         this.loadImagesToCache();

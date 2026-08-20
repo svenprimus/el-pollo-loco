@@ -1,4 +1,4 @@
-const hitableMixin = (Base) =>
+export const hitableMixin = (Base) =>
     class extends Base {
         // TODO
         // hit() {}

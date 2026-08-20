@@ -1,4 +1,8 @@
-class Cloud extends MovableObject {
+import { MovableObject } from '../world/movable-object.class.js';
+import { Level } from '../world/level.class.js';
+import { World } from '../world/world.class.js';
+
+export class Cloud extends MovableObject {
     static wIndex = null;
     w = 1920 / 4;
     h = 1080 / 4;

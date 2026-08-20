@@ -1,4 +1,8 @@
-class MovableObject extends DrawableObject {
+import { DrawableObject } from './drawable-object.class.js';
+import { TimingHub } from '../utility/timing-hub.class.js';
+import { Game } from '../utility/game.class.js';
+
+export class MovableObject extends DrawableObject {
     speedX = 0.15;
     speedY = 0;
     acceleration = 2.5;
@@ -89,7 +93,7 @@ class MovableObject extends DrawableObject {
                     this.speedY -= this.acceleration;
                 }
             },
-            1000 / FPS,
+            1000 / Game.FPS,
             this
         );
     }
@@ -128,7 +132,7 @@ class MovableObject extends DrawableObject {
                     fn();
                 }
             },
-            1000 / FPS,
+            1000 / Game.FPS,
             this
         );
         return id;
