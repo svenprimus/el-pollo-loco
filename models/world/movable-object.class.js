@@ -93,7 +93,9 @@ export class MovableObject extends DrawableObject {
         TimingHub.setInterval(
             () => {
                 if ((this.isAboveGround() || this.isDead() || this.jumpStarted()) && this.isInsideCanvas()) {
-                    this.y = Math.min(this.y - this.speedY, this.ground - this.h);
+                    this.y = this.isDead()
+                        ? this.y - this.speedY
+                        : Math.min(this.y - this.speedY, this.ground - this.h);
                     this.speedY -= this.acceleration;
                 }
             },
