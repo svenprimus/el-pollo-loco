@@ -47,10 +47,10 @@ export class World {
         // Space for fixed objects
         // this.addToMap(this.statusBar);
         // this.ctx.translate(this.cameraX, 0);
-
         this.addToMap(this.level.hero);
         this.addToMap(this.level.enemies);
         this.addToMap(this.level.boss);
+        this.addToMap(this.level.thrownAmmo);
         this.addToMap(this.level.clouds);
         this.ctx.translate(-this.cameraX, 0);
 

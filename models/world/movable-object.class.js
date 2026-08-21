@@ -92,7 +92,7 @@ export class MovableObject extends DrawableObject {
     applyGravity() {
         TimingHub.setInterval(
             () => {
-                if ((this.isJumping() || this.isDead() || this.jumpStarted()) && this.isInsideCanvas()) {
+                if ((this.isJumping() || this.isDead() || this.jumpStarted()) && this.isAboveCanvasBottom()) {
                     this.y = this.isDead()
                         ? this.y - this.speedY
                         : Math.min(this.y - this.speedY, this.ground - this.h);
@@ -128,8 +128,8 @@ export class MovableObject extends DrawableObject {
         return this.speedY > 0;
     }
 
-    isInsideCanvas() {
-        return this.y + this.h > 0 && this.y < this.hCanvas;
+    isAboveCanvasBottom() {
+        return this.y < this.hCanvas;
     }
 
     /**

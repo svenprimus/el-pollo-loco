@@ -4,6 +4,7 @@ import { ImageLib } from '../utility/image-lib.class.js';
 import { Game } from '../utility/game.class.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 import { Controls } from '../utility/controls.class.js';
+import { ThrowableObject } from './throwable-object.class.js';
 
 export class Hero extends MovableObject {
     world;
@@ -16,6 +17,7 @@ export class Hero extends MovableObject {
     isAttackingAtr = false;
     isDrinkingAtr = false;
     isRunningAtr = false;
+    throwables = [];
 
     animations = [
         {
@@ -23,12 +25,12 @@ export class Hero extends MovableObject {
             animation: () => this.setAnimation(ImageLib.HERO.dead, 5),
         },
         {
-            condition: () => this.isHurt(),
-            animation: () => this.setAnimation(ImageLib.HERO.hurt, 10),
-        },
-        {
             condition: () => this.isAttacking(),
             animation: () => this.setAnimation(ImageLib.HERO.attack, 5),
+        },
+        {
+            condition: () => this.isHurt(),
+            animation: () => this.setAnimation(ImageLib.HERO.hurt, 10),
         },
         {
             condition: () => this.isJumping(),
@@ -90,7 +92,7 @@ export class Hero extends MovableObject {
                 this.resolveControl();
                 this.resolveAnimation();
             },
-            Game.FPS,
+            25,
             this
         );
     }
@@ -197,6 +199,17 @@ export class Hero extends MovableObject {
     }
 
     attack() {
+        if (false === this.isAttackingAtr) {
+            // TODO push when collected, pop when thrown
+            this.throwables.push(new ThrowableObject(this, this.hCanvas));
+            this.world.level.thrownAmmo.push(this.throwables.shift());
+            this.world.level.thrownAmmo[this.world.level.thrownAmmo.length - 1].throw(
+                this.x,
+                this.y,
+                this.isRunning() ? this.speedX : 0,
+                this.reverseDirection
+            );
+        }
         this.isAttackingAtr = true;
     }
 

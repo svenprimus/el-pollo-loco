@@ -140,6 +140,8 @@ export class ImageLib {
     };
 
     static BG = {
+        wNatural: 1920,
+        hNatural: 1080,
         layer_1: [
             '../assets/sprites/5_background/layers/1_first_layer/1.png',
             '../assets/sprites/5_background/layers/1_first_layer/2.png',
@@ -160,56 +162,95 @@ export class ImageLib {
     };
 
     static AMMO = {
-        midair: [
-            '../assets/sprites/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
-            '../assets/sprites/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
-            '../assets/sprites/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png',
-            '../assets/sprites/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png',
-        ],
-        impact: [
-            '../assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png',
-            '../assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png',
-            '../assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png',
-            '../assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png',
-            '../assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
-            '../assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
-        ],
-        collectable: [
-            '../assets/sprites/6_salsa_bottle/1_salsa_bottle_on_ground.png',
-            '../assets/sprites/6_salsa_bottle/2_salsa_bottle_on_ground.png',
-        ],
+        midair: {
+            wNatural: 400,
+            hNatural: 400,
+            imgs: [
+                '../assets/sprites/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
+                '../assets/sprites/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
+                '../assets/sprites/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png',
+                '../assets/sprites/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png',
+            ],
+        },
+
+        impact: {
+            wNatural: 524,
+            hNatural: 400,
+            imgs: [
+                '../assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png',
+                '../assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png',
+                '../assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png',
+                '../assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png',
+                '../assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
+                '../assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
+            ],
+        },
+        collectable: {
+            wNatural: 400,
+            hNatural: 400,
+            imgs: [
+                '../assets/sprites/6_salsa_bottle/1_salsa_bottle_on_ground.png',
+                '../assets/sprites/6_salsa_bottle/2_salsa_bottle_on_ground.png',
+            ],
+        },
         icon: '../assets/sprites/6_salsa_bottle/salsa_bottle.png',
     };
 
     static STATUSBAR = {
-        hp: [
-            '../assets/sprites/7_statusbars/1_statusbar/2_statusbar_health/green/0.png',
-            '../assets/sprites/7_statusbars/1_statusbar/2_statusbar_health/green/20.png',
-            '../assets/sprites/7_statusbars/1_statusbar/2_statusbar_health/green/40.png',
-            '../assets/sprites/7_statusbars/1_statusbar/2_statusbar_health/green/60.png',
-            '../assets/sprites/7_statusbars/1_statusbar/2_statusbar_health/green/80.png',
-            '../assets/sprites/7_statusbars/1_statusbar/2_statusbar_health/green/100.png',
-        ],
-        boss: [
-            '../assets/sprites/7_statusbars/2_statusbar_endboss/orange/0.png',
-            '../assets/sprites/7_statusbars/2_statusbar_endboss/orange/20.png',
-            '../assets/sprites/7_statusbars/2_statusbar_endboss/orange/40.png',
-            '../assets/sprites/7_statusbars/2_statusbar_endboss/orange/60.png',
-            '../assets/sprites/7_statusbars/2_statusbar_endboss/orange/80.png',
-            '../assets/sprites/7_statusbars/2_statusbar_endboss/orange/100.png',
-        ],
+        hp: {
+            wNatural: 595,
+            hNatural: 158,
+            imgs: [
+                '../assets/sprites/7_statusbars/1_statusbar/2_statusbar_health/green/0.png',
+                '../assets/sprites/7_statusbars/1_statusbar/2_statusbar_health/green/20.png',
+                '../assets/sprites/7_statusbars/1_statusbar/2_statusbar_health/green/40.png',
+                '../assets/sprites/7_statusbars/1_statusbar/2_statusbar_health/green/60.png',
+                '../assets/sprites/7_statusbars/1_statusbar/2_statusbar_health/green/80.png',
+                '../assets/sprites/7_statusbars/1_statusbar/2_statusbar_health/green/100.png',
+            ],
+        },
+        boss: {
+            wNatural: 595,
+            hNatural: 158,
+            imgs: [
+                '../assets/sprites/7_statusbars/2_statusbar_endboss/orange/0.png',
+                '../assets/sprites/7_statusbars/2_statusbar_endboss/orange/20.png',
+                '../assets/sprites/7_statusbars/2_statusbar_endboss/orange/40.png',
+                '../assets/sprites/7_statusbars/2_statusbar_endboss/orange/60.png',
+                '../assets/sprites/7_statusbars/2_statusbar_endboss/orange/80.png',
+                '../assets/sprites/7_statusbars/2_statusbar_endboss/orange/100.png',
+            ],
+        },
         icons: {
+            wNatural: 158,
+            hNatural: 158,
             hp: '../assets/sprites/7_statusbars/3_icons/icon_health.png',
             coin: '../assets/sprites/7_statusbars/3_icons/icon_coin.png',
             bottle: '../assets/sprites/7_statusbars/3_icons/icon_salsa_bottle.png',
         },
     };
 
-    static COIN = ['../assets/sprites/8_coin/coin_1.png', '../assets/sprites/8_coin/coin_2.png'];
+    static COIN = {
+        wNatural: 300,
+        hNatural: 300,
+        imgs: ['../assets/sprites/8_coin/coin_1.png', '../assets/sprites/8_coin/coin_2.png'],
+    };
 
     static SCREENS = {
-        start: '../assets/sprites/9_intro_outro_screens/start/startscreen_1.png',
-        gameOver: '../assets/sprites/You won, you lost/Game Over.png',
-        won: '../assets/sprites/You won, you lost/You won A.png',
+        start: {
+            wNatural: 1920,
+            hNatural: 1080,
+            img: '../assets/sprites/9_intro_outro_screens/start/startscreen_1.png',
+        },
+        gameOver: {
+            wNatural: 1143,
+            hNatural: 674,
+            img: '../assets/sprites/You won, you lost/Game Over.png',
+        },
+        won: {
+            wNatural: 987,
+            hNatural: 879,
+            img: '../assets/sprites/You won, you lost/You won A.png',
+        },
     };
 }
