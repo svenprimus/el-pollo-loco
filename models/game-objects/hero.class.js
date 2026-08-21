@@ -17,11 +17,45 @@ export class Hero extends MovableObject {
     isDrinkingAtr = false;
     isRunningAtr = false;
 
+    animations = [
+        {
+            condition: () => this.isDead(),
+            animation: () => this.setAnimation(ImageLib.HERO.dead, 5),
+        },
+        {
+            condition: () => this.isHurt(),
+            animation: () => this.setAnimation(ImageLib.HERO.hurt, 10),
+        },
+        {
+            condition: () => this.isAttacking(),
+            animation: () => this.setAnimation(ImageLib.HERO.drink, 5), // TODO
+        },
+        {
+            condition: () => this.isJumping(),
+            animation: () => this.setAnimation(ImageLib.HERO.jump, 10),
+        },
+        {
+            condition: () => this.isDrinking(),
+            animation: () => this.setAnimation(ImageLib.HERO.drink, 5),
+        },
+        {
+            condition: () => this.isRunning(),
+            animation: () => this.setAnimation(ImageLib.HERO.walk, Game.FPS),
+        },
+        {
+            condition: () => this.isIdleLong(),
+            animation: () => this.setIdleAnimation(ImageLib.HERO.idleLong, 5),
+        },
+        {
+            condition: () => this.isIdle(),
+            animation: () => this.setIdleAnimation(ImageLib.HERO.idle, 5),
+        },
+    ];
+
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.HERO.idle[0]);
         this.loadImagesToCache();
-        this.h = hCanvas / 2;
-        this.w = ImageLib.HERO.wNatural / (ImageLib.HERO.hNatural / this.h);
+        this.setSize(hCanvas);
         this.animate(ImageLib.HERO.idle, Game.FPS);
         this.resolve();
         this.applyGravity();
@@ -31,6 +65,11 @@ export class Hero extends MovableObject {
         this.y = this.ground - this.h;
         this.x = wCanvas / 8;
         this.cameraOffset = this.x;
+    }
+
+    setSize(hCanvas) {
+        this.h = hCanvas / 2;
+        this.w = ImageLib.HERO.wNatural / (ImageLib.HERO.hNatural / this.h);
     }
 
     loadImagesToCache() {
@@ -43,6 +82,7 @@ export class Hero extends MovableObject {
         this.loadImages(ImageLib.HERO.drink);
     }
 
+    // #region resolve
     resolve() {
         TimingHub.setInterval(
             () => {
@@ -56,55 +96,58 @@ export class Hero extends MovableObject {
 
     resolveControl() {
         if (false === this.isDead()) {
-            if (Controls.ATTACK) {
-                this.attack();
-            } else {
-                this.stopAttacking();
-            }
-
-            if (Controls.UP) {
-                this.jump(25);
-            } else if (1 === this.jumpCount) {
-                this.extraJumpAvailable = true;
-            }
-
-            if (Controls.DOWN && false === Controls.UP && false === Controls.ATTACK) {
-                this.drink();
-            } else {
-                this.stopDrinking();
-            }
-
-            if (Controls.LEFT && false === Controls.RIGHT) {
-                this.runLeft();
-            } else if (Controls.RIGHT && false === Controls.LEFT) {
-                this.runRight();
-            } else {
-                this.stopRunning();
-            }
+            this.resolveAttack();
+            this.resolveJump();
+            this.resolveDrinking();
+            this.resolveRunning();
+        } else {
+            this.fallOut();
         }
     }
 
     resolveAnimation() {
-        if (this.isDead()) {
-            this.setAnimation(ImageLib.HERO.dead, 5);
-            this.fallOut();
-        } else if (this.isHurt()) {
-            this.setAnimation(ImageLib.HERO.hurt, 10);
-        } else if (this.isAttacking()) {
-            // this.setAnimation(ImageLib.HERO.attack, 10); //TODO: does not exist yet
-            this.setAnimation(ImageLib.HERO.drink, 5); // TODO: PLACEHOLDER
-        } else if (this.isJumping()) {
-            this.setAnimation(ImageLib.HERO.jump, 10);
-        } else if (this.isDrinking()) {
-            this.setAnimation(ImageLib.HERO.drink, 5);
-        } else if (this.isRunning()) {
-            this.setAnimation(ImageLib.HERO.walk, Game.FPS);
-        } else if (this.isIdleLong()) {
-            this.setIdleAnimation(ImageLib.HERO.idleLong, 5);
-        } else if (this.isIdle()) {
-            this.setIdleAnimation(ImageLib.HERO.idle, 5);
+        for (let state of this.animations) {
+            if (state.condition()) {
+                state.animation();
+                break;
+            }
         }
     }
+
+    resolveAttack() {
+        if (Controls.ATTACK) {
+            this.attack();
+        } else {
+            this.stopAttacking();
+        }
+    }
+
+    resolveJump() {
+        if (Controls.UP) {
+            this.jump(25);
+        } else if (1 === this.jumpCount) {
+            this.extraJumpAvailable = true;
+        }
+    }
+
+    resolveDrinking() {
+        if (Controls.DOWN && false === Controls.UP && false === Controls.ATTACK) {
+            this.drink();
+        } else {
+            this.stopDrinking();
+        }
+    }
+
+    resolveRunning() {
+        if (Controls.LEFT && false === Controls.RIGHT) {
+            this.runLeft();
+        } else if (Controls.RIGHT && false === Controls.LEFT) {
+            this.runRight();
+        } else {
+            this.stopRunning();
+        }
+    }
+    // #endregion resolve
 
     /**
      * Play the given animation, if frequency is unchanged, otherwise restart animation with new frequency.
