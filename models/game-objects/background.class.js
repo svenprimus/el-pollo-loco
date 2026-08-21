@@ -9,6 +9,8 @@ export class Background extends DrawableObject {
 
     constructor(path, hCanvas) {
         super(hCanvas).loadImage(path);
+        Background.wIndex = null; // set at place() after all bg are created
+        Background.LAYERS = null; // set at place() after all bg are created
         this.setSize(hCanvas);
     }
 

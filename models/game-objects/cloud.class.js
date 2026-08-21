@@ -10,6 +10,7 @@ export class Cloud extends MovableObject {
 
     constructor(path, hCanvas) {
         super(hCanvas).loadImage(path);
+        Cloud.wIndex = null; // used in place after all clouds have been created
         this.resolve();
         this.setSpeed();
     }

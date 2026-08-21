@@ -15,6 +15,7 @@ export class Chicken extends Enemy {
 
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.ENEMY.mob_1.walk[2]);
+        Chicken.spread = 0; // used in place() after all chicken have been created
         this.loadImagesToCache();
         this.setSize(hCanvas);
         this.setSpeed();

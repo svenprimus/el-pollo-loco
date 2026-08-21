@@ -12,6 +12,7 @@ export class Hatchling extends Enemy {
 
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.ENEMY.mob_2.walk[2]);
+        Hatchling.spread = -1; // used in place() after all hatchlings have been created
         this.loadImagesToCache();
         this.setSize(hCanvas);
         this.setSpeed();
