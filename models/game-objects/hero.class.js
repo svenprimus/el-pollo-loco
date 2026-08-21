@@ -230,7 +230,7 @@ export class Hero extends MovableObject {
             this.startIdleTime = new Date().getTime();
         }
         const timeNow = new Date().getTime();
-        return timeNow - this.startIdleTime > 3000;
+        return timeNow - this.startIdleTime > 10000;
     }
 
     isIdle() {
