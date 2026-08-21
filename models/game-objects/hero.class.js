@@ -52,7 +52,7 @@ export class Hero extends MovableObject {
             this.setAnimation(ImageLib.HERO.hurt, 10);
         } else if (Controls.UP && Controls.RIGHT) {
             this.setAnimation(ImageLib.HERO.jump, 10);
-            this.jump(30);
+            this.jump(25);
             this.reverseDirection = false;
             if (this.isBeforeEnd()) {
                 this.moveRight();
@@ -60,7 +60,7 @@ export class Hero extends MovableObject {
             }
         } else if (Controls.UP && Controls.LEFT) {
             this.setAnimation(ImageLib.HERO.jump, 10);
-            this.jump(30);
+            this.jump(25);
             this.reverseDirection = true;
             if (this.isAfterStart()) {
                 this.moveLeft();
@@ -68,7 +68,7 @@ export class Hero extends MovableObject {
             }
         } else if (Controls.UP) {
             this.setAnimation(ImageLib.HERO.jump, 10);
-            this.jump(30);
+            this.jump(25);
         } else if (Controls.ATTACK) {
             // attack();
         } else if (Controls.RIGHT && this.isBeforeEnd()) {
@@ -95,6 +95,10 @@ export class Hero extends MovableObject {
             } else {
                 this.setAnimation(ImageLib.HERO.idle, 5);
             }
+        }
+
+        if (false === Controls.UP && 1 === this.jumpCount) {
+            this.extraJumpAvailable = true;
         }
 
         if (false === isIdle) {
