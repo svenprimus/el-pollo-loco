@@ -28,7 +28,7 @@ export class Hero extends MovableObject {
         },
         {
             condition: () => this.isAttacking(),
-            animation: () => this.setAnimation(ImageLib.HERO.drink, 5), // TODO
+            animation: () => this.setAnimation(ImageLib.HERO.attack, 5),
         },
         {
             condition: () => this.isJumping(),
@@ -80,6 +80,7 @@ export class Hero extends MovableObject {
         this.loadImages(ImageLib.HERO.hurt);
         this.loadImages(ImageLib.HERO.dead);
         this.loadImages(ImageLib.HERO.drink);
+        this.loadImages(ImageLib.HERO.attack);
     }
 
     // #region resolve
