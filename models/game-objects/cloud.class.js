@@ -10,13 +10,8 @@ export class Cloud extends MovableObject {
 
     constructor(path, hCanvas) {
         super(hCanvas).loadImage(path);
-        Cloud.wIndex = null;
-        this.moveLeftSteady( 
-            () => {
-                this.loopThroughCanvas();
-            }
-        );
-        this.speedX = Math.random() * 0.5;
+        this.resolve();
+        this.setSpeed();
     }
 
     place(hCanvas, amountPerLayer) {
@@ -28,6 +23,16 @@ export class Cloud extends MovableObject {
             this.x = World.BG_WIDTH * index + Math.random() * World.BG_WIDTH;
             this.y = (Math.random() * hCanvas) / 4;
         }
+    }
+
+    resolve() {
+        this.moveLeftSteady(() => {
+            this.loopThroughCanvas();
+        });
+    }
+
+    setSpeed() {
+        this.speedX = Math.random() * 0.5;
     }
 
     loopThroughCanvas() {

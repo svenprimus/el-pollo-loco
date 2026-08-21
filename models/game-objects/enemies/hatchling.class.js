@@ -13,13 +13,11 @@ export class Hatchling extends Enemy {
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.ENEMY.mob_2.walk[2]);
         this.loadImagesToCache();
-        Hatchling.spread = -1;
-
-        this.h = hCanvas / 16;
-        this.w = ImageLib.ENEMY.mob_2.wNatural / (ImageLib.ENEMY.mob_2.hNatural / this.h);
-        this.speedX = Math.random() * 2;
-        this.idHandler = this.moveLeftSteady(() => this.statusHandler());
+        this.setSize(hCanvas);
+        this.setSpeed();
         this.animate(ImageLib.ENEMY.mob_2.walk, this.speedX * 5);
+        this.resolve();
+        this.applyGravity();
     }
 
     place(wCanvas, hCanvas) {
@@ -28,6 +26,19 @@ export class Hatchling extends Enemy {
 
         this.x = Hatchling.spread * World.BG_WIDTH + Math.random() * 50 + 0.8 * World.BG_WIDTH;
         this.y = this.ground - this.h - Math.random() * 15;
+    }
+
+    setSize(hCanvas) {
+        this.h = hCanvas / 16;
+        this.w = ImageLib.ENEMY.mob_2.wNatural / (ImageLib.ENEMY.mob_2.hNatural / this.h);
+    }
+
+    setSpeed() {
+        this.speedX = Math.random() * 2;
+    }
+
+    resolve() {
+        this.idHandler = this.moveLeftSteady(() => this.statusHandler());
     }
 
     loadImagesToCache() {

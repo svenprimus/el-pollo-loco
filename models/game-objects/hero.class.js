@@ -9,19 +9,21 @@ export class Hero extends MovableObject {
     world;
     startIdleTime = 0;
     cameraOffset = 0;
-
+    speedX = 15;
     hp = 100;
     hpMax = 100;
     atk = 50;
+    isAttackingAtr = false;
+    isDrinkingAtr = false;
+    isRunningAtr = false;
 
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.HERO.idle[0]);
         this.loadImagesToCache();
         this.h = hCanvas / 2;
         this.w = ImageLib.HERO.wNatural / (ImageLib.HERO.hNatural / this.h);
-        this.speedX = 15;
         this.animate(ImageLib.HERO.idle, Game.FPS);
-        TimingHub.setInterval(() => this.resolveControl(), Game.FPS, this);
+        this.resolve();
         this.applyGravity();
     }
 
@@ -41,73 +43,155 @@ export class Hero extends MovableObject {
         this.loadImages(ImageLib.HERO.drink);
     }
 
-    resolveControl() {
-        let isIdle = false;
-        this.world.cameraY = this.world.cameraY;
+    resolve() {
+        TimingHub.setInterval(
+            () => {
+                this.resolveControl();
+                this.resolveAnimation();
+            },
+            Game.FPS,
+            this
+        );
+    }
 
+    resolveControl() {
+        if (false === this.isDead()) {
+            if (Controls.ATTACK) {
+                this.attack();
+            } else {
+                this.stopAttacking();
+            }
+
+            if (Controls.UP) {
+                this.jump(25);
+            } else if (1 === this.jumpCount) {
+                this.extraJumpAvailable = true;
+            }
+
+            if (Controls.DOWN && false === Controls.UP && false === Controls.ATTACK) {
+                this.drink();
+            } else {
+                this.stopDrinking();
+            }
+
+            if (Controls.LEFT && false === Controls.RIGHT) {
+                this.runLeft();
+            } else if (Controls.RIGHT && false === Controls.LEFT) {
+                this.runRight();
+            } else {
+                this.stopRunning();
+            }
+        }
+    }
+
+    resolveAnimation() {
         if (this.isDead()) {
             this.setAnimation(ImageLib.HERO.dead, 5);
             this.fallOut();
         } else if (this.isHurt()) {
             this.setAnimation(ImageLib.HERO.hurt, 10);
-        } else if (Controls.UP && Controls.RIGHT) {
+        } else if (this.isAttacking()) {
+            // this.setAnimation(ImageLib.HERO.attack, 10); //TODO: does not exist yet
+            this.setAnimation(ImageLib.HERO.drink, 5); // TODO: PLACEHOLDER
+        } else if (this.isJumping()) {
             this.setAnimation(ImageLib.HERO.jump, 10);
-            this.jump(25);
-            this.reverseDirection = false;
-            if (this.isBeforeEnd()) {
-                this.moveRight();
-                const distanceToLeftBorder = -this.x + this.cameraOffset;
-                this.world.cameraX = Math.max(this.world.cameraX - this.speedX - 10, distanceToLeftBorder);
-            }
-        } else if (Controls.UP && Controls.LEFT) {
-            this.setAnimation(ImageLib.HERO.jump, 10);
-            this.jump(25);
-            this.reverseDirection = true;
-            if (this.isAfterStart()) {
-                this.moveLeft();
-                const distanceToRightBorder = -this.x + this.world.canvas.width - this.w - this.cameraOffset;
-                this.world.cameraX = Math.min(this.world.cameraX + this.speedX + 10, distanceToRightBorder);
-            }
-        } else if (Controls.UP) {
-            this.setAnimation(ImageLib.HERO.jump, 10);
-            this.jump(25);
-        } else if (Controls.ATTACK) {
-            // attack();
-        } else if (Controls.RIGHT && this.isBeforeEnd()) {
-            this.reverseDirection = false;
+        } else if (this.isDrinking()) {
+            this.setAnimation(ImageLib.HERO.drink, 5);
+        } else if (this.isRunning()) {
             this.setAnimation(ImageLib.HERO.walk, Game.FPS);
-            this.moveRight();
-            const distanceToLeftStartingBorder = -this.x + this.cameraOffset;
-            this.world.cameraX = Math.max(this.world.cameraX - this.speedX - 10, distanceToLeftStartingBorder);
-        } else if (Controls.LEFT && this.isAfterStart()) {
-            this.reverseDirection = true;
-            this.setAnimation(ImageLib.HERO.walk, Game.FPS);
-            this.moveLeft();
+        } else if (this.isIdleLong()) {
+            this.setIdleAnimation(ImageLib.HERO.idleLong, 5);
+        } else if (this.isIdle()) {
+            this.setIdleAnimation(ImageLib.HERO.idle, 5);
+        }
+    }
+
+    /**
+     * Play the given animation, if frequency is unchanged, otherwise restart animation with new frequency.
+     * Resets idle time.
+     * @param {array} images
+     * @param {number} frequency
+     */
+    setAnimation(images, frequency) {
+        this.startIdleTime = 0;
+        this.restartAnimateIfChangedFrequency(images, 0, frequency);
+    }
+
+    /**
+     * Play the given animation for idle states, if frequency is unchanged, otherwise restart animation
+     * with new frequency and keeps idle timer.
+     * @param {array} images
+     * @param {number} frequency
+     */
+    setIdleAnimation(images, frequency) {
+        this.restartAnimateIfChangedFrequency(images, 0, frequency);
+    }
+
+    // #region actions
+    runLeft() {
+        this.isRunningAtr = true;
+        this.reverseDirection = true;
+        if (this.isAfterStart()) {
+            super.moveLeft();
             const distanceToRightStartingBorder = -this.x + this.world.canvas.width - this.w - this.cameraOffset;
             this.world.cameraX = Math.min(this.world.cameraX + this.speedX + 10, distanceToRightStartingBorder);
-        } else if (Controls.DOWN) {
-            this.setAnimation(ImageLib.HERO.drink, 5);
-        } else if (!this.isAboveGround()) {
-            isIdle = true;
-            if (this.startIdleTime === 0) {
-                this.startIdleTime = new Date().getTime();
-            }
-            const timeNow = new Date().getTime();
-
-            if (timeNow - this.startIdleTime > 10000) {
-                this.setAnimation(ImageLib.HERO.idleLong, 5);
-            } else {
-                this.setAnimation(ImageLib.HERO.idle, 5);
-            }
         }
+    }
 
-        if (false === Controls.UP && 1 === this.jumpCount) {
-            this.extraJumpAvailable = true;
+    runRight() {
+        this.isRunningAtr = true;
+        this.reverseDirection = false;
+        if (this.isBeforeEnd()) {
+            super.moveRight();
+            const distanceToLeftStartingBorder = -this.x + this.cameraOffset;
+            this.world.cameraX = Math.max(this.world.cameraX - this.speedX - 10, distanceToLeftStartingBorder);
         }
+    }
 
-        if (false === isIdle) {
-            this.startIdleTime = 0;
+    stopRunning() {
+        this.isRunningAtr = false;
+    }
+
+    attack() {
+        this.isAttackingAtr = true;
+    }
+
+    stopAttacking() {
+        this.isAttackingAtr = false;
+    }
+
+    drink() {
+        this.isDrinkingAtr = true;
+    }
+
+    stopDrinking() {
+        this.isDrinkingAtr = false;
+    }
+    // #endregion actions
+
+    // #region conditions
+    isAttacking() {
+        return this.isAttackingAtr;
+    }
+
+    isDrinking() {
+        return this.isDrinkingAtr;
+    }
+
+    isRunning() {
+        return this.isRunningAtr;
+    }
+
+    isIdleLong() {
+        if (this.startIdleTime === 0) {
+            this.startIdleTime = new Date().getTime();
         }
+        const timeNow = new Date().getTime();
+        return timeNow - this.startIdleTime > 3000;
+    }
+
+    isIdle() {
+        return false === this.isJumping();
     }
 
     isAfterStart() {
@@ -117,16 +201,5 @@ export class Hero extends MovableObject {
     isBeforeEnd() {
         return this.x < Level.END - this.world.canvas.width + this.cameraOffset - this.speedX;
     }
-
-    /**
-     * Play the given animation, if frequency is unchanged, otherwise restart animation with new frequency
-     * @param {array} images
-     * @param {number} frequency
-     */
-    setAnimation(images, frequency) {
-        if (!this.isAboveGround()) {
-            this.restartAnimateIfChangedFrequency(images, 0, frequency);
-            //TODO animations into order... if hurt, dead, aboveground, etc
-        }
-    }
+    // #endregion conditions
 }

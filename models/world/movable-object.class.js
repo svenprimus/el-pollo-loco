@@ -92,7 +92,7 @@ export class MovableObject extends DrawableObject {
     applyGravity() {
         TimingHub.setInterval(
             () => {
-                if ((this.isAboveGround() || this.isDead() || this.jumpStarted()) && this.isInsideCanvas()) {
+                if ((this.isJumping() || this.isDead() || this.jumpStarted()) && this.isInsideCanvas()) {
                     this.y = this.isDead()
                         ? this.y - this.speedY
                         : Math.min(this.y - this.speedY, this.ground - this.h);
@@ -115,7 +115,7 @@ export class MovableObject extends DrawableObject {
      * Check if object is above height of visual ground.
      * @returns True if object is by definition in the air.
      */
-    isAboveGround() {
+    isJumping() {
         const isAbove = this.y + this.h < this.ground;
         if (false === isAbove) {
             this.jumpCount = 0;
@@ -171,7 +171,7 @@ export class MovableObject extends DrawableObject {
         if (0 === this.jumpCount || this.extraJumpAvailable) {
             this.jumpCount++;
             this.speedY = impulse;
-            this.y--; // othewise immediatley isAboveGround will return false and reset double jump
+            this.y--; // othewise immediatley isJumping will return false and reset double jump
             if (this.extraJumpAvailable) {
                 this.extraJumpAvailable = false;
             }
