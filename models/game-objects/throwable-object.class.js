@@ -7,6 +7,7 @@ export class ThrowableObject extends MovableObject {
     hero;
     isImpacting = false;
     isFinished = false;
+    hpMax = 1;
 
     constructor(hero, hCanvas) {
         super(hCanvas).loadImage(ImageLib.AMMO.midair.imgs[0]);
@@ -29,10 +30,11 @@ export class ThrowableObject extends MovableObject {
     }
 
     throw(x, y, relativeSpeed, isReversed) {
-        this.x = x;
-        this.y = y;
-        this.speedY = 15;
         const factor = isReversed ? 1 : -1;
+
+        this.x = x - this.w / 2;
+        this.y = y;
+        this.speedY = 25;
         this.speedX = factor * 20 + factor * relativeSpeed;
 
         const idInterval = TimingHub.setInterval(() => {

@@ -204,8 +204,8 @@ export class Hero extends MovableObject {
             this.throwables.push(new ThrowableObject(this, this.hCanvas));
             this.world.level.thrownAmmo.push(this.throwables.shift());
             this.world.level.thrownAmmo[this.world.level.thrownAmmo.length - 1].throw(
-                this.x,
-                this.y,
+                this.x + this.w / 2,
+                this.y + this.h / 2,
                 this.isRunning() ? this.speedX : 0,
                 this.reverseDirection
             );
