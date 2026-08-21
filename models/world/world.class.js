@@ -3,7 +3,6 @@ import { Background } from '../game-objects/background.class.js';
 import { Cloud } from '../game-objects/cloud.class.js';
 import { createLevel_1 } from '../../levels/level-1.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
-
 export class World {
     canvas;
     ctx;
@@ -85,7 +84,7 @@ export class World {
         }
 
         drawble.draw(this.ctx);
-        // drawble.drawFrame(this.ctx);
+        drawble.drawFrame(this.ctx);
 
         if (drawble.reverseDirection) {
             this.flipImageBack(drawble);

@@ -46,7 +46,7 @@ export class Hero extends MovableObject {
         this.world.cameraY = this.world.cameraY;
 
         if (this.isDead()) {
-            this.setAnimation(ImageLib.HERO.dead, 10);
+            this.setAnimation(ImageLib.HERO.dead, 5);
             this.fallOut();
         } else if (this.isHurt()) {
             this.setAnimation(ImageLib.HERO.hurt, 10);
@@ -56,7 +56,8 @@ export class Hero extends MovableObject {
             this.reverseDirection = false;
             if (this.isBeforeEnd()) {
                 this.moveRight();
-                this.world.cameraX = -this.x + this.cameraOffset;
+                const distanceToLeftBorder = -this.x + this.cameraOffset;
+                this.world.cameraX = Math.max(this.world.cameraX - this.speedX - 10, distanceToLeftBorder);
             }
         } else if (Controls.UP && Controls.LEFT) {
             this.setAnimation(ImageLib.HERO.jump, 10);
@@ -64,7 +65,8 @@ export class Hero extends MovableObject {
             this.reverseDirection = true;
             if (this.isAfterStart()) {
                 this.moveLeft();
-                this.world.cameraX = -this.x + this.cameraOffset;
+                const distanceToRightBorder = -this.x + this.world.canvas.width - this.w - this.cameraOffset;
+                this.world.cameraX = Math.min(this.world.cameraX + this.speedX + 10, distanceToRightBorder);
             }
         } else if (Controls.UP) {
             this.setAnimation(ImageLib.HERO.jump, 10);
@@ -75,12 +77,14 @@ export class Hero extends MovableObject {
             this.reverseDirection = false;
             this.setAnimation(ImageLib.HERO.walk, Game.FPS);
             this.moveRight();
-            this.world.cameraX = -this.x + this.cameraOffset;
+            const distanceToLeftStartingBorder = -this.x + this.cameraOffset;
+            this.world.cameraX = Math.max(this.world.cameraX - this.speedX - 10, distanceToLeftStartingBorder);
         } else if (Controls.LEFT && this.isAfterStart()) {
             this.reverseDirection = true;
             this.setAnimation(ImageLib.HERO.walk, Game.FPS);
             this.moveLeft();
-            this.world.cameraX = -this.x + this.cameraOffset;
+            const distanceToRightStartingBorder = -this.x + this.world.canvas.width - this.w - this.cameraOffset;
+            this.world.cameraX = Math.min(this.world.cameraX + this.speedX + 10, distanceToRightStartingBorder);
         } else if (Controls.DOWN) {
             this.setAnimation(ImageLib.HERO.drink, 5);
         } else if (!this.isAboveGround()) {
@@ -107,7 +111,7 @@ export class Hero extends MovableObject {
     }
 
     isAfterStart() {
-        return this.x > Level.START + this.cameraOffset + this.speedX;
+        return this.x > Level.START + (this.world.canvas.width - this.w - this.cameraOffset + this.speedX + 1);
     }
 
     isBeforeEnd() {
