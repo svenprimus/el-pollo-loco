@@ -7,7 +7,7 @@ export class DrawableObject {
     w = 150;
     h = 100;
     hCanvas = 0;
-    
+
     constructor(hCanvas) {
         this.y = hCanvas; // initially place objects below viewable range
         this.hCanvas = hCanvas;
@@ -50,9 +50,15 @@ export class DrawableObject {
     drawFrame(ctx) {
         if (this.hpMax > 0) {
             ctx.beginPath();
-            ctx.llineWidth = '2';
+            ctx.lineWidth = '2';
             ctx.strokeStyle = 'blue';
             ctx.rect(this.x, this.y, this.w, this.h);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.lineWidth = '2';
+            ctx.strokeStyle = 'red';
+            ctx.rect(this.x, this.y, 2, 2);
             ctx.stroke();
         }
     }

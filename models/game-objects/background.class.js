@@ -9,10 +9,9 @@ export class Background extends DrawableObject {
 
     constructor(path, hCanvas) {
         super(hCanvas).loadImage(path);
-        Background.wIndex = null;
-        Background.LAYERS = null;
-        this.w = 1920 / (1080 / hCanvas);
-        this.h = hCanvas;
+        Background.wIndex = null; // set at place() after all bg are created
+        Background.LAYERS = null; // set at place() after all bg are created
+        this.setSize(hCanvas);
     }
 
     place(amountPerLayer) {
@@ -25,5 +24,10 @@ export class Background extends DrawableObject {
             const index = Math.floor(Background.wIndex++ / Background.LAYERS);
             this.x = index > 0 ? index * this.w - 1 : index * this.w + 1;
         }
+    }
+
+    setSize(hCanvas) {
+        this.w = 1920 / (1080 / hCanvas);
+        this.h = hCanvas;
     }
 }

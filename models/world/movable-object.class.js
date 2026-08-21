@@ -7,6 +7,8 @@ export class MovableObject extends DrawableObject {
     speedY = 0;
     acceleration = 2.5;
     died = false;
+    jumpCount = 0;
+    extraJumpAvailable = false;
     hp;
     hpMax;
     atk;
@@ -90,10 +92,11 @@ export class MovableObject extends DrawableObject {
     applyGravity() {
         TimingHub.setInterval(
             () => {
-                if ((this.isAboveGround() || this.isDead() || this.jumpStarted()) && this.isInsideCanvas()) {
-                    this.y -= this.speedY;
+                if ((this.isJumping() || this.isDead() || this.jumpStarted()) && this.isInsideCanvas()) {
+                    this.y = this.isDead()
+                        ? this.y - this.speedY
+                        : Math.min(this.y - this.speedY, this.ground - this.h);
                     this.speedY -= this.acceleration;
-                    // console.log('Speed ' ,this.speedY, ' y ', this.y, this.isInsideCanvas());
                 }
             },
             1000 / Game.FPS,
@@ -112,8 +115,13 @@ export class MovableObject extends DrawableObject {
      * Check if object is above height of visual ground.
      * @returns True if object is by definition in the air.
      */
-    isAboveGround() {
-        return this.y + this.h < this.ground;
+    isJumping() {
+        const isAbove = this.y + this.h < this.ground;
+        if (false === isAbove) {
+            this.jumpCount = 0;
+            this.extraJumpAvailable = false;
+        }
+        return isAbove;
     }
 
     jumpStarted() {
@@ -121,7 +129,7 @@ export class MovableObject extends DrawableObject {
     }
 
     isInsideCanvas() {
-        return (this.y + this.h) > 0 && this.y < this.hCanvas;
+        return this.y + this.h > 0 && this.y < this.hCanvas;
     }
 
     /**
@@ -160,8 +168,13 @@ export class MovableObject extends DrawableObject {
      * Add value to 'speedY'.
      */
     jump(impulse) {
-        if (false === this.isAboveGround()) {
+        if (0 === this.jumpCount || this.extraJumpAvailable) {
+            this.jumpCount++;
             this.speedY = impulse;
+            this.y--; // othewise immediatley isJumping will return false and reset double jump
+            if (this.extraJumpAvailable) {
+                this.extraJumpAvailable = false;
+            }
         }
     }
 

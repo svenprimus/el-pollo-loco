@@ -7,7 +7,7 @@ import { World } from '../../world/world.class.js';
 
 export class Chicken extends Enemy {
     static spread = 0;
-    isJumping = false;
+    isJumpingAtr = false;
     idHandler;
     hp = 50;
     hpMax = 50;
@@ -15,22 +15,37 @@ export class Chicken extends Enemy {
 
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.ENEMY.mob_1.walk[2]);
+        Chicken.spread = 0; // used in place() after all chicken have been created
         this.loadImagesToCache();
-        Chicken.spread = 0;
-        this.h = hCanvas / 8;
-        this.w = ImageLib.ENEMY.mob_1.wNatural / (ImageLib.ENEMY.mob_1.hNatural / this.h);
-        this.speedX = Math.random() * 2; // this is walking speed, not the animation speed
-
+        this.setSize(hCanvas);
+        this.setSpeed();
         this.animate(ImageLib.ENEMY.mob_1.walk, this.speedX * 5);
-        this.idHandler = this.moveLeftSteady(() => this.statusHandler(), Game.FPS, this);
+        this.resolve();
         this.applyGravity();
     }
 
     place(wCanvas, hCanvas) {
         const sections = Math.floor(Level.END / World.BG_WIDTH);
         const section = Chicken.spread++ % sections;
-        this.x = section * World.BG_WIDTH + Math.random() * World.BG_WIDTH;
+        if (0 === section) {
+            this.x = World.BG_WIDTH / 2 + Math.random() * World.BG_WIDTH;
+        } else {
+            this.x = section * World.BG_WIDTH + Math.random() * World.BG_WIDTH;
+        }
         this.y = this.ground - this.h - Math.random() * 15;
+    }
+
+    setSize(hCanvas) {
+        this.h = hCanvas / 8;
+        this.w = ImageLib.ENEMY.mob_1.wNatural / (ImageLib.ENEMY.mob_1.hNatural / this.h);
+    }
+
+    setSpeed() {
+        this.speedX = Math.random() * 2; // this is walking speed, not the animation speed
+    }
+
+    resolve() {
+        this.idHandler = this.moveLeftSteady(() => this.statusHandler(), Game.FPS, this);
     }
 
     statusHandler() {
@@ -43,10 +58,10 @@ export class Chicken extends Enemy {
     }
 
     randomJump() {
-        if (Math.random() > 0.99 && !this.isAboveGround()) {
+        if (Math.random() > 0.99 && !this.isJumping()) {
             this.speedX = 4;
             this.jump(20);
-            this.isJumping = true;
+            this.isJumpingAtr = true;
             this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.jump, 0, this.speedX * 5);
             this.startResetTimeout();
         }
@@ -55,7 +70,7 @@ export class Chicken extends Enemy {
     startResetTimeout() {
         TimingHub.setTimeout(() => {
             this.speedX = Math.random() * 2;
-            this.isJumping = false;
+            this.isJumpingAtr = false;
             this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.walk, 2, this.speedX * 5);
         }, 1000);
     }

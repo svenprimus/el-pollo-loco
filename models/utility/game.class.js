@@ -11,6 +11,7 @@ export class Game {
         const canvas = document.getElementById('canvas');
         Game.world = new World(canvas);
         Game.world.draw();
+        window.world = Game.world; // TODO: remove - only for debugging
     }
 
     static pause() {

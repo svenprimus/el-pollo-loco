@@ -59,6 +59,16 @@ export class ImageLib {
             '../assets/sprites/2_character_pepe/5_dead/D-56.png',
             '../assets/sprites/2_character_pepe/5_dead/D-57.png',
         ],
+        drink: [
+            '../assets/sprites/2_character_pepe/6_tequila/t-1.png',
+            '../assets/sprites/2_character_pepe/6_tequila/t-2.png',
+            '../assets/sprites/2_character_pepe/6_tequila/t-3.png',
+            '../assets/sprites/2_character_pepe/6_tequila/t-4.png',
+        ],
+        attack: [
+            '../assets/sprites/2_character_pepe/7_attack/A-1.png',
+            '../assets/sprites/2_character_pepe/7_attack/A-2.png',
+        ],
     };
 
     static ENEMY = {
