@@ -30,7 +30,7 @@ export class Controls {
                 case 'ArrowRight':
                     Controls.RIGHT = true;
                     break;
-                case 'ControlRight':
+                case 'Enter':
                 case 'KeyE':
                     Controls.ATTACK = true;
                     break;
@@ -58,7 +58,7 @@ export class Controls {
                 case 'ArrowRight':
                     Controls.RIGHT = false;
                     break;
-                case 'ControlRight':
+                case 'Enter':
                 case 'KeyE':
                     Controls.ATTACK = false;
                     break;
