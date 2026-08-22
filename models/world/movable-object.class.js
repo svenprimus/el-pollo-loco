@@ -13,7 +13,6 @@ export class MovableObject extends DrawableObject {
     hpMax;
     atk;
     lastHit = 0;
-    reverseDirection = false; // TODO: move to DrawableObject?
     ground = 0;
     idAnimate;
     animateFreq;
@@ -63,27 +62,6 @@ export class MovableObject extends DrawableObject {
             this.playSingleImage(images, idFirst);
             this.restartAnimate(images, frequency, fn);
         }
-    }
-
-    /**
-     * Iterate and set img-attribute repeatedly through sequence of images.
-     * @param {array} images - Sequence of image paths for current animation
-     */
-    playAnimation(images) {
-        this.imgCurrent = (this.imgCurrent + 1) % images.length;
-        const path = images[this.imgCurrent];
-        this.img = this.imgCache[path];
-    }
-
-    /**
-     * Load a single image from array into current img.
-     * @param {array} images
-     * @param {number} index
-     */
-    playSingleImage(images, index) {
-        this.imgCurrent = index;
-        const path = images[this.imgCurrent];
-        this.img = this.imgCache[path];
     }
 
     /**

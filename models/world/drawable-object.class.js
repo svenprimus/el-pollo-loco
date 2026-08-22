@@ -7,6 +7,7 @@ export class DrawableObject {
     w = 150;
     h = 100;
     hCanvas = 0;
+    reverseDirection = false;
 
     constructor(hCanvas) {
         this.y = hCanvas; // initially place objects below viewable range
@@ -61,6 +62,27 @@ export class DrawableObject {
             ctx.rect(this.x, this.y, 2, 2);
             ctx.stroke();
         }
+    }
+
+    /**
+     * Iterate and set img-attribute repeatedly through sequence of images.
+     * @param {array} images - Sequence of image paths for current animation
+     */
+    playAnimation(images) {
+        this.imgCurrent = (this.imgCurrent + 1) % images.length;
+        const path = images[this.imgCurrent];
+        this.img = this.imgCache[path];
+    }
+
+    /**
+     * Load a single image from array into current img.
+     * @param {array} images
+     * @param {number} index
+     */
+    playSingleImage(images, index) {
+        this.imgCurrent = index;
+        const path = images[this.imgCurrent];
+        this.img = this.imgCache[path];
     }
 
     /**
