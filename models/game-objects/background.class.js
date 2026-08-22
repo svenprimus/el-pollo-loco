@@ -1,10 +1,11 @@
 import { DrawableObject } from '../world/drawable-object.class.js';
+import { ImageLib } from '../../models/utility/image-lib.class.js';
 
 export class Background extends DrawableObject {
     static wIndex = null;
     static LAYERS = null;
-    static NATURAL_WIDTH = 1920;
-    static NATURAL_HEIGHT = 1080;
+    static NATURAL_WIDTH = ImageLib.BG.wNatural;
+    static NATURAL_HEIGHT = ImageLib.BG.hNatural;
     y = 0;
 
     constructor(path, hCanvas) {

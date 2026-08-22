@@ -13,7 +13,6 @@ export class MovableObject extends DrawableObject {
     hpMax;
     atk;
     lastHit = 0;
-    reverseDirection = false; // TODO: move to DrawableObject?
     ground = 0;
     idAnimate;
     animateFreq;
@@ -66,33 +65,12 @@ export class MovableObject extends DrawableObject {
     }
 
     /**
-     * Iterate and set img-attribute repeatedly through sequence of images.
-     * @param {array} images - Sequence of image paths for current animation
-     */
-    playAnimation(images) {
-        this.imgCurrent = (this.imgCurrent + 1) % images.length;
-        const path = images[this.imgCurrent];
-        this.img = this.imgCache[path];
-    }
-
-    /**
-     * Load a single image from array into current img.
-     * @param {array} images
-     * @param {number} index
-     */
-    playSingleImage(images, index) {
-        this.imgCurrent = index;
-        const path = images[this.imgCurrent];
-        this.img = this.imgCache[path];
-    }
-
-    /**
      * Change vertical position by speedX and acceleration. The speedX gets reduced by acceleration.
      */
     applyGravity() {
         TimingHub.setInterval(
             () => {
-                if ((this.isJumping() || this.isDead() || this.jumpStarted()) && this.isInsideCanvas()) {
+                if ((this.isJumping() || this.isDead() || this.jumpStarted()) && this.isAboveCanvasBottom()) {
                     this.y = this.isDead()
                         ? this.y - this.speedY
                         : Math.min(this.y - this.speedY, this.ground - this.h);
@@ -128,8 +106,8 @@ export class MovableObject extends DrawableObject {
         return this.speedY > 0;
     }
 
-    isInsideCanvas() {
-        return this.y + this.h > 0 && this.y < this.hCanvas;
+    isAboveCanvasBottom() {
+        return this.y < this.hCanvas;
     }
 
     /**

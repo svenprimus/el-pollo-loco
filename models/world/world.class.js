@@ -8,7 +8,7 @@ export class World {
     ctx;
     cameraX = 0;
     level;
-    statusBar = new StatusBar();
+    statusBar;
     static BG_WIDTH = 0; // width of one background (can be larger than canvas width)
 
     constructor(canvas) {
@@ -20,9 +20,11 @@ export class World {
         // this.canvas.width = window.innerWidth * 0.9;
         // this.canvas.height = window.innerHeight * 0.9;
         this.loadLevel();
-        this.draw();
+        this.statusBar = new StatusBar(canvas.height, (100 * this.level.hero.hp) / this.level.hero.hpMax);
         this.level.hero.world = this;
         Cloud.world = this;
+
+        this.draw();
         this.checkCollisions();
     }
 
@@ -31,6 +33,7 @@ export class World {
             this.level.enemies.forEach((enemy) => {
                 if (this.level.hero.isColliding(enemy)) {
                     this.level.hero.hit(enemy.atk);
+                    this.statusBar.setPercentage((100 * this.level.hero.hp) / this.level.hero.hpMax);
                 }
             });
         }, 200);
@@ -39,20 +42,18 @@ export class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+        // moving objects
         this.ctx.translate(this.cameraX, 0);
-
         this.addToMap(this.level.backgrounds);
-
-        // this.ctx.translate(-this.cameraX, 0);
-        // Space for fixed objects
-        // this.addToMap(this.statusBar);
-        // this.ctx.translate(this.cameraX, 0);
-
         this.addToMap(this.level.hero);
         this.addToMap(this.level.enemies);
         this.addToMap(this.level.boss);
+        this.addToMap(this.level.thrownAmmo);
         this.addToMap(this.level.clouds);
         this.ctx.translate(-this.cameraX, 0);
+
+        // fixed objects
+        this.addToMap(this.statusBar);
 
         const self = this;
         requestAnimationFrame(() => {
