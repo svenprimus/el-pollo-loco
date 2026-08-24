@@ -20,6 +20,8 @@ export class Hero extends MovableObject {
     isDrinkingAtr = false;
     isRunningAtr = false;
     throwables = [];
+    easeLeftOut = 3;
+    easeRightOut = 3;
 
     animations = [
         {
@@ -170,20 +172,30 @@ export class Hero extends MovableObject {
     runLeft() {
         this.isRunningAtr = true;
         this.reverseDirection = true;
+        this.easeRightOut = 3;
         if (this.isAfterStart()) {
             super.moveLeft();
             const distanceToRightStartingBorder = -this.x + this.world.canvas.width - this.w - this.cameraOffset;
-            this.world.cameraX = Math.min(this.world.cameraX + this.speedX + 10, distanceToRightStartingBorder);
+            this.easeLeftOut = Math.max(this.easeLeftOut - 0.3, 1);
+            this.world.cameraX = Math.min(
+                this.world.cameraX + this.easeLeftOut * this.speedX + 10,
+                distanceToRightStartingBorder
+            );
         }
     }
 
     runRight() {
         this.isRunningAtr = true;
         this.reverseDirection = false;
+        this.easeLeftOut = 3;
         if (this.isBeforeEnd()) {
             super.moveRight();
             const distanceToLeftStartingBorder = -this.x + this.cameraOffset;
-            this.world.cameraX = Math.max(this.world.cameraX - this.speedX - 10, distanceToLeftStartingBorder);
+            this.easeRightOut = Math.max(this.easeRightOut - 0.3, 1);
+            this.world.cameraX = Math.max(
+                this.world.cameraX - this.easeRightOut * this.speedX - 10,
+                distanceToLeftStartingBorder
+            );
         }
     }
 
@@ -216,7 +228,7 @@ export class Hero extends MovableObject {
         }
         const timeNow = new Date().getTime();
         if (timeNow - this.startDrinkTime > 1000) {
-            this.hp =  Math.min(this.hp + 10, this.hpMax);
+            this.hp = Math.min(this.hp + 10, this.hpMax);
             this.startDrinkTime = 0;
             this.world.statusBar.setPercentage((100 * this.hp) / this.hpMax);
         }
