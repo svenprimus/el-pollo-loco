@@ -35,14 +35,14 @@ export class Chicken extends Enemy {
         super(hCanvas).loadImage(ImageLib.ENEMY.mob_1.walk[2]);
         Chicken.spread = 0; // used in place() after all chicken have been created
         this.loadImagesToCache();
-        this.setSize(hCanvas, 8, ImageLib.ENEMY.mob_1.wNatural, ImageLib.ENEMY.mob_1.hNatural);
+        this.setSize(8, ImageLib.ENEMY.mob_1.wNatural, ImageLib.ENEMY.mob_1.hNatural);
         this.setSpeed(2);
         this.animate(ImageLib.ENEMY.mob_1.walk, this.speedX * 5);
         this.resolve();
         this.applyGravity();
     }
 
-    place(wCanvas, hCanvas) {
+    place() {
         const sections = Math.floor(Level.END / World.BG_WIDTH);
         const section = Chicken.spread++ % sections;
         if (0 === section) {

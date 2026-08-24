@@ -27,8 +27,8 @@ export class Background extends DrawableObject {
         }
     }
 
-    setSize(hCanvas) {
-        this.w = 1920 / (1080 / hCanvas);
-        this.h = hCanvas;
+    setSize() {
+        this.w = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.hCanvas);
+        this.h = this.hCanvas;
     }
 }

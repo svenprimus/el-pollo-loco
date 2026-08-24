@@ -10,8 +10,8 @@ export class Enemy extends MovableObject {
         super(hCanvas);
     }
 
-    setSize(hCanvas, hDivider, wNatural, hNatural) {
-        this.h = hCanvas / hDivider;
+    setSize(hDivider, wNatural, hNatural) {
+        this.h = this.hCanvas / hDivider;
         this.w = wNatural / (hNatural / this.h);
     }
 

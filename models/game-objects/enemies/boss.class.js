@@ -10,14 +10,14 @@ export class Boss extends Enemy {
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.ENEMY.boss_1.walk[0]);
         this.loadImagesToCache();
-        this.setSize(hCanvas, 1.8, ImageLib.ENEMY.boss_1.wNatural, ImageLib.ENEMY.boss_1.hNatural);
+        this.setSize(1.8, ImageLib.ENEMY.boss_1.wNatural, ImageLib.ENEMY.boss_1.hNatural);
 
         this.animate(ImageLib.ENEMY.boss_1.alert, 5);
         this.resolve();
         this.applyGravity();
     }
 
-    place(wCanvas, hCanvas) {
+    place(wCanvas) {
         this.x = Level.END - wCanvas;
         this.y = this.ground - this.h + 10;
     }

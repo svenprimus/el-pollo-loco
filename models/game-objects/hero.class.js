@@ -59,20 +59,20 @@ export class Hero extends MovableObject {
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.HERO.idle[0]);
         this.loadImagesToCache();
-        this.setSize(hCanvas);
+        this.setSize();
         this.animate(ImageLib.HERO.idle, Game.FPS);
         this.resolve();
         this.applyGravity();
     }
 
-    place(wCanvas, hCanvas) {
+    place(wCanvas) {
         this.y = this.ground - this.h;
         this.x = wCanvas / 8;
         this.cameraOffset = this.x;
     }
 
-    setSize(hCanvas) {
-        this.h = hCanvas / 2;
+    setSize() {
+        this.h = this.hCanvas / 2;
         this.w = ImageLib.HERO.wNatural / (ImageLib.HERO.hNatural / this.h);
     }
 
