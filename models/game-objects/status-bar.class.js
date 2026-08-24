@@ -17,7 +17,10 @@ export class StatusBar extends DrawableObject {
     }
 
     setPercentage(percentage) {
-        const index = Math.round(((ImageLib.STATUSBAR.hp.imgs.length - 1) * percentage) / 100);
+        const index = Math.min(
+            Math.round(((ImageLib.STATUSBAR.hp.imgs.length - 1) * percentage) / 100),
+            ImageLib.STATUSBAR.hp.imgs.length - 1
+        );
         this.playSingleImage(ImageLib.STATUSBAR.hp.imgs, index);
     }
 }

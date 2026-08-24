@@ -9,6 +9,7 @@ import { ThrowableObject } from './throwable-object.class.js';
 export class Hero extends MovableObject {
     world;
     startIdleTime = 0;
+    startDrinkTime = 0;
     cameraOffset = 0;
     speedX = 15;
     hp = 100;
@@ -218,11 +219,21 @@ export class Hero extends MovableObject {
     }
 
     drink() {
+        if (this.startDrinkTime === 0) {
+            this.startDrinkTime = new Date().getTime();
+        }
+        const timeNow = new Date().getTime();
+        if (timeNow - this.startDrinkTime > 1000) {
+            this.hp =  Math.min(this.hp + 10, this.hpMax);
+            this.startDrinkTime = 0;
+            this.world.statusBar.setPercentage((100 * this.hp) / this.hpMax);
+        }
         this.isDrinkingAtr = true;
     }
 
     stopDrinking() {
         this.isDrinkingAtr = false;
+        this.startDrinkTime = 0;
     }
     // #endregion actions
 
