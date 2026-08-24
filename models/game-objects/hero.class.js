@@ -15,6 +15,7 @@ export class Hero extends MovableObject {
     hp = 100;
     hpMax = 100;
     atk = 50;
+    atkJump = 25;
     isAttackingAtr = false;
     isDrinkingAtr = false;
     isRunningAtr = false;
@@ -39,7 +40,7 @@ export class Hero extends MovableObject {
         },
         {
             condition: () => this.isDrinking(),
-            animation: () => this.setAnimation(ImageLib.HERO.drink, 5),
+            animation: () => this.setAnimation(ImageLib.HERO.drink, 4),
         },
         {
             condition: () => this.isRunning(),
@@ -91,7 +92,7 @@ export class Hero extends MovableObject {
         TimingHub.setInterval(
             () => {
                 this.resolveControl();
-                this.resolveAnimation();
+                this.resolveAnimation(this.animations);
             },
             25,
             this
@@ -106,15 +107,6 @@ export class Hero extends MovableObject {
             this.resolveRunning();
         } else {
             this.fallOut();
-        }
-    }
-
-    resolveAnimation() {
-        for (let state of this.animations) {
-            if (state.condition()) {
-                state.animation();
-                break;
-            }
         }
     }
 
@@ -256,10 +248,6 @@ export class Hero extends MovableObject {
         }
         const timeNow = new Date().getTime();
         return timeNow - this.startIdleTime > 10000;
-    }
-
-    isIdle() {
-        return false === this.isJumping();
     }
 
     isAfterStart() {

@@ -46,6 +46,15 @@ export class MovableObject extends DrawableObject {
         }
     }
 
+    resolveAnimation(animations) {
+        for (let state of animations) {
+            if (state.condition()) {
+                state.animation();
+                break;
+            }
+        }
+    }
+
     /**
      * If the frequency or images differ from previous ones, the animation will be restartet.
      * An initial image is loaded before animation starts. This can set initial state of transition, e.g. walk -> stand
@@ -170,6 +179,23 @@ export class MovableObject extends DrawableObject {
         return collided;
     }
 
+    isCollidingFromTop(othr) {
+        othr.hitByJump =
+            othr.isBelow &&
+            this.x + this.w > othr.x &&
+            othr.x + othr.w > this.x &&
+            this.y + this.h > othr.y &&
+            this.y + this.h < othr.y + othr.h;
+        othr.isBelow = this.y + this.h < othr.y;
+
+        if (othr.hitByJump) {
+            TimingHub.setTimeout(() => {
+                othr.hitByJump = false;
+            }, 1000);
+        }
+        return othr.hitByJump;
+    }
+
     /**
      * Reduces amount of this hp by given damage and stores last hit time.
      * @param {number} damage - damage from hit
@@ -190,5 +216,9 @@ export class MovableObject extends DrawableObject {
      */
     isDead() {
         return this.hp <= 0;
+    }
+
+    isIdle() {
+        return false === this.isJumping();
     }
 }

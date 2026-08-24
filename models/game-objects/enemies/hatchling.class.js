@@ -8,7 +8,22 @@ export class Hatchling extends Enemy {
     static spread = -1;
     hp = 20;
     hpMax = 20;
-    atk = 2;
+    atk = 1;
+
+    animations = [
+        // {
+        // condition: () => this.isDeadBySalsa(),
+        // animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.jump, 0, this.speedX * 5),
+        // },
+        {
+            condition: () => this.isDead(),
+            animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_2.dead, 0, this.speedX * 5),
+        },
+        {
+            condition: () => this.isIdle(),
+            animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_2.walk, 2, this.speedX * 5),
+        },
+    ];
 
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.ENEMY.mob_2.walk[2]);
@@ -45,15 +60,18 @@ export class Hatchling extends Enemy {
     loadImagesToCache() {
         this.loadImages(ImageLib.ENEMY.mob_2.walk);
         this.loadImages(ImageLib.ENEMY.mob_2.dead);
+        this.loadImages(ImageLib.ENEMY.mob_2.drum);
     }
 
     statusHandler() {
         if (this.isDead() || this.x + this.w < Level.START) {
             TimingHub.stopInterval(this.idAnimate);
             TimingHub.stopInterval(this.idHandler);
+            this.fallOut();
         } else {
             this.randomFury();
         }
+        this.resolveAnimation(this.animations);
     }
 
     randomFury() {

@@ -1,6 +1,7 @@
 import { StatusBar } from '../game-objects/status-bar.class.js';
 import { Background } from '../game-objects/background.class.js';
 import { Cloud } from '../game-objects/cloud.class.js';
+import { Boss } from '../game-objects/enemies/boss.class.js';
 import { createLevel_1 } from '../../levels/level-1.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 export class World {
@@ -31,12 +32,15 @@ export class World {
     checkCollisions() {
         TimingHub.setInterval(() => {
             this.level.enemies.forEach((enemy) => {
-                if (this.level.hero.isColliding(enemy)) {
+                if (false === enemy.hitByJump && this.level.hero.isCollidingFromTop(enemy)) {
+                    enemy.hit(this.level.hero.atkJump);
+                    this.level.hero.speedY = 20;
+                } else if (false === enemy.hitByJump && this.level.hero.isColliding(enemy)) {
                     this.level.hero.hit(enemy.atk);
                     this.statusBar.setPercentage((100 * this.level.hero.hp) / this.level.hero.hpMax);
                 }
             });
-        }, 200);
+        }, 50);
     }
 
     draw() {
@@ -55,10 +59,7 @@ export class World {
         // fixed objects
         this.addToMap(this.statusBar);
 
-        const self = this;
-        requestAnimationFrame(() => {
-            self.draw();
-        });
+        requestAnimationFrame(() => this.draw());
     }
 
     /**
