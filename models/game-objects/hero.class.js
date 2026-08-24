@@ -145,6 +145,18 @@ export class Hero extends MovableObject {
             this.stopRunning();
         }
     }
+
+    resolveCollision(enemy, statusBar) {
+        if (false == this.isDead()) {
+            if (false === enemy.hitByJump && this.isCollidingFromTop(enemy)) {
+                enemy.hit(this.atkJump);
+                this.speedY = 20;
+            } else if (false === enemy.hitByJump && this.isColliding(enemy)) {
+                this.hit(enemy.atk);
+                statusBar.setPercentage((100 * this.hp) / this.hpMax);
+            }
+        }
+    }
     // #endregion resolve
 
     /**
@@ -176,7 +188,7 @@ export class Hero extends MovableObject {
         if (this.isAfterStart()) {
             super.moveLeft();
             const distanceToRightStartingBorder = -this.x + this.world.canvas.width - this.w - this.cameraOffset;
-            this.easeLeftOut = Math.max(this.easeLeftOut - 0.3, 1);
+            this.easeLeftOut = Math.max(this.easeLeftOut - 0.2, 1);
             this.world.cameraX = Math.min(
                 this.world.cameraX + this.easeLeftOut * this.speedX + 10,
                 distanceToRightStartingBorder
@@ -191,7 +203,7 @@ export class Hero extends MovableObject {
         if (this.isBeforeEnd()) {
             super.moveRight();
             const distanceToLeftStartingBorder = -this.x + this.cameraOffset;
-            this.easeRightOut = Math.max(this.easeRightOut - 0.3, 1);
+            this.easeRightOut = Math.max(this.easeRightOut - 0.2, 1);
             this.world.cameraX = Math.max(
                 this.world.cameraX - this.easeRightOut * this.speedX - 10,
                 distanceToLeftStartingBorder
