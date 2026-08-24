@@ -32,13 +32,25 @@ export class World {
     checkCollisions() {
         TimingHub.setInterval(() => {
             this.level.enemies.forEach((enemy) => {
-                if (false === enemy.hitByJump && this.level.hero.isCollidingFromTop(enemy)) {
-                    enemy.hit(this.level.hero.atkJump);
-                    this.level.hero.speedY = 20;
-                } else if (false === enemy.hitByJump && this.level.hero.isColliding(enemy)) {
-                    this.level.hero.hit(enemy.atk);
-                    this.statusBar.setPercentage((100 * this.level.hero.hp) / this.level.hero.hpMax);
+                // TODO: we could override colliding function for hero / ammo and call this.level.hero.isColliding(enemy)
+                if (false == this.level.hero.isDead()) {
+                    if (false === enemy.hitByJump && this.level.hero.isCollidingFromTop(enemy)) {
+                        enemy.hit(this.level.hero.atkJump);
+                        this.level.hero.speedY = 20;
+                    } else if (false === enemy.hitByJump && this.level.hero.isColliding(enemy)) {
+                        this.level.hero.hit(enemy.atk);
+                        this.statusBar.setPercentage((100 * this.level.hero.hp) / this.level.hero.hpMax);
+                    }
                 }
+
+                this.level.thrownAmmo.forEach((ammo) => {
+                    if (false == enemy.hitByAmmo && ammo.isCollidingForAmmo(enemy)) {
+                        // TODO: explode on impace
+                        enemy.hit(this.level.hero.atk);
+                        enemy.diedBySalsa = enemy.isDead();
+                        console.log('Bottle hit for ', this.level.hero.atk);
+                    }
+                });
             });
         }, 50);
     }

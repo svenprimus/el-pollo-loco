@@ -196,6 +196,21 @@ export class MovableObject extends DrawableObject {
         return othr.hitByJump;
     }
 
+    isCollidingForAmmo(othr) {
+        othr.hitByAmmo =
+            this.x + this.w > othr.x &&
+            othr.x + othr.w > this.x &&
+            this.y + this.h > othr.y &&
+            othr.y + othr.h > this.y;
+
+        if (othr.hitByAmmo) {
+            TimingHub.setTimeout(() => {
+                othr.hitByAmmo = false;
+            }, 1000);
+        }
+        return othr.hitByAmmo;
+    }
+
     /**
      * Reduces amount of this hp by given damage and stores last hit time.
      * @param {number} damage - damage from hit

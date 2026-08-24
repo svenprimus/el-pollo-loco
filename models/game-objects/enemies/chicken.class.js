@@ -13,10 +13,10 @@ export class Chicken extends Enemy {
     atk = 2.5;
 
     animations = [
-        // {
-        //     condition: () => this.isDeadBySalsa(),
-        //     animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.drum, 0, this.speedX * 5),
-        // },
+        {
+            condition: () => this.isDeadBySalsa(),
+            animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.drum, 0, this.speedX * 5),
+        },
         {
             condition: () => this.isDead(),
             animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.dead, 0, this.speedX * 5),
@@ -35,8 +35,8 @@ export class Chicken extends Enemy {
         super(hCanvas).loadImage(ImageLib.ENEMY.mob_1.walk[2]);
         Chicken.spread = 0; // used in place() after all chicken have been created
         this.loadImagesToCache();
-        this.setSize(hCanvas);
-        this.setSpeed();
+        this.setSize(hCanvas, 8, ImageLib.ENEMY.mob_1.wNatural, ImageLib.ENEMY.mob_1.hNatural);
+        this.setSpeed(2);
         this.animate(ImageLib.ENEMY.mob_1.walk, this.speedX * 5);
         this.resolve();
         this.applyGravity();
@@ -51,15 +51,6 @@ export class Chicken extends Enemy {
             this.x = section * World.BG_WIDTH + Math.random() * World.BG_WIDTH;
         }
         this.y = this.ground - this.h - Math.random() * 15;
-    }
-
-    setSize(hCanvas) {
-        this.h = hCanvas / 8;
-        this.w = ImageLib.ENEMY.mob_1.wNatural / (ImageLib.ENEMY.mob_1.hNatural / this.h);
-    }
-
-    setSpeed() {
-        this.speedX = Math.random() * 2; // this is walking speed, not the animation speed
     }
 
     resolve() {
