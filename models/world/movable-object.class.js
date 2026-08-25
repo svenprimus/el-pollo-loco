@@ -18,6 +18,13 @@ export class MovableObject extends DrawableObject {
     idAnimate;
     animateFreq;
 
+    offset = {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+    };
+
     constructor(hCanvas) {
         super(hCanvas);
         this.ground = hCanvas - hCanvas * 0.11;
@@ -155,14 +162,14 @@ export class MovableObject extends DrawableObject {
      * Adds 'speedX' to x position.
      */
     moveRight() {
-        this.x += Level.wCanvas * this.speedX / 1000;
+        this.x += (Level.wCanvas * this.speedX) / 1000;
     }
 
     /**
      * Reduce 'speedX' from x position.
      */
     moveLeft() {
-        this.x -= Level.wCanvas * this.speedX / 1000;
+        this.x -= (Level.wCanvas * this.speedX) / 1000;
     }
 
     /**
@@ -270,5 +277,27 @@ export class MovableObject extends DrawableObject {
 
     isIdle() {
         return false === this.isJumping();
+    }
+
+    setOffset(offset, wNatural, hNatural) {
+        this.offset.top = (offset.top * this.h) / hNatural;
+        this.offset.bottom = (offset.bottom * this.h) / hNatural;
+        this.offset.right = (offset.right * this.w) / wNatural;
+        this.offset.left = (offset.left * this.w) / wNatural;
+    }
+
+    drawRealFrame(ctx) {
+        if (this.hpMax > 0) {
+            ctx.beginPath();
+            ctx.lineWidth = '2';
+            ctx.strokeStyle = 'red';
+            ctx.rect(
+                this.x + this.offset.left,
+                this.y + this.offset.top,
+                this.w - this.offset.left - this.offset.right,
+                this.h - this.offset.top - this.offset.bottom
+            );
+            ctx.stroke();
+        }
     }
 }

@@ -15,6 +15,7 @@ export class ThrowableObject extends MovableObject {
         this.hero = hero;
         this.loadImagesToCache();
         this.setSize();
+        this.setOffset(ImageLib.AMMO.midair.offset, ImageLib.AMMO.midair.wNatural, ImageLib.AMMO.midair.hNatural);
         this.applyGravity();
         this.animate(ImageLib.AMMO.midair.imgs);
     }

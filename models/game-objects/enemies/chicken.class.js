@@ -36,6 +36,7 @@ export class Chicken extends Enemy {
         Chicken.spread = 0; // used in place() after all chicken have been created
         this.loadImagesToCache();
         this.setSize(8, ImageLib.ENEMY.mob_1.wNatural, ImageLib.ENEMY.mob_1.hNatural);
+        this.setOffset(ImageLib.ENEMY.mob_1.offset, ImageLib.ENEMY.mob_1.wNatural, ImageLib.ENEMY.mob_1.hNatural);
         this.setSpeed(2);
         this.animate(ImageLib.ENEMY.mob_1.walk, this.speedX * 5);
         this.resolve();

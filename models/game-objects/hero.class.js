@@ -78,6 +78,7 @@ export class Hero extends MovableObject {
     setSize() {
         this.h = this.hCanvas / 2;
         this.w = ImageLib.HERO.wNatural / (ImageLib.HERO.hNatural / this.h);
+        this.setOffset(ImageLib.HERO.offset, ImageLib.HERO.wNatural, ImageLib.HERO.hNatural);
     }
 
     loadImagesToCache() {
