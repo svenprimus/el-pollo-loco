@@ -44,6 +44,10 @@ export function createLevel_1(wCanvas, hCanvas) {
             new Cloud(ImageLib.BG.clouds[1], hCanvas),
             new Cloud(ImageLib.BG.clouds[0], hCanvas), 
             new Cloud(ImageLib.BG.clouds[1], hCanvas),
+            new Cloud(ImageLib.BG.clouds[0], hCanvas), 
+            new Cloud(ImageLib.BG.clouds[1], hCanvas),
+            new Cloud(ImageLib.BG.clouds[0], hCanvas), 
+            new Cloud(ImageLib.BG.clouds[1], hCanvas),
         ],
         4,
         [
