@@ -161,7 +161,7 @@ export class Hero extends MovableObject {
     resolveSpawnpoint() {
         if (
             false === this.world.level.boss.hasSpawned &&
-            this.world.level.boss.x < this.x + (this.world.canvas.width - this.world.canvas.width / 8)
+            this.world.level.boss.x < this.x + (Level.wCanvas - Level.wCanvas / 8)
         ) {
             this.world.level.boss.spawn();
             this.world.level.enemies.forEach((enemy) => {
@@ -287,11 +287,19 @@ export class Hero extends MovableObject {
     }
 
     isAfterStart() {
-        return this.x > Level.START + (this.world.canvas.width - this.w - this.cameraOffset + this.speedX + 1);
+        if (this.world.level.boss.hasSpawned) {
+            return this.x > this.world.level.boss.xStart - Level.wCanvas;
+        } else {
+            return this.x > Level.START + (Level.wCanvas - this.w - this.cameraOffset + this.speedX + 1);
+        }
     }
 
     isBeforeEnd() {
-        return this.x < Level.END - this.world.canvas.width + this.cameraOffset - this.speedX;
+        if (this.world.level.boss.hasSpawned) {
+            return this.x < this.world.level.boss.xStart - this.w;
+        } else {
+            return this.x < Level.END - Level.wCanvas + this.cameraOffset - this.speedX;
+        }
     }
     // #endregion conditions
 
@@ -304,7 +312,7 @@ export class Hero extends MovableObject {
     }
 
     followCameraLeft() {
-        const distanceToRightStartingBorder = -this.x + this.world.canvas.width - this.w - this.cameraOffset;
+        const distanceToRightStartingBorder = -this.x + Level.wCanvas - this.w - this.cameraOffset;
         this.easeLeftOut = Math.max(this.easeLeftOut - 0.2, 1);
         this.world.cameraX = this.world.level.boss.hasSpawned
             ? -this.x + this.cameraOffset

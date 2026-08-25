@@ -10,8 +10,8 @@ import { TimingHub } from '../utility/timing-hub.class.js';
 export class Level {
     static START;
     static END;
-    wCanvas = 0;
-    hCanvas = 0;
+    static wCanvas = 0;
+    static hCanvas = 0;
     hero;
     boss;
     enemies;
@@ -22,8 +22,8 @@ export class Level {
     thrownAmmo = [];
 
     constructor(wCanvas, hCanvas, hero, boss, enemies, cloudsPerLayer, clouds, bgsPerLayer, backgrounds) {
-        this.wCanvas = wCanvas;
-        this.hCanvas = hCanvas;
+        Level.wCanvas = wCanvas;
+        Level.hCanvas = hCanvas;
         this.hero = hero;
         this.boss = boss;
         this.enemies = enemies;
@@ -33,18 +33,19 @@ export class Level {
         this.backgrounds = backgrounds;
         Level.START = -1 * World.BG_WIDTH;
         Level.END = (World.BG_WIDTH * (backgrounds.length - bgsPerLayer)) / bgsPerLayer;
+
         this.placeObjects();
         this.resolveAmmo();
     }
 
     placeObjects() {
-        this.hero.place(this.wCanvas, this.hCanvas);
-        this.boss.place(this.wCanvas, this.hCanvas);
+        this.hero.place(Level.wCanvas, Level.hCanvas);
+        this.boss.place(Level.wCanvas, Level.hCanvas);
         this.enemies.forEach((enemy) => {
-            enemy.place(this.wCanvas, this.hCanvas);
+            enemy.place(Level.wCanvas, Level.hCanvas);
         });
         this.clouds.forEach((cloud) => {
-            cloud.place(this.hCanvas, this.cloudsPerLayer);
+            cloud.place(Level.hCanvas, this.cloudsPerLayer);
         });
         this.backgrounds.forEach((bg) => {
             bg.place(this.bgsPerLayer);
