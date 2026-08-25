@@ -75,6 +75,11 @@ export class ImageLib {
             '../assets/sprites/2_character_pepe/7_attack/A-1.png',
             '../assets/sprites/2_character_pepe/7_attack/A-2.png',
         ],
+        collected: [
+            '../assets/sprites/2_character_pepe/8_collected/C-1.png',
+            '../assets/sprites/2_character_pepe/8_collected/C-2.png',
+            '../assets/sprites/2_character_pepe/8_collected/C-3.png',
+        ],
     };
 
     static ENEMY = {
@@ -222,13 +227,15 @@ export class ImageLib {
             hNatural: 400,
             offset: {
                 top: 78,
-                right: 134,
+                right: 144,
                 bottom: 46,
-                left: 177,
+                left: 167,
             },
             imgs: [
-                '../assets/sprites/6_salsa_bottle/1_salsa_bottle_on_ground.png',
-                '../assets/sprites/6_salsa_bottle/2_salsa_bottle_on_ground.png',
+                '../assets/sprites/6_salsa_bottle/collectable/c-1.png',
+                '../assets/sprites/6_salsa_bottle/collectable/c-2.png',
+                '../assets/sprites/6_salsa_bottle/collectable/c-3.png',
+                '../assets/sprites/6_salsa_bottle/collectable/c-4.png',
             ],
         },
         icon: '../assets/sprites/6_salsa_bottle/salsa_bottle.png',

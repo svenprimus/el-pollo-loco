@@ -9,18 +9,20 @@ export class Level {
     hero;
     boss;
     enemies;
+    collectables;
     cloudsPerLayer = 0;
     clouds;
     bgsPerLayer = 0;
     backgrounds;
     thrownAmmo = [];
 
-    constructor(wCanvas, hCanvas, hero, boss, enemies, cloudsPerLayer, clouds, bgsPerLayer, backgrounds) {
+    constructor(wCanvas, hCanvas, hero, boss, enemies, collectables, cloudsPerLayer, clouds, bgsPerLayer, backgrounds) {
         Level.wCanvas = wCanvas;
         Level.hCanvas = hCanvas;
         this.hero = hero;
         this.boss = boss;
         this.enemies = enemies;
+        this.collectables = collectables;
         this.clouds = clouds;
         this.cloudsPerLayer = cloudsPerLayer;
         this.bgsPerLayer = bgsPerLayer;
@@ -31,6 +33,7 @@ export class Level {
         this.placeObjects();
         this.cleanAmmo();
         this.cleanEnemies();
+        this.cleanCollectables();
     }
 
     placeObjects() {
@@ -38,6 +41,9 @@ export class Level {
         this.boss.place(Level.wCanvas, Level.hCanvas);
         this.enemies.forEach((enemy) => {
             enemy.place(Level.wCanvas, Level.hCanvas);
+        });
+        this.collectables.forEach((collectable) => {
+            collectable.place(Level.wCanvas, Level.hCanvas);
         });
         this.clouds.forEach((cloud) => {
             cloud.place(this.cloudsPerLayer);
@@ -67,6 +73,20 @@ export class Level {
                 for (let i = this.enemies.length - 1; i >= 0; i--) {
                     if (this.enemies[i].isFinished()) {
                         this.enemies.splice(i, 1);
+                    }
+                }
+            },
+            100,
+            this
+        );
+    }
+
+    cleanCollectables() {
+        TimingHub.setInterval(
+            () => {
+                for (let i = this.collectables.length - 1; i >= 0; i--) {
+                    if (this.collectables[i].collected) {
+                        this.collectables.splice(i, 1);
                     }
                 }
             },

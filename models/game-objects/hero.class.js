@@ -5,6 +5,8 @@ import { Game } from '../utility/game.class.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 import { Controls } from '../utility/controls.class.js';
 import { ThrowableObject } from './throwable-object.class.js';
+import { Collectable } from './collectable.class.js';
+import { Enemy } from './enemies/enemy.class.js';
 
 export class Hero extends MovableObject {
     world;
@@ -24,6 +26,7 @@ export class Hero extends MovableObject {
     easeLeftOut = 3;
     easeRightOut = 3;
     lastAttack = 0;
+    lastCollected = 0;
 
     animations = [
         {
@@ -41,6 +44,10 @@ export class Hero extends MovableObject {
         {
             condition: () => this.isJumping(),
             animation: () => this.setAnimation(ImageLib.HERO.jump, 10),
+        },
+        {
+            condition: () => this.isCollecting(),
+            animation: () => this.setAnimation(ImageLib.HERO.collected, 6),
         },
         {
             condition: () => this.isDrinking(),
@@ -64,6 +71,7 @@ export class Hero extends MovableObject {
         super(hCanvas).loadImage(ImageLib.HERO.idle[0]);
         this.loadImagesToCache();
         this.setSizeByHeight(2, ImageLib.HERO.wNatural, ImageLib.HERO.hNatural);
+        this.reload();
         this.animate(ImageLib.HERO.idle, Game.FPS);
         this.resolve();
         this.applyGravity();
@@ -85,6 +93,7 @@ export class Hero extends MovableObject {
         this.loadImages(ImageLib.HERO.dead);
         this.loadImages(ImageLib.HERO.drink);
         this.loadImages(ImageLib.HERO.attack);
+        this.loadImages(ImageLib.HERO.collected);
     }
 
     // #region resolve
@@ -144,13 +153,16 @@ export class Hero extends MovableObject {
         }
     }
 
-    resolveCollision(enemy) {
+    resolveCollision(othr) {
         if (false == this.isDead()) {
-            if (false === enemy.hitByJump && this.isCollidingFromTop(enemy)) {
-                enemy.hit(this.atkJump);
+            const isViableEnemy = false === othr.hitByJump && othr instanceof Enemy;
+            if (isViableEnemy && this.isCollidingFromTop(othr)) {
+                othr.hit(this.atkJump);
                 this.speedY = 5;
-            } else if (false === enemy.hitByJump && this.isColliding(enemy) && false === enemy.isFleeing()) {
-                this.hit(enemy.atk);
+            } else if (isViableEnemy && this.isColliding(othr) && false === othr.isFleeing()) {
+                this.hit(othr.atk);
+            } else if (othr instanceof Collectable && this.isColliding(othr) && false === othr.collected) {
+                this.collect(othr);
             }
         }
     }
@@ -219,9 +231,6 @@ export class Hero extends MovableObject {
     }
 
     attack() {
-        // TODO push when collected, pop when thrown
-        this.throwables.push(new ThrowableObject(this, this.hCanvas));
-
         if (
             false === this.isAttackingAtr &&
             this.throwables.length > 0 &&
@@ -234,6 +243,15 @@ export class Hero extends MovableObject {
         }
     }
 
+    collect(othr) {
+        if (othr instanceof Collectable) {
+            this.throwables.push(new ThrowableObject(this, this.hCanvas));
+            othr.collected = true;
+            this.lastCollected = new Date().getTime();
+        }
+        // TODO: instance of bottle or coin
+    }
+
     throw() {
         this.world.level.thrownAmmo.push(this.throwables.shift());
         this.world.level.thrownAmmo[this.world.level.thrownAmmo.length - 1].throw(
@@ -242,6 +260,12 @@ export class Hero extends MovableObject {
             this.isRunning() ? this.speedX : 0,
             this.reverseDirection
         );
+    }
+
+    reload() {
+        for (let i = 0; i < 5; i++) {
+            this.throwables.push(new ThrowableObject(this, this.hCanvas));
+        }
     }
 
     stopAttacking() {
@@ -278,6 +302,10 @@ export class Hero extends MovableObject {
 
     isRunning() {
         return this.isRunningAtr;
+    }
+
+    isCollecting() {
+        return new Date().getTime() - this.lastCollected < 500;
     }
 
     isIdleLong() {

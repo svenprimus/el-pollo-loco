@@ -1,5 +1,6 @@
 import { Level } from '../models/world/level.class.js';
 import { Hero } from '../models/game-objects/hero.class.js';
+import { Collectable } from '../models/game-objects/collectable.class.js';
 import { Boss } from '../models/game-objects/enemies/boss.class.js';
 import { Chicken } from '../models/game-objects/enemies/chicken.class.js';
 import { Hatchling } from '../models/game-objects/enemies/hatchling.class.js';
@@ -33,6 +34,18 @@ export function createLevel_1(wCanvas, hCanvas) {
             new Hatchling(hCanvas),
             new Hatchling(hCanvas),
             new Hatchling(hCanvas),
+        ],
+        [
+            new Collectable(hCanvas),
+            new Collectable(hCanvas),
+            new Collectable(hCanvas),
+            new Collectable(hCanvas),
+            new Collectable(hCanvas),
+            new Collectable(hCanvas),
+            new Collectable(hCanvas),
+            new Collectable(hCanvas),
+            new Collectable(hCanvas),
+            new Collectable(hCanvas),
         ],
         2,
         [
