@@ -29,7 +29,8 @@ export class Level {
         Level.END = (World.BG_WIDTH * (backgrounds.length - bgsPerLayer)) / bgsPerLayer;
 
         this.placeObjects();
-        this.resolveAmmo();
+        this.cleanAmmo();
+        this.cleanEnemies();
     }
 
     placeObjects() {
@@ -46,12 +47,26 @@ export class Level {
         });
     }
 
-    resolveAmmo() {
+    cleanAmmo() {
         TimingHub.setInterval(
             () => {
                 for (let i = this.thrownAmmo.length - 1; i >= 0; i--) {
                     if (this.thrownAmmo[i].isFinished) {
                         this.thrownAmmo.splice(i, 1);
+                    }
+                }
+            },
+            100,
+            this
+        );
+    }
+
+    cleanEnemies() {
+        TimingHub.setInterval(
+            () => {
+                for (let i = this.enemies.length - 1; i >= 0; i--) {
+                    if (this.enemies[i].isFinished()) {
+                        this.enemies.splice(i, 1);
                     }
                 }
             },

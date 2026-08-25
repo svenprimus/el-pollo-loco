@@ -101,4 +101,14 @@ export class DrawableObject {
         img.src = path;
         return img;
     }
+
+    setSizeByHeight(divider, wNatural, hNatural) {
+        this.h = this.hCanvas / divider;
+        this.w = wNatural / (hNatural / this.h);
+    }
+
+    setSizeByWidth(divider, wNatural, hNatural) {
+        this.w = this.hCanvas / divider;
+        this.h = hNatural / (wNatural / this.w);
+    }
 }

@@ -35,7 +35,7 @@ export class Chicken extends Enemy {
         super(hCanvas).loadImage(ImageLib.ENEMY.mob_1.walk[2]);
         Chicken.spread = 0; // used in place() after all chicken have been created
         this.loadImagesToCache();
-        this.setSize(8, ImageLib.ENEMY.mob_1.wNatural, ImageLib.ENEMY.mob_1.hNatural);
+        this.setSizeByHeight(8, ImageLib.ENEMY.mob_1.wNatural, ImageLib.ENEMY.mob_1.hNatural);
         this.setSpeed(2);
         this.animate(ImageLib.ENEMY.mob_1.walk, this.speedX * 5);
         this.resolve();
@@ -51,6 +51,7 @@ export class Chicken extends Enemy {
             this.x = section * World.BG_WIDTH + Math.random() * World.BG_WIDTH;
         }
         this.y = this.ground - this.h - Math.random() * 15;
+        this.setOffset(ImageLib.ENEMY.mob_1.offset, ImageLib.ENEMY.mob_1.wNatural, ImageLib.ENEMY.mob_1.hNatural);
     }
 
     resolve() {
@@ -70,8 +71,9 @@ export class Chicken extends Enemy {
 
     randomJump() {
         if (Math.random() > 0.99 && !this.isJumping()) {
-            this.speedX = 4 + this.speedFlee;
-            this.jump(4);
+            const funFactor = Math.random() * 3 + 3;
+            this.speedX = funFactor + this.speedFlee;
+            this.jump(funFactor);
             this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.jump, 0, this.speedX * 5);
             this.startResetTimeout();
         }

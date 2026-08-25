@@ -28,7 +28,7 @@ export class Hero extends MovableObject {
     animations = [
         {
             condition: () => this.isDead(),
-            animation: () => this.setOneAnimation(ImageLib.HERO.dead, 5, ImageLib.HERO.dead.length - 1),
+            animation: () => this.setAnimation(ImageLib.HERO.dead, 5, ImageLib.HERO.dead.length - 1),
         },
         {
             condition: () => this.isAttacking(),
@@ -63,7 +63,7 @@ export class Hero extends MovableObject {
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.HERO.idle[0]);
         this.loadImagesToCache();
-        this.setSize();
+        this.setSizeByHeight(2, ImageLib.HERO.wNatural, ImageLib.HERO.hNatural);
         this.animate(ImageLib.HERO.idle, Game.FPS);
         this.resolve();
         this.applyGravity();
@@ -73,11 +73,7 @@ export class Hero extends MovableObject {
         this.y = this.ground - this.h;
         this.x = wCanvas / 8;
         this.cameraOffset = this.x;
-    }
-
-    setSize() {
-        this.h = this.hCanvas / 2;
-        this.w = ImageLib.HERO.wNatural / (ImageLib.HERO.hNatural / this.h);
+        this.setOffset(ImageLib.HERO.offset, ImageLib.HERO.wNatural, ImageLib.HERO.hNatural);
     }
 
     loadImagesToCache() {
@@ -179,14 +175,9 @@ export class Hero extends MovableObject {
      * @param {array} images
      * @param {number} frequency
      */
-    setAnimation(images, frequency) {
+    setAnimation(images, frequency, indexEnd = null) {
         this.startIdleTime = 0;
-        this.restartAnimateIfChangedFrequency(images, 0, frequency);
-    }
-
-    setOneAnimation(images, frequency, indexEnd) {
-        this.startIdleTime = 0;
-        this.restartOneAnimateIfChangedFrequency(images, 0, frequency, null, indexEnd);
+        this.restartAnimateIfChangedFrequency(images, 0, frequency, null, indexEnd);
     }
 
     /**

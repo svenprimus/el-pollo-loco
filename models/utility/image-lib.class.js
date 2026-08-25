@@ -2,6 +2,12 @@ export class ImageLib {
     static HERO = {
         wNatural: 610,
         hNatural: 1200,
+        offset: {
+            top: 520,
+            right: 196,
+            bottom: 65,
+            left: 159,
+        },
         idle: [
             '../assets/sprites/2_character_pepe/1_idle/idle/I-1.png',
             '../assets/sprites/2_character_pepe/1_idle/idle/I-2.png',
@@ -75,6 +81,12 @@ export class ImageLib {
         mob_1: {
             wNatural: 248,
             hNatural: 243,
+            offset: {
+                top: 42,
+                right: 18,
+                bottom: 46,
+                left: 18,
+            },
             walk: [
                 '../assets/sprites/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
                 '../assets/sprites/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
@@ -91,6 +103,12 @@ export class ImageLib {
         mob_2: {
             wNatural: 236,
             hNatural: 210,
+            offset: {
+                top: 24,
+                right: 43,
+                bottom: 35,
+                left: 28,
+            },
             walk: [
                 '../assets/sprites/3_enemies_chicken/chicken_small/1_walk/1_w.png',
                 '../assets/sprites/3_enemies_chicken/chicken_small/1_walk/2_w.png',
@@ -102,6 +120,12 @@ export class ImageLib {
         boss_1: {
             wNatural: 1045,
             hNatural: 1217,
+            offset: {
+                top: 274,
+                right: 145,
+                bottom: 131,
+                left: 156,
+            },
             walk: [
                 '../assets/sprites/4_enemie_boss_chicken/1_walk/G1.png',
                 '../assets/sprites/4_enemie_boss_chicken/1_walk/G2.png',
@@ -167,6 +191,12 @@ export class ImageLib {
         midair: {
             wNatural: 400,
             hNatural: 400,
+            offset: {
+                top: 68,
+                right: 62,
+                bottom: 57,
+                left: 63,
+            },
             imgs: [
                 '../assets/sprites/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
                 '../assets/sprites/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
@@ -190,6 +220,12 @@ export class ImageLib {
         collectable: {
             wNatural: 400,
             hNatural: 400,
+            offset: {
+                top: 78,
+                right: 134,
+                bottom: 46,
+                left: 177,
+            },
             imgs: [
                 '../assets/sprites/6_salsa_bottle/1_salsa_bottle_on_ground.png',
                 '../assets/sprites/6_salsa_bottle/2_salsa_bottle_on_ground.png',
@@ -235,6 +271,12 @@ export class ImageLib {
     static COIN = {
         wNatural: 300,
         hNatural: 300,
+        offset: {
+            top: 103,
+            right: 103,
+            bottom: 103,
+            left: 103,
+        },
         imgs: ['../assets/sprites/8_coin/coin_1.png', '../assets/sprites/8_coin/coin_2.png'],
     };
 

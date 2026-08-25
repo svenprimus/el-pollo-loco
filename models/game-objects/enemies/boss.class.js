@@ -20,7 +20,7 @@ export class Boss extends Enemy {
     animations = [
         {
             condition: () => this.isDead(),
-            animation: () => this.setOneAnimation(ImageLib.ENEMY.boss_1.dead, 6, ImageLib.ENEMY.boss_1.dead.length - 1),
+            animation: () => this.setAnimation(ImageLib.ENEMY.boss_1.dead, 6, ImageLib.ENEMY.boss_1.dead.length - 1),
         },
         {
             condition: () => this.isAttacking(),
@@ -43,8 +43,7 @@ export class Boss extends Enemy {
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.ENEMY.boss_1.walk[0]);
         this.loadImagesToCache();
-        this.setSize(1.8, ImageLib.ENEMY.boss_1.wNatural, ImageLib.ENEMY.boss_1.hNatural);
-
+        this.setSizeByHeight(1.8, ImageLib.ENEMY.boss_1.wNatural, ImageLib.ENEMY.boss_1.hNatural);
         this.animate(ImageLib.ENEMY.boss_1.alert, 2);
         this.resolve();
         this.applyGravity();
@@ -54,6 +53,7 @@ export class Boss extends Enemy {
         this.x = Level.END - wCanvas;
         this.y = this.ground - this.h + 10;
         this.xStart = this.x;
+        this.setOffset(ImageLib.ENEMY.boss_1.offset, ImageLib.ENEMY.boss_1.wNatural, ImageLib.ENEMY.boss_1.hNatural);
     }
 
     resolve() {
@@ -154,12 +154,8 @@ export class Boss extends Enemy {
      * @param {array} images
      * @param {number} frequency
      */
-    setAnimation(images, frequency) {
-        this.restartAnimateIfChangedFrequency(images, 0, frequency);
-    }
-
-    setOneAnimation(images, frequency, indexEnd) {
-        this.restartOneAnimateIfChangedFrequency(images, 0, frequency, null, indexEnd);
+    setAnimation(images, frequency, indexEnd = null) {
+        this.restartAnimateIfChangedFrequency(images, 0, frequency, null, indexEnd);
     }
 
     loadImagesToCache() {

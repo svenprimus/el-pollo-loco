@@ -13,7 +13,7 @@ export class Cloud extends MovableObject {
         super(hCanvas).loadImage(path);
         Cloud.wIndex = null; // used in place after all clouds have been created
         this.resolve();
-        this.setSpeed();
+        this.setSpeed(0.5);
     }
 
     place(amountPerLayer) {
@@ -31,10 +31,6 @@ export class Cloud extends MovableObject {
         this.moveLeftSteady(() => {
             this.loopThroughCanvas();
         });
-    }
-
-    setSpeed() {
-        this.speedX = Math.random() * 0.5;
     }
 
     loopThroughCanvas() {
