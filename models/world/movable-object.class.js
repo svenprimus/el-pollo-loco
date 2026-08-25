@@ -40,9 +40,30 @@ export class MovableObject extends DrawableObject {
         );
     }
 
+    animateUntil(images, frequency = 10, fn = null, indexEnd) {
+        this.animateFreq = frequency;
+        this.idAnimate = TimingHub.setInterval(
+            () => {
+                if (fn !== null) {
+                    fn();
+                } else {
+                    this.playAnimationUntil(images, indexEnd);
+                }
+            },
+            1000 / frequency,
+            this
+        );
+    }
+
     restartAnimate(images, frequency = 10, fn = null) {
         if (TimingHub.stopInterval(this.idAnimate)) {
             this.animate(images, frequency, fn);
+        }
+    }
+
+    restartAnimateUntil(images, frequency = 10, fn = null, indexEnd) {
+        if (TimingHub.stopInterval(this.idAnimate)) {
+            this.animateUntil(images, frequency, fn, indexEnd);
         }
     }
 
@@ -70,6 +91,16 @@ export class MovableObject extends DrawableObject {
         ) {
             this.playSingleImage(images, idFirst);
             this.restartAnimate(images, frequency, fn);
+        }
+    }
+
+    restartOneAnimateIfChangedFrequency(images, idFirst, frequency = 10, fn = null, indexEnd) {
+        if (
+            (this.animateFreq !== frequency && TimingHub.isIntervalSet(this.idAnimate)) ||
+            this.img !== this.imgCache[images[this.imgCurrent]]
+        ) {
+            this.playSingleImage(images, 0);
+            this.restartAnimateUntil(images, frequency, null, indexEnd);
         }
     }
 

@@ -1,18 +1,50 @@
 import { Enemy } from './enemy.class.js';
 import { ImageLib } from '../../utility/image-lib.class.js';
 import { Level } from '../../world/level.class.js';
+import { TimingHub } from '../../utility/timing-hub.class.js';
 
 export class Boss extends Enemy {
     hp = 500;
     hpMax = 500;
-    atk = 20;
+    atk = 5;
+    xStart;
+    lastAlert = 0;
+    isRunningAtr = false;
+    isAttackingAtr = false;
+    isAttackFinished = false;
+    isSpawning = false;
+    hasSpawned = false;
+    speedX = 3;
+
+    animations = [
+        {
+            condition: () => this.isDead(),
+            animation: () => this.setOneAnimation(ImageLib.ENEMY.boss_1.dead, 6, ImageLib.ENEMY.boss_1.dead.length - 1),
+        },
+        {
+            condition: () => this.isAttacking(),
+            animation: () => this.setAnimation(ImageLib.ENEMY.boss_1.attack, 8),
+        },
+        {
+            condition: () => this.isHurt(),
+            animation: () => this.setAnimation(ImageLib.ENEMY.boss_1.hurt, 6),
+        },
+        {
+            condition: () => this.isRunning(),
+            animation: () => this.setAnimation(ImageLib.ENEMY.boss_1.walk, 4),
+        },
+        {
+            condition: () => this.isIdle(),
+            animation: () => this.setAnimation(ImageLib.ENEMY.boss_1.alert, 8),
+        },
+    ];
 
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.ENEMY.boss_1.walk[0]);
         this.loadImagesToCache();
         this.setSize(1.8, ImageLib.ENEMY.boss_1.wNatural, ImageLib.ENEMY.boss_1.hNatural);
 
-        this.animate(ImageLib.ENEMY.boss_1.alert, 5);
+        this.animate(ImageLib.ENEMY.boss_1.alert, 2);
         this.resolve();
         this.applyGravity();
     }
@@ -20,10 +52,113 @@ export class Boss extends Enemy {
     place(wCanvas) {
         this.x = Level.END - wCanvas;
         this.y = this.ground - this.h + 10;
+        this.xStart = this.x;
     }
 
     resolve() {
-        // TODO
+        TimingHub.setInterval(
+            () => {
+                this.statusHandler();
+                this.resolveAnimation(this.animations);
+            },
+            25,
+            this
+        );
+    }
+
+    statusHandler() {
+        if (this.hasSpawned) {
+            if (this.isDead()) {
+                this.fallOut();
+                if (false === this.isAboveCanvasBottom()) {
+                    TimingHub.stopInterval(this.idAnimate);
+                }
+            } else {
+                this.steadyAttack();
+            }
+        }
+    }
+
+    steadyAttack() {
+        if (new Date().getTime() - this.lastAlert > 3000) {
+            if (false === this.reverseDirection && this.x > this.xStart - 3 * this.w) {
+                this.pursue();
+            } else if (this.x < this.xStart - this.w) {
+                this.attackAndReturn();
+            } else {
+                this.reverseDirection = false;
+                this.isRunningAtr = false;
+                this.isAttackFinished = false;
+                this.lastAlert = new Date().getTime();
+            }
+        }
+    }
+
+    pursue() {
+        this.speedX = 5;
+        this.moveLeft();
+        this.isRunningAtr = true;
+        this.isAttackFinished = false;
+    }
+
+    attackAndReturn() {
+        if (false === this.isAttackingAtr && false === this.isAttackFinished) {
+            this.attack();
+        } else if (this.isAttackFinished) {
+            this.moveRight();
+            this.isRunningAtr = true;
+            this.reverseDirection = true;
+        }
+    }
+
+    spawn() {
+        if (false === this.isSpawning) {
+            this.isRunningAtr = true;
+            this.isSpawning = true;
+            const id = this.moveLeftSteady(() => {
+                if (this.x < this.xStart - this.w) {
+                    this.isRunningAtr = false;
+                    this.isSpawning = false;
+                    this.hasSpawned = true;
+                    this.lastAlert = new Date().getTime();
+                    this.attack();
+                    TimingHub.stopInterval(id);
+                }
+            });
+        }
+    }
+
+    attack() {
+        if (false === this.isAttackingAtr) {
+            const id = TimingHub.setTimeout(() => {
+                this.isAttackingAtr = false;
+                this.isAttackFinished = true;
+            }, 1000);
+            this.isAttackingAtr = true;
+        }
+    }
+
+    // TODO may move to MovableObject
+    isRunning() {
+        return this.isRunningAtr;
+    }
+
+    isAttacking() {
+        return this.isAttackingAtr;
+    }
+
+    /**
+     * Play the given animation, if frequency is unchanged, otherwise restart animation with new frequency.
+     * Resets idle time.
+     * @param {array} images
+     * @param {number} frequency
+     */
+    setAnimation(images, frequency) {
+        this.restartAnimateIfChangedFrequency(images, 0, frequency);
+    }
+
+    setOneAnimation(images, frequency, indexEnd) {
+        this.restartOneAnimateIfChangedFrequency(images, 0, frequency, null, indexEnd);
     }
 
     loadImagesToCache() {

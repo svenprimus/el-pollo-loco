@@ -68,10 +68,10 @@ export class Hatchling extends Enemy {
 
     randomFury() {
         if (Math.random() > 0.99) {
-            this.speedX = 4;
+            this.speedX = 4 + this.speedFlee;
             this.restartAnimate(ImageLib.ENEMY.mob_2.walk, this.speedX * 5);
             TimingHub.setTimeout(() => {
-                this.speedX = Math.random() * 2;
+                this.speedX = Math.random() * 2 + this.speedFlee;
                 this.restartAnimate(ImageLib.ENEMY.mob_2.walk, this.speedX * 5);
             }, 750);
         }

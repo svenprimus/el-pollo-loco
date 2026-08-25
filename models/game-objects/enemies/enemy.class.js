@@ -5,6 +5,7 @@ export class Enemy extends MovableObject {
     hitByAmmo = false;
     isBelow = false;
     diedBySalsa = false;
+    speedFlee = 0;
 
     constructor(hCanvas) {
         super(hCanvas);
@@ -21,5 +22,14 @@ export class Enemy extends MovableObject {
 
     isDeadBySalsa() {
         return this.diedBySalsa;
+    }
+
+    flee() {
+        this.speedX = 15;
+        this.speedFlee = 15;
+    }
+
+    isFleeing() {
+        return this.speedFlee > 0;
     }
 }

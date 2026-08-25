@@ -18,8 +18,8 @@ export class World {
         World.BG_WIDTH = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / canvas.height);
 
         // TODO we could do this, but requires reload as it is
-        // this.canvas.width = window.innerWidth * 0.9;
-        // this.canvas.height = window.innerHeight * 0.9;
+        this.canvas.width = window.innerWidth * 0.9;
+        this.canvas.height = window.innerHeight * 0.9;
         this.loadLevel();
         this.statusBar = new StatusBar(canvas.height, (100 * this.level.hero.hp) / this.level.hero.hpMax);
         this.level.hero.world = this;
@@ -31,13 +31,27 @@ export class World {
 
     checkCollisions() {
         TimingHub.setInterval(() => {
-            this.level.enemies.forEach((enemy) => {
-                this.level.hero.resolveCollision(enemy, this.statusBar);
-                this.level.thrownAmmo.forEach((ammo) => {
-                    ammo.resolveCollision(enemy, this.level.hero.atk);
-                });
-            });
+            this.checkCollisionWithMobs();
+            this.checkCollisionWithBoss();
         }, 50);
+    }
+
+    checkCollisionWithMobs() {
+        this.level.enemies.forEach((enemy) => {
+            this.level.hero.resolveCollision(enemy, this.statusBar);
+            this.level.thrownAmmo.forEach((ammo) => {
+                ammo.resolveCollision(enemy, this.level.hero.atk);
+            });
+        });
+    }
+
+    checkCollisionWithBoss() {
+        if (false === this.level.boss.isSpawning) {
+            this.level.hero.resolveCollision(this.level.boss, this.statusBar);
+            this.level.thrownAmmo.forEach((ammo) => {
+                ammo.resolveCollision(this.level.boss, this.level.hero.atk);
+            });
+        }
     }
 
     draw() {
