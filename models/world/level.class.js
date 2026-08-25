@@ -39,7 +39,7 @@ export class Level {
             enemy.place(Level.wCanvas, Level.hCanvas);
         });
         this.clouds.forEach((cloud) => {
-            cloud.place(Level.hCanvas, this.cloudsPerLayer);
+            cloud.place(this.cloudsPerLayer);
         });
         this.backgrounds.forEach((bg) => {
             bg.place(this.bgsPerLayer);
