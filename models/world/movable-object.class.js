@@ -40,9 +40,39 @@ export class MovableObject extends DrawableObject {
         );
     }
 
+    animateUntil(images, frequency = 10, fn = null, indexEnd) {
+        this.animateFreq = frequency;
+        this.idAnimate = TimingHub.setInterval(
+            () => {
+                if (fn !== null) {
+                    fn();
+                } else {
+                    this.playAnimationUntil(images, indexEnd);
+                }
+            },
+            1000 / frequency,
+            this
+        );
+    }
+
     restartAnimate(images, frequency = 10, fn = null) {
         if (TimingHub.stopInterval(this.idAnimate)) {
             this.animate(images, frequency, fn);
+        }
+    }
+
+    restartAnimateUntil(images, frequency = 10, fn = null, indexEnd) {
+        if (TimingHub.stopInterval(this.idAnimate)) {
+            this.animateUntil(images, frequency, fn, indexEnd);
+        }
+    }
+
+    resolveAnimation(animations) {
+        for (let state of animations) {
+            if (state.condition()) {
+                state.animation();
+                break;
+            }
         }
     }
 
@@ -61,6 +91,16 @@ export class MovableObject extends DrawableObject {
         ) {
             this.playSingleImage(images, idFirst);
             this.restartAnimate(images, frequency, fn);
+        }
+    }
+
+    restartOneAnimateIfChangedFrequency(images, idFirst, frequency = 10, fn = null, indexEnd) {
+        if (
+            (this.animateFreq !== frequency && TimingHub.isIntervalSet(this.idAnimate)) ||
+            this.img !== this.imgCache[images[this.imgCurrent]]
+        ) {
+            this.playSingleImage(images, 0);
+            this.restartAnimateUntil(images, frequency, null, indexEnd);
         }
     }
 
@@ -170,6 +210,38 @@ export class MovableObject extends DrawableObject {
         return collided;
     }
 
+    isCollidingFromTop(othr) {
+        othr.hitByJump =
+            othr.isBelow &&
+            this.x + this.w > othr.x &&
+            othr.x + othr.w > this.x &&
+            this.y + this.h > othr.y &&
+            this.y + this.h < othr.y + othr.h;
+        othr.isBelow = this.y + this.h < othr.y;
+
+        if (othr.hitByJump) {
+            TimingHub.setTimeout(() => {
+                othr.hitByJump = false;
+            }, 1000);
+        }
+        return othr.hitByJump;
+    }
+
+    isCollidingForAmmo(othr) {
+        othr.hitByAmmo =
+            this.x + this.w > othr.x &&
+            othr.x + othr.w > this.x &&
+            this.y + this.h > othr.y &&
+            othr.y + othr.h > this.y;
+
+        if (othr.hitByAmmo) {
+            TimingHub.setTimeout(() => {
+                othr.hitByAmmo = false;
+            }, 1000);
+        }
+        return othr.hitByAmmo;
+    }
+
     /**
      * Reduces amount of this hp by given damage and stores last hit time.
      * @param {number} damage - damage from hit
@@ -190,5 +262,9 @@ export class MovableObject extends DrawableObject {
      */
     isDead() {
         return this.hp <= 0;
+    }
+
+    isIdle() {
+        return false === this.isJumping();
     }
 }

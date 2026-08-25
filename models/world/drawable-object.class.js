@@ -74,6 +74,14 @@ export class DrawableObject {
         this.img = this.imgCache[path];
     }
 
+    playAnimationUntil(images, indexEnd) {
+        this.imgCurrent = Math.min(this.imgCurrent + 1, indexEnd);
+        console.log('played ', this.imgCurrent);
+
+        const path = images[this.imgCurrent];
+        this.img = this.imgCache[path];
+    }
+
     /**
      * Load a single image from array into current img.
      * @param {array} images

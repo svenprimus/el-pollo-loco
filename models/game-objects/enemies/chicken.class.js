@@ -7,24 +7,42 @@ import { World } from '../../world/world.class.js';
 
 export class Chicken extends Enemy {
     static spread = 0;
-    isJumpingAtr = false;
     idHandler;
     hp = 50;
     hpMax = 50;
-    atk = 10;
+    atk = 2.5;
+
+    animations = [
+        {
+            condition: () => this.isDeadBySalsa(),
+            animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.drum, 0, this.speedX * 5),
+        },
+        {
+            condition: () => this.isDead(),
+            animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.dead, 0, this.speedX * 5),
+        },
+        {
+            condition: () => this.isJumping(),
+            animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.jump, 0, this.speedX * 5),
+        },
+        {
+            condition: () => this.isIdle(),
+            animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.walk, 2, this.speedX * 5),
+        },
+    ];
 
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.ENEMY.mob_1.walk[2]);
         Chicken.spread = 0; // used in place() after all chicken have been created
         this.loadImagesToCache();
-        this.setSize(hCanvas);
-        this.setSpeed();
+        this.setSize(8, ImageLib.ENEMY.mob_1.wNatural, ImageLib.ENEMY.mob_1.hNatural);
+        this.setSpeed(2);
         this.animate(ImageLib.ENEMY.mob_1.walk, this.speedX * 5);
         this.resolve();
         this.applyGravity();
     }
 
-    place(wCanvas, hCanvas) {
+    place() {
         const sections = Math.floor(Level.END / World.BG_WIDTH);
         const section = Chicken.spread++ % sections;
         if (0 === section) {
@@ -35,15 +53,6 @@ export class Chicken extends Enemy {
         this.y = this.ground - this.h - Math.random() * 15;
     }
 
-    setSize(hCanvas) {
-        this.h = hCanvas / 8;
-        this.w = ImageLib.ENEMY.mob_1.wNatural / (ImageLib.ENEMY.mob_1.hNatural / this.h);
-    }
-
-    setSpeed() {
-        this.speedX = Math.random() * 2; // this is walking speed, not the animation speed
-    }
-
     resolve() {
         this.idHandler = this.moveLeftSteady(() => this.statusHandler(), Game.FPS, this);
     }
@@ -52,16 +61,17 @@ export class Chicken extends Enemy {
         if (this.isDead() || this.x + this.w < Level.START) {
             TimingHub.stopInterval(this.idAnimate);
             TimingHub.stopInterval(this.idHandler);
+            this.fallOut();
         } else {
             this.randomJump();
         }
+        this.resolveAnimation(this.animations);
     }
 
     randomJump() {
         if (Math.random() > 0.99 && !this.isJumping()) {
-            this.speedX = 4;
+            this.speedX = 4 + this.speedFlee;
             this.jump(20);
-            this.isJumpingAtr = true;
             this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.jump, 0, this.speedX * 5);
             this.startResetTimeout();
         }
@@ -69,9 +79,7 @@ export class Chicken extends Enemy {
 
     startResetTimeout() {
         TimingHub.setTimeout(() => {
-            this.speedX = Math.random() * 2;
-            this.isJumpingAtr = false;
-            this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.walk, 2, this.speedX * 5);
+            this.speedX = Math.random() * 2 + this.speedFlee;
         }, 1000);
     }
 
@@ -79,5 +87,6 @@ export class Chicken extends Enemy {
         this.loadImages(ImageLib.ENEMY.mob_1.walk);
         this.loadImages(ImageLib.ENEMY.mob_1.jump);
         this.loadImages(ImageLib.ENEMY.mob_1.dead);
+        this.loadImages(ImageLib.ENEMY.mob_1.drum);
     }
 }

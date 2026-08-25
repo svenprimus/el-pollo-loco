@@ -7,19 +7,20 @@ export class ThrowableObject extends MovableObject {
     hero;
     isImpacting = false;
     isFinished = false;
+    isCollided = false;
     hpMax = 1;
 
     constructor(hero, hCanvas) {
         super(hCanvas).loadImage(ImageLib.AMMO.midair.imgs[0]);
         this.hero = hero;
         this.loadImagesToCache();
-        this.setSize(hCanvas);
+        this.setSize();
         this.applyGravity();
         this.animate(ImageLib.AMMO.midair.imgs);
     }
 
-    setSize(hCanvas) {
-        this.h = hCanvas / 6;
+    setSize() {
+        this.h = this.hCanvas / 6;
         this.w = ImageLib.AMMO.midair.wNatural / (ImageLib.AMMO.midair.hNatural / this.h);
     }
 
@@ -38,7 +39,7 @@ export class ThrowableObject extends MovableObject {
         this.speedX = factor * 20 + factor * relativeSpeed;
 
         const idInterval = TimingHub.setInterval(() => {
-            if (false === this.isJumping()) {
+            if (false === this.isJumping() || this.isCollided) {
                 this.impact(idInterval);
             } else {
                 this.moveLeft();
@@ -56,6 +57,14 @@ export class ThrowableObject extends MovableObject {
                 TimingHub.stopInterval(idInterval);
                 this.isFinished = true;
             }, 1000 / ImageLib.AMMO.impact.imgs.length);
+        }
+    }
+
+    resolveCollision(enemy, damage) {
+        if (false == enemy.hitByAmmo && this.isCollidingForAmmo(enemy)) {
+            enemy.hit(damage);
+            enemy.diedBySalsa = enemy.isDead();
+            this.isCollided = true;
         }
     }
 }

@@ -1,6 +1,7 @@
 import { StatusBar } from '../game-objects/status-bar.class.js';
 import { Background } from '../game-objects/background.class.js';
 import { Cloud } from '../game-objects/cloud.class.js';
+import { Boss } from '../game-objects/enemies/boss.class.js';
 import { createLevel_1 } from '../../levels/level-1.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 export class World {
@@ -17,8 +18,8 @@ export class World {
         World.BG_WIDTH = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / canvas.height);
 
         // TODO we could do this, but requires reload as it is
-        // this.canvas.width = window.innerWidth * 0.9;
-        // this.canvas.height = window.innerHeight * 0.9;
+        this.canvas.width = window.innerWidth * 0.9;
+        this.canvas.height = window.innerHeight * 0.9;
         this.loadLevel();
         this.statusBar = new StatusBar(canvas.height, (100 * this.level.hero.hp) / this.level.hero.hpMax);
         this.level.hero.world = this;
@@ -30,18 +31,31 @@ export class World {
 
     checkCollisions() {
         TimingHub.setInterval(() => {
-            this.level.enemies.forEach((enemy) => {
-                if (this.level.hero.isColliding(enemy)) {
-                    this.level.hero.hit(enemy.atk);
-                    this.statusBar.setPercentage((100 * this.level.hero.hp) / this.level.hero.hpMax);
-                }
+            this.checkCollisionWithMobs();
+            this.checkCollisionWithBoss();
+        }, 50);
+    }
+
+    checkCollisionWithMobs() {
+        this.level.enemies.forEach((enemy) => {
+            this.level.hero.resolveCollision(enemy, this.statusBar);
+            this.level.thrownAmmo.forEach((ammo) => {
+                ammo.resolveCollision(enemy, this.level.hero.atk);
             });
-        }, 200);
+        });
+    }
+
+    checkCollisionWithBoss() {
+        if (false === this.level.boss.isSpawning) {
+            this.level.hero.resolveCollision(this.level.boss, this.statusBar);
+            this.level.thrownAmmo.forEach((ammo) => {
+                ammo.resolveCollision(this.level.boss, this.level.hero.atk);
+            });
+        }
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
         // moving objects
         this.ctx.translate(this.cameraX, 0);
         this.addToMap(this.level.backgrounds);
@@ -51,14 +65,9 @@ export class World {
         this.addToMap(this.level.thrownAmmo);
         this.addToMap(this.level.clouds);
         this.ctx.translate(-this.cameraX, 0);
-
         // fixed objects
         this.addToMap(this.statusBar);
-
-        const self = this;
-        requestAnimationFrame(() => {
-            self.draw();
-        });
+        requestAnimationFrame(() => this.draw());
     }
 
     /**

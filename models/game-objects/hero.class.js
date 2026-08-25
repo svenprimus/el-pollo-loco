@@ -15,15 +15,18 @@ export class Hero extends MovableObject {
     hp = 100;
     hpMax = 100;
     atk = 50;
+    atkJump = 25;
     isAttackingAtr = false;
     isDrinkingAtr = false;
     isRunningAtr = false;
     throwables = [];
+    easeLeftOut = 3;
+    easeRightOut = 3;
 
     animations = [
         {
             condition: () => this.isDead(),
-            animation: () => this.setAnimation(ImageLib.HERO.dead, 5),
+            animation: () => this.setOneAnimation(ImageLib.HERO.dead, 5, ImageLib.HERO.dead.length - 1),
         },
         {
             condition: () => this.isAttacking(),
@@ -39,7 +42,7 @@ export class Hero extends MovableObject {
         },
         {
             condition: () => this.isDrinking(),
-            animation: () => this.setAnimation(ImageLib.HERO.drink, 5),
+            animation: () => this.setAnimation(ImageLib.HERO.drink, 4),
         },
         {
             condition: () => this.isRunning(),
@@ -58,20 +61,20 @@ export class Hero extends MovableObject {
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.HERO.idle[0]);
         this.loadImagesToCache();
-        this.setSize(hCanvas);
+        this.setSize();
         this.animate(ImageLib.HERO.idle, Game.FPS);
         this.resolve();
         this.applyGravity();
     }
 
-    place(wCanvas, hCanvas) {
+    place(wCanvas) {
         this.y = this.ground - this.h;
         this.x = wCanvas / 8;
         this.cameraOffset = this.x;
     }
 
-    setSize(hCanvas) {
-        this.h = hCanvas / 2;
+    setSize() {
+        this.h = this.hCanvas / 2;
         this.w = ImageLib.HERO.wNatural / (ImageLib.HERO.hNatural / this.h);
     }
 
@@ -91,7 +94,7 @@ export class Hero extends MovableObject {
         TimingHub.setInterval(
             () => {
                 this.resolveControl();
-                this.resolveAnimation();
+                this.resolveAnimation(this.animations);
             },
             25,
             this
@@ -106,15 +109,6 @@ export class Hero extends MovableObject {
             this.resolveRunning();
         } else {
             this.fallOut();
-        }
-    }
-
-    resolveAnimation() {
-        for (let state of this.animations) {
-            if (state.condition()) {
-                state.animation();
-                break;
-            }
         }
     }
 
@@ -151,6 +145,30 @@ export class Hero extends MovableObject {
             this.stopRunning();
         }
     }
+
+    resolveCollision(enemy, statusBar) {
+        if (false == this.isDead()) {
+            if (false === enemy.hitByJump && this.isCollidingFromTop(enemy)) {
+                enemy.hit(this.atkJump);
+                this.speedY = 20;
+            } else if (false === enemy.hitByJump && this.isColliding(enemy) && false === enemy.isFleeing()) {
+                this.hit(enemy.atk);
+                statusBar.setPercentage((100 * this.hp) / this.hpMax);
+            }
+        }
+    }
+
+    resolveSpawnpoint() {
+        if (
+            false === this.world.level.boss.hasSpawned &&
+            this.world.level.boss.x < this.x + (this.world.canvas.width - this.world.canvas.width / 8)
+        ) {
+            this.world.level.boss.spawn();
+            this.world.level.enemies.forEach((enemy) => {
+                enemy.flee();
+            });
+        }
+    }
     // #endregion resolve
 
     /**
@@ -162,6 +180,11 @@ export class Hero extends MovableObject {
     setAnimation(images, frequency) {
         this.startIdleTime = 0;
         this.restartAnimateIfChangedFrequency(images, 0, frequency);
+    }
+
+    setOneAnimation(images, frequency, indexEnd) {
+        this.startIdleTime = 0;
+        this.restartOneAnimateIfChangedFrequency(images, 0, frequency, null, indexEnd);
     }
 
     /**
@@ -178,20 +201,23 @@ export class Hero extends MovableObject {
     runLeft() {
         this.isRunningAtr = true;
         this.reverseDirection = true;
-        if (this.isAfterStart()) {
+        this.easeRightOut = 3;
+        if (this.isAfterStart() && false === this.world.level.boss.isSpawning) {
             super.moveLeft();
-            const distanceToRightStartingBorder = -this.x + this.world.canvas.width - this.w - this.cameraOffset;
-            this.world.cameraX = Math.min(this.world.cameraX + this.speedX + 10, distanceToRightStartingBorder);
+            this.followCameraLeft();
         }
     }
 
     runRight() {
         this.isRunningAtr = true;
         this.reverseDirection = false;
-        if (this.isBeforeEnd()) {
-            super.moveRight();
-            const distanceToLeftStartingBorder = -this.x + this.cameraOffset;
-            this.world.cameraX = Math.max(this.world.cameraX - this.speedX - 10, distanceToLeftStartingBorder);
+        this.easeLeftOut = 3;
+        if (this.isBeforeEnd() && false === this.world.level.boss.isSpawning) {
+            this.resolveSpawnpoint();
+            if (false === this.world.level.boss.isSpawning) {
+                super.moveRight();
+                this.followCameraRight();
+            }
         }
     }
 
@@ -200,8 +226,10 @@ export class Hero extends MovableObject {
     }
 
     attack() {
-        if (false === this.isAttackingAtr) {
-            // TODO push when collected, pop when thrown
+        // TODO push when collected, pop when thrown
+        this.throwables.push(new ThrowableObject(this, this.hCanvas));
+
+        if (false === this.isAttackingAtr && this.throwables.length > 0 && false == this.world.level.boss.isSpawning) {
             this.throwables.push(new ThrowableObject(this, this.hCanvas));
             this.world.level.thrownAmmo.push(this.throwables.shift());
             this.world.level.thrownAmmo[this.world.level.thrownAmmo.length - 1].throw(
@@ -210,8 +238,8 @@ export class Hero extends MovableObject {
                 this.isRunning() ? this.speedX : 0,
                 this.reverseDirection
             );
+            this.isAttackingAtr = true;
         }
-        this.isAttackingAtr = true;
     }
 
     stopAttacking() {
@@ -224,7 +252,7 @@ export class Hero extends MovableObject {
         }
         const timeNow = new Date().getTime();
         if (timeNow - this.startDrinkTime > 1000) {
-            this.hp =  Math.min(this.hp + 10, this.hpMax);
+            this.hp = Math.min(this.hp + 10, this.hpMax);
             this.startDrinkTime = 0;
             this.world.statusBar.setPercentage((100 * this.hp) / this.hpMax);
         }
@@ -258,10 +286,6 @@ export class Hero extends MovableObject {
         return timeNow - this.startIdleTime > 10000;
     }
 
-    isIdle() {
-        return false === this.isJumping();
-    }
-
     isAfterStart() {
         return this.x > Level.START + (this.world.canvas.width - this.w - this.cameraOffset + this.speedX + 1);
     }
@@ -270,4 +294,20 @@ export class Hero extends MovableObject {
         return this.x < Level.END - this.world.canvas.width + this.cameraOffset - this.speedX;
     }
     // #endregion conditions
+
+    followCameraRight() {
+        const distanceToLeftStartingBorder = -this.x + this.cameraOffset;
+        this.easeRightOut = Math.max(this.easeRightOut - 0.2, 1);
+        this.world.cameraX = this.world.level.boss.hasSpawned
+            ? distanceToLeftStartingBorder
+            : Math.max(this.world.cameraX - this.easeRightOut * this.speedX - 10, distanceToLeftStartingBorder);
+    }
+
+    followCameraLeft() {
+        const distanceToRightStartingBorder = -this.x + this.world.canvas.width - this.w - this.cameraOffset;
+        this.easeLeftOut = Math.max(this.easeLeftOut - 0.2, 1);
+        this.world.cameraX = this.world.level.boss.hasSpawned
+            ? -this.x + this.cameraOffset
+            : Math.min(this.world.cameraX + this.easeLeftOut * this.speedX + 10, distanceToRightStartingBorder);
+    }
 }

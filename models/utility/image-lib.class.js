@@ -86,6 +86,7 @@ export class ImageLib {
                 '../assets/sprites/3_enemies_chicken/chicken_normal/3_jump/2_j.png',
                 '../assets/sprites/3_enemies_chicken/chicken_normal/3_jump/3_j.png',
             ],
+            drum: ['../assets/sprites/3_enemies_chicken/chicken_drum/drumstick.png'],
         },
         mob_2: {
             wNatural: 236,
@@ -95,7 +96,8 @@ export class ImageLib {
                 '../assets/sprites/3_enemies_chicken/chicken_small/1_walk/2_w.png',
                 '../assets/sprites/3_enemies_chicken/chicken_small/1_walk/3_w.png',
             ],
-            dead: ['../assets/sprites/3_enemies_chicken/chicken_normal/1_walk/1_w.png'],
+            dead: ['../assets/sprites/3_enemies_chicken/chicken_small/2_dead/dead.png'],
+            drum: ['../assets/sprites/3_enemies_chicken/chicken_drum/drumstick.png'],
         },
         boss_1: {
             wNatural: 1045,
