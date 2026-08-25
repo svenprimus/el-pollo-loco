@@ -15,11 +15,9 @@ export class World {
     constructor(canvas) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
-        World.BG_WIDTH = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / canvas.height);
-
-        // TODO we could do this, but requires reload as it is
         this.canvas.width = window.innerWidth * 0.9;
         this.canvas.height = window.innerHeight * 0.9;
+        World.BG_WIDTH = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / canvas.height);
         this.loadLevel();
         this.statusBar = new StatusBar(canvas.height, (100 * this.level.hero.hp) / this.level.hero.hpMax);
         this.level.hero.world = this;
