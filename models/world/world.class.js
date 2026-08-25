@@ -1,7 +1,6 @@
 import { StatusBar } from '../game-objects/status-bar.class.js';
 import { Background } from '../game-objects/background.class.js';
 import { Cloud } from '../game-objects/cloud.class.js';
-import { Boss } from '../game-objects/enemies/boss.class.js';
 import { createLevel_1 } from '../../levels/level-1.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 export class World {

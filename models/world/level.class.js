@@ -1,9 +1,3 @@
-import { Hero } from '../game-objects/hero.class.js';
-import { Boss } from '../game-objects/enemies/boss.class.js';
-import { Chicken } from '../game-objects/enemies/chicken.class.js';
-import { Hatchling } from '../game-objects/enemies/hatchling.class.js';
-import { Cloud } from '../game-objects/cloud.class.js';
-import { Background } from '../game-objects/background.class.js';
 import { World } from './world.class.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 

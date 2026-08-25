@@ -35,7 +35,7 @@ export class ThrowableObject extends MovableObject {
 
         this.x = x - this.w / 2;
         this.y = y;
-        this.speedY = 25;
+        this.speedY = 5;
         this.speedX = factor * 20 + factor * relativeSpeed;
 
         const idInterval = TimingHub.setInterval(() => {

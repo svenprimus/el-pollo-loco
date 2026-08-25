@@ -122,7 +122,7 @@ export class Hero extends MovableObject {
 
     resolveJump() {
         if (Controls.UP) {
-            this.jump(25);
+            this.jump(5);
         } else if (1 === this.jumpCount) {
             this.extraJumpAvailable = true;
         }
@@ -150,7 +150,7 @@ export class Hero extends MovableObject {
         if (false == this.isDead()) {
             if (false === enemy.hitByJump && this.isCollidingFromTop(enemy)) {
                 enemy.hit(this.atkJump);
-                this.speedY = 20;
+                this.speedY = 5;
             } else if (false === enemy.hitByJump && this.isColliding(enemy) && false === enemy.isFleeing()) {
                 this.hit(enemy.atk);
                 statusBar.setPercentage((100 * this.hp) / this.hpMax);
@@ -161,7 +161,7 @@ export class Hero extends MovableObject {
     resolveSpawnpoint() {
         if (
             false === this.world.level.boss.hasSpawned &&
-            this.world.level.boss.x < this.x + (Level.wCanvas - Level.wCanvas / 8)
+            this.x > this.world.level.boss.xStart - Level.wCanvas + this.cameraOffset
         ) {
             this.world.level.boss.spawn();
             this.world.level.enemies.forEach((enemy) => {
@@ -305,17 +305,20 @@ export class Hero extends MovableObject {
 
     followCameraRight() {
         const distanceToLeftStartingBorder = -this.x + this.cameraOffset;
+
         this.easeRightOut = Math.max(this.easeRightOut - 0.2, 1);
+        // fix camera slowly to bossfight area, or follow character
         this.world.cameraX = this.world.level.boss.hasSpawned
-            ? distanceToLeftStartingBorder
+            ? Math.min(this.world.cameraX + 0.1, -1 * (this.world.level.boss.xStart - Level.wCanvas))
             : Math.max(this.world.cameraX - this.easeRightOut * this.speedX - 10, distanceToLeftStartingBorder);
     }
 
     followCameraLeft() {
         const distanceToRightStartingBorder = -this.x + Level.wCanvas - this.w - this.cameraOffset;
         this.easeLeftOut = Math.max(this.easeLeftOut - 0.2, 1);
+        // fix camera slowly to bossfight area, or follow character
         this.world.cameraX = this.world.level.boss.hasSpawned
-            ? -this.x + this.cameraOffset
+            ? Math.min(this.world.cameraX + 0.1, -1 * (this.world.level.boss.xStart - Level.wCanvas))
             : Math.min(this.world.cameraX + this.easeLeftOut * this.speedX + 10, distanceToRightStartingBorder);
     }
 }
