@@ -44,7 +44,6 @@ export class Boss extends Enemy {
         super(hCanvas).loadImage(ImageLib.ENEMY.boss_1.walk[0]);
         this.loadImagesToCache();
         this.setSizeByHeight(1.8, ImageLib.ENEMY.boss_1.wNatural, ImageLib.ENEMY.boss_1.hNatural);
-        this.setOffset(ImageLib.ENEMY.boss_1.offset, ImageLib.ENEMY.boss_1.wNatural, ImageLib.ENEMY.boss_1.hNatural);
         this.animate(ImageLib.ENEMY.boss_1.alert, 2);
         this.resolve();
         this.applyGravity();
@@ -54,6 +53,7 @@ export class Boss extends Enemy {
         this.x = Level.END - wCanvas;
         this.y = this.ground - this.h + 10;
         this.xStart = this.x;
+        this.setOffset(ImageLib.ENEMY.boss_1.offset, ImageLib.ENEMY.boss_1.wNatural, ImageLib.ENEMY.boss_1.hNatural);
     }
 
     resolve() {

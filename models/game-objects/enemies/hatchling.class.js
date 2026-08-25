@@ -30,7 +30,6 @@ export class Hatchling extends Enemy {
         Hatchling.spread = -1; // used in place() after all hatchlings have been created
         this.loadImagesToCache();
         this.setSizeByHeight(16, ImageLib.ENEMY.mob_2.wNatural, ImageLib.ENEMY.mob_2.hNatural);
-        this.setOffset(ImageLib.ENEMY.mob_2.offset, ImageLib.ENEMY.mob_2.wNatural, ImageLib.ENEMY.mob_2.hNatural);
         this.setSpeed(2);
         this.animate(ImageLib.ENEMY.mob_2.walk, this.speedX * 5);
         this.resolve();
@@ -43,6 +42,7 @@ export class Hatchling extends Enemy {
 
         this.x = Hatchling.spread * World.BG_WIDTH + Math.random() * 50 + 0.8 * World.BG_WIDTH;
         this.y = this.ground - this.h - Math.random() * 15;
+        this.setOffset(ImageLib.ENEMY.mob_2.offset, ImageLib.ENEMY.mob_2.wNatural, ImageLib.ENEMY.mob_2.hNatural);
     }
 
     resolve() {
