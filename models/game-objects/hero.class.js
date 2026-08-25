@@ -8,6 +8,7 @@ import { ThrowableObject } from './throwable-object.class.js';
 
 export class Hero extends MovableObject {
     world;
+    statusBar;
     startIdleTime = 0;
     startDrinkTime = 0;
     cameraOffset = 0;
@@ -147,14 +148,13 @@ export class Hero extends MovableObject {
         }
     }
 
-    resolveCollision(enemy, statusBar) {
+    resolveCollision(enemy) {
         if (false == this.isDead()) {
             if (false === enemy.hitByJump && this.isCollidingFromTop(enemy)) {
                 enemy.hit(this.atkJump);
                 this.speedY = 5;
             } else if (false === enemy.hitByJump && this.isColliding(enemy) && false === enemy.isFleeing()) {
                 this.hit(enemy.atk);
-                statusBar.setPercentage((100 * this.hp) / this.hpMax);
             }
         }
     }
@@ -164,6 +164,7 @@ export class Hero extends MovableObject {
             false === this.world.level.boss.hasSpawned &&
             this.x > this.world.level.boss.xStart - Level.wCanvas + this.cameraOffset
         ) {
+            this.world.setStatusBarBoss();
             this.world.level.boss.spawn();
             this.world.level.enemies.forEach((enemy) => {
                 enemy.flee();
@@ -264,7 +265,7 @@ export class Hero extends MovableObject {
         if (timeNow - this.startDrinkTime > 1000) {
             this.hp = Math.min(this.hp + 10, this.hpMax);
             this.startDrinkTime = 0;
-            this.world.statusBar.setPercentage((100 * this.hp) / this.hpMax);
+            this.statusBar.setPercentage((100 * this.hp) / this.hpMax);
         }
         this.isDrinkingAtr = true;
     }

@@ -8,7 +8,6 @@ export class World {
     ctx;
     cameraX = 0;
     level;
-    statusBar;
     static BG_WIDTH = 0; // width of one background (can be larger than canvas width)
 
     constructor(canvas) {
@@ -18,10 +17,10 @@ export class World {
         this.canvas.height = window.innerHeight * 0.9;
         World.BG_WIDTH = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / canvas.height);
         this.loadLevel();
-        this.statusBar = new StatusBar(canvas.height, (100 * this.level.hero.hp) / this.level.hero.hpMax);
         this.level.hero.world = this;
         Cloud.world = this;
-
+        this.setStatusBarHero();
+        this.setStatusBarBoss();
         this.draw();
         this.checkCollisions();
     }
@@ -35,7 +34,7 @@ export class World {
 
     checkCollisionWithMobs() {
         this.level.enemies.forEach((enemy) => {
-            this.level.hero.resolveCollision(enemy, this.statusBar);
+            this.level.hero.resolveCollision(enemy);
             this.level.thrownAmmo.forEach((ammo) => {
                 ammo.resolveCollision(enemy, this.level.hero.atk);
             });
@@ -44,7 +43,7 @@ export class World {
 
     checkCollisionWithBoss() {
         if (false === this.level.boss.isSpawning) {
-            this.level.hero.resolveCollision(this.level.boss, this.statusBar);
+            this.level.hero.resolveCollision(this.level.boss);
             this.level.thrownAmmo.forEach((ammo) => {
                 ammo.resolveCollision(this.level.boss, this.level.hero.atk);
             });
@@ -63,7 +62,9 @@ export class World {
         this.addToMap(this.level.clouds);
         this.ctx.translate(-this.cameraX, 0);
         // fixed objects
-        this.addToMap(this.statusBar);
+        this.addToMap(this.level.hero.statusBar);
+        this.addToMap(this.level.boss.statusBar);
+
         requestAnimationFrame(() => this.draw());
     }
 
@@ -72,12 +73,14 @@ export class World {
      * @param {DrawableObject|DrawableObject[]} drawbles - one or multiple objects to be added to map
      */
     addToMap(drawbles) {
-        if (Array.isArray(drawbles)) {
-            drawbles.forEach((o) => {
-                this.drawObject(o);
-            });
-        } else {
-            this.drawObject(drawbles);
+        if (drawbles) {
+            if (Array.isArray(drawbles)) {
+                drawbles.forEach((o) => {
+                    this.drawObject(o);
+                });
+            } else {
+                this.drawObject(drawbles);
+            }
         }
     }
 
@@ -118,5 +121,15 @@ export class World {
 
     loadLevel() {
         this.level = createLevel_1(this.canvas.width, this.canvas.height);
+    }
+
+    setStatusBarHero() {
+        const pos = this.canvas.height * 0.05;
+        this.level.hero.statusBar = new StatusBar(this.canvas.width, canvas.height, this.level.hero, pos, false);
+    }
+
+    setStatusBarBoss() {
+        const y = this.canvas.height * 0.05;
+        this.level.boss.statusBar = new StatusBar(this.canvas.width, this.canvas.height, this.level.boss, y, true);
     }
 }

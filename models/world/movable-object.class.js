@@ -248,8 +248,11 @@ export class MovableObject extends DrawableObject {
      * @param {number} damage - damage from hit
      */
     hit(damage) {
-        this.hp = Math.max(this.hp - damage, 0);
         this.lastHit = new Date().getTime();
+        this.hp = Math.max(this.hp - damage, 0);
+        if (this.statusBar) {
+            this.statusBar.setPercentage((100 * this.hp) / this.hpMax);
+        }
     }
 
     isHurt() {

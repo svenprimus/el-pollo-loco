@@ -4,6 +4,7 @@ import { Level } from '../../world/level.class.js';
 import { TimingHub } from '../../utility/timing-hub.class.js';
 
 export class Boss extends Enemy {
+    statusBar;
     hp = 500;
     hpMax = 500;
     atk = 5;
