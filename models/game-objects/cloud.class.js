@@ -39,7 +39,7 @@ export class Cloud extends MovableObject {
 
     loopThroughCanvas() {
         if (this.x + this.w < Level.START) {
-            this.x = Cloud.world.cameraX + Cloud.world.canvas.width + this.w;
+            this.x = Cloud.world.cameraX + Level.wCanvas + this.w;
         }
     }
 }

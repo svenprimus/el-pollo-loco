@@ -1,11 +1,12 @@
 import { DrawableObject } from './drawable-object.class.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 import { Game } from '../utility/game.class.js';
+import { Level } from './level.class.js';
 
 export class MovableObject extends DrawableObject {
     speedX = 0.15;
     speedY = 0;
-    acceleration = 2.5;
+    acceleration = 0.5;
     died = false;
     jumpCount = 0;
     extraJumpAvailable = false;
@@ -112,8 +113,8 @@ export class MovableObject extends DrawableObject {
             () => {
                 if ((this.isJumping() || this.isDead() || this.jumpStarted()) && this.isAboveCanvasBottom()) {
                     this.y = this.isDead()
-                        ? this.y - this.speedY
-                        : Math.min(this.y - this.speedY, this.ground - this.h);
+                        ? this.y - (this.speedY * Level.hCanvas) / 100
+                        : Math.min(this.y - (this.speedY * Level.hCanvas) / 100, this.ground - this.h);
                     this.speedY -= this.acceleration;
                 }
             },
@@ -125,7 +126,7 @@ export class MovableObject extends DrawableObject {
     fallOut() {
         if (false === this.died) {
             this.died = true;
-            this.speedY = 20;
+            this.speedY = 4;
         }
     }
 
@@ -185,10 +186,10 @@ export class MovableObject extends DrawableObject {
     /**
      * Add value to 'speedY'.
      */
-    jump(impulse) {
+    jump(percentImpulse) {
         if (0 === this.jumpCount || this.extraJumpAvailable) {
             this.jumpCount++;
-            this.speedY = impulse;
+            this.speedY = percentImpulse;
             this.y--; // othewise immediatley isJumping will return false and reset double jump
             if (this.extraJumpAvailable) {
                 this.extraJumpAvailable = false;

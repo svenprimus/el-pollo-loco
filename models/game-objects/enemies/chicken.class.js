@@ -71,7 +71,7 @@ export class Chicken extends Enemy {
     randomJump() {
         if (Math.random() > 0.99 && !this.isJumping()) {
             this.speedX = 4 + this.speedFlee;
-            this.jump(20);
+            this.jump(4);
             this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.jump, 0, this.speedX * 5);
             this.startResetTimeout();
         }

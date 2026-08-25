@@ -81,7 +81,7 @@ export class Boss extends Enemy {
 
     steadyAttack() {
         if (new Date().getTime() - this.lastAlert > 3000) {
-            if (false === this.reverseDirection && this.x > this.xStart - 3 * this.w) {
+            if (false === this.reverseDirection && this.x > this.xStart - Level.wCanvas) {
                 this.pursue();
             } else if (this.x < this.xStart - this.w) {
                 this.attackAndReturn();
@@ -112,7 +112,7 @@ export class Boss extends Enemy {
     }
 
     spawn() {
-        if (false === this.isSpawning) {
+        if (false === this.isSpawning && false === this.hasSpawned) {
             this.isRunningAtr = true;
             this.isSpawning = true;
             const id = this.moveLeftSteady(() => {

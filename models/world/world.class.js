@@ -1,7 +1,6 @@
 import { StatusBar } from '../game-objects/status-bar.class.js';
 import { Background } from '../game-objects/background.class.js';
 import { Cloud } from '../game-objects/cloud.class.js';
-import { Boss } from '../game-objects/enemies/boss.class.js';
 import { createLevel_1 } from '../../levels/level-1.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 export class World {
@@ -15,11 +14,9 @@ export class World {
     constructor(canvas) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
-        World.BG_WIDTH = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / canvas.height);
-
-        // TODO we could do this, but requires reload as it is
         this.canvas.width = window.innerWidth * 0.9;
         this.canvas.height = window.innerHeight * 0.9;
+        World.BG_WIDTH = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / canvas.height);
         this.loadLevel();
         this.statusBar = new StatusBar(canvas.height, (100 * this.level.hero.hp) / this.level.hero.hpMax);
         this.level.hero.world = this;
