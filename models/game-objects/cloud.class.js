@@ -34,7 +34,7 @@ export class Cloud extends MovableObject {
     }
 
     setSpeed() {
-        this.speedX = Math.random() * 0.05;
+        this.speedX = Math.random() * 0.5;
     }
 
     loopThroughCanvas() {

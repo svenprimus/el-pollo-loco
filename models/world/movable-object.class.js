@@ -155,14 +155,14 @@ export class MovableObject extends DrawableObject {
      * Adds 'speedX' to x position.
      */
     moveRight() {
-        this.x += this.speedX;
+        this.x += Level.wCanvas * this.speedX / 1000;
     }
 
     /**
      * Reduce 'speedX' from x position.
      */
     moveLeft() {
-        this.x -= this.speedX;
+        this.x -= Level.wCanvas * this.speedX / 1000;
     }
 
     /**
