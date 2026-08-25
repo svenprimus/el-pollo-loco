@@ -22,6 +22,7 @@ export class Hero extends MovableObject {
     throwables = [];
     easeLeftOut = 3;
     easeRightOut = 3;
+    lastAttack = 0;
 
     animations = [
         {
@@ -229,17 +230,26 @@ export class Hero extends MovableObject {
         // TODO push when collected, pop when thrown
         this.throwables.push(new ThrowableObject(this, this.hCanvas));
 
-        if (false === this.isAttackingAtr && this.throwables.length > 0 && false == this.world.level.boss.isSpawning) {
-            this.throwables.push(new ThrowableObject(this, this.hCanvas));
-            this.world.level.thrownAmmo.push(this.throwables.shift());
-            this.world.level.thrownAmmo[this.world.level.thrownAmmo.length - 1].throw(
-                this.x + this.w / 2,
-                this.y + this.h / 2,
-                this.isRunning() ? this.speedX : 0,
-                this.reverseDirection
-            );
+        if (
+            false === this.isAttackingAtr &&
+            this.throwables.length > 0 &&
+            false == this.world.level.boss.isSpawning &&
+            new Date().getTime() - this.lastAttack > 1000
+        ) {
+            this.lastAttack = new Date().getTime();
+            this.throw();
             this.isAttackingAtr = true;
         }
+    }
+
+    throw() {
+        this.world.level.thrownAmmo.push(this.throwables.shift());
+        this.world.level.thrownAmmo[this.world.level.thrownAmmo.length - 1].throw(
+            this.x + this.w / 2,
+            this.y + this.h / 2,
+            this.isRunning() ? this.speedX : 0,
+            this.reverseDirection
+        );
     }
 
     stopAttacking() {
