@@ -21,7 +21,6 @@ export class World {
         this.level.hero.world = this;
         Cloud.world = this;
         this.setStatusBarHero();
-        this.setStatusBarBoss();
         this.draw();
         this.checkCollisions();
     }
