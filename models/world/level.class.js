@@ -29,7 +29,6 @@ export class Level {
         this.backgrounds = backgrounds;
         Level.START = -1 * World.BG_WIDTH;
         Level.END = (World.BG_WIDTH * (backgrounds.length - bgsPerLayer)) / bgsPerLayer;
-
         this.placeObjects();
         this.cleanAmmo();
         this.cleanEnemies();

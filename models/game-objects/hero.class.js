@@ -170,7 +170,8 @@ export class Hero extends MovableObject {
     resolveSpawnpoint() {
         if (
             false === this.world.level.boss.hasSpawned &&
-            this.x > this.world.level.boss.xStart - Level.wCanvas + this.cameraOffset
+            this.x >=
+                Level.END - Level.wCanvas + this.cameraOffset - Math.ceil((this.speedX * Level.wCanvas) / 1000)
         ) {
             this.world.setStatusBarBoss();
             this.world.level.boss.spawn();
@@ -328,18 +329,19 @@ export class Hero extends MovableObject {
         if (this.world.level.boss.hasSpawned) {
             return this.x < this.world.level.boss.xStart - this.w;
         } else {
-            return this.x < Level.END - Level.wCanvas + this.cameraOffset - this.speedX;
+            return (
+                this.x < Level.END - Level.wCanvas + this.cameraOffset
+            );
         }
     }
     // #endregion conditions
 
     followCameraRight() {
         const distanceToLeftStartingBorder = -this.x + this.cameraOffset;
-
         this.easeRightOut = Math.max(this.easeRightOut - 0.2, 1);
         // fix camera slowly to bossfight area, or follow character
         this.world.cameraX = this.world.level.boss.hasSpawned
-            ? Math.min(this.world.cameraX + 0.1, -1 * (this.world.level.boss.xStart - Level.wCanvas))
+            ? Math.max(this.world.cameraX - 0.1, -1 * (this.world.level.boss.xStart - Level.wCanvas - 5))
             : Math.max(this.world.cameraX - this.easeRightOut * this.speedX - 10, distanceToLeftStartingBorder);
     }
 
@@ -348,7 +350,7 @@ export class Hero extends MovableObject {
         this.easeLeftOut = Math.max(this.easeLeftOut - 0.2, 1);
         // fix camera slowly to bossfight area, or follow character
         this.world.cameraX = this.world.level.boss.hasSpawned
-            ? Math.min(this.world.cameraX + 0.1, -1 * (this.world.level.boss.xStart - Level.wCanvas))
+            ? Math.max(this.world.cameraX - 0.1, -1 * (this.world.level.boss.xStart - Level.wCanvas - 5))
             : Math.min(this.world.cameraX + this.easeLeftOut * this.speedX + 10, distanceToRightStartingBorder);
     }
 }
