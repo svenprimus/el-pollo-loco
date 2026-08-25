@@ -71,7 +71,7 @@ export class Hatchling extends Enemy {
             this.speedX = 4 + this.speedFlee;
             this.restartAnimate(ImageLib.ENEMY.mob_2.walk, this.speedX * 5);
             TimingHub.setTimeout(() => {
-                this.speedX = Math.random() * 2 + this.speedFlee;
+                this.speedX = Math.random() * 3 + this.speedFlee;
                 this.restartAnimate(ImageLib.ENEMY.mob_2.walk, this.speedX * 5);
             }, 750);
         }
