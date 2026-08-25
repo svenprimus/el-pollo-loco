@@ -14,15 +14,10 @@ export class ThrowableObject extends MovableObject {
         super(hCanvas).loadImage(ImageLib.AMMO.midair.imgs[0]);
         this.hero = hero;
         this.loadImagesToCache();
-        this.setSize();
+        this.setSizeByHeight(6, ImageLib.AMMO.midair.wNatural, ImageLib.AMMO.midair.hNatural);
         this.setOffset(ImageLib.AMMO.midair.offset, ImageLib.AMMO.midair.wNatural, ImageLib.AMMO.midair.hNatural);
         this.applyGravity();
         this.animate(ImageLib.AMMO.midair.imgs);
-    }
-
-    setSize() {
-        this.h = this.hCanvas / 6;
-        this.w = ImageLib.AMMO.midair.wNatural / (ImageLib.AMMO.midair.hNatural / this.h);
     }
 
     loadImagesToCache() {

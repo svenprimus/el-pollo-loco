@@ -6,9 +6,8 @@ export class StatusBar extends DrawableObject {
     constructor(wCanvas, hCanvas, movableObject, y, isBoss) {
         super(hCanvas).loadImage(isBoss ? ImageLib.STATUSBAR.boss.imgs[5] : ImageLib.STATUSBAR.hp.imgs[5]);
         this.y = y;
-        this.w = hCanvas / 3;
+        this.setSizeByWidth(3, ImageLib.STATUSBAR.hp.wNatural, ImageLib.STATUSBAR.hp.hNatural);
         this.x = isBoss ? wCanvas - y - this.w : y;
-        this.h = ImageLib.STATUSBAR.hp.hNatural / (ImageLib.STATUSBAR.hp.wNatural / this.w);
         this.isBoss = isBoss;
         this.reverseDirection = isBoss;
         this.loadImagesToCache();

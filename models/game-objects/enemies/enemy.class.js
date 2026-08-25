@@ -11,15 +11,6 @@ export class Enemy extends MovableObject {
         super(hCanvas);
     }
 
-    setSize(hDivider, wNatural, hNatural) {
-        this.h = this.hCanvas / hDivider;
-        this.w = wNatural / (hNatural / this.h);
-    }
-
-    setSpeed(factor) {
-        this.speedX = Math.random() * factor;
-    }
-
     isDeadBySalsa() {
         return this.diedBySalsa;
     }

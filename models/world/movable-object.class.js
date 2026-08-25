@@ -107,8 +107,8 @@ export class MovableObject extends DrawableObject {
             (this.animateFreq !== frequency && TimingHub.isIntervalSet(this.idAnimate)) ||
             this.img !== this.imgCache[images[this.imgCurrent]]
         ) {
-            this.playSingleImage(images, 0);
-            this.restartAnimateUntil(images, frequency, null, indexEnd);
+            this.playSingleImage(images, idFirst);
+            this.restartAnimateUntil(images, frequency, fn, indexEnd);
         }
     }
 
@@ -284,6 +284,10 @@ export class MovableObject extends DrawableObject {
         this.offset.bottom = (offset.bottom * this.h) / hNatural;
         this.offset.right = (offset.right * this.w) / wNatural;
         this.offset.left = (offset.left * this.w) / wNatural;
+    }
+
+    setSpeed(factor) {
+        this.speedX = Math.random() * factor;
     }
 
     drawRealFrame(ctx) {
