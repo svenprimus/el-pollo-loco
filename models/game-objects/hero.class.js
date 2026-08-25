@@ -28,7 +28,7 @@ export class Hero extends MovableObject {
     animations = [
         {
             condition: () => this.isDead(),
-            animation: () => this.setOneAnimation(ImageLib.HERO.dead, 5, ImageLib.HERO.dead.length - 1),
+            animation: () => this.setAnimation(ImageLib.HERO.dead, 5, ImageLib.HERO.dead.length - 1),
         },
         {
             condition: () => this.isAttacking(),
@@ -175,14 +175,9 @@ export class Hero extends MovableObject {
      * @param {array} images
      * @param {number} frequency
      */
-    setAnimation(images, frequency) {
+    setAnimation(images, frequency, indexEnd = null) {
         this.startIdleTime = 0;
-        this.restartAnimateIfChangedFrequency(images, 0, frequency);
-    }
-
-    setOneAnimation(images, frequency, indexEnd) {
-        this.startIdleTime = 0;
-        this.restartOneAnimateIfChangedFrequency(images, 0, frequency, null, indexEnd);
+        this.restartAnimateIfChangedFrequency(images, 0, frequency, null, indexEnd);
     }
 
     /**

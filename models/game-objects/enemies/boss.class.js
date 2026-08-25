@@ -20,7 +20,7 @@ export class Boss extends Enemy {
     animations = [
         {
             condition: () => this.isDead(),
-            animation: () => this.setOneAnimation(ImageLib.ENEMY.boss_1.dead, 6, ImageLib.ENEMY.boss_1.dead.length - 1),
+            animation: () => this.setAnimation(ImageLib.ENEMY.boss_1.dead, 6, ImageLib.ENEMY.boss_1.dead.length - 1),
         },
         {
             condition: () => this.isAttacking(),
@@ -154,12 +154,8 @@ export class Boss extends Enemy {
      * @param {array} images
      * @param {number} frequency
      */
-    setAnimation(images, frequency) {
-        this.restartAnimateIfChangedFrequency(images, 0, frequency);
-    }
-
-    setOneAnimation(images, frequency, indexEnd) {
-        this.restartOneAnimateIfChangedFrequency(images, 0, frequency, null, indexEnd);
+    setAnimation(images, frequency, indexEnd = null) {
+        this.restartAnimateIfChangedFrequency(images, 0, frequency, null, indexEnd);
     }
 
     loadImagesToCache() {

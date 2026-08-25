@@ -33,12 +33,14 @@ export class MovableObject extends DrawableObject {
     /**
      * Start animation of current animation sequence given by images-attribute.
      */
-    animate(images, frequency = 10, fn = null) {
+    animate(images, frequency = 10, fn = null, indexEnd = null) {
         this.animateFreq = frequency;
         this.idAnimate = TimingHub.setInterval(
             () => {
                 if (fn !== null) {
                     fn();
+                } else if (indexEnd !== null) {
+                    this.playAnimationUntil(images, indexEnd);
                 } else {
                     this.playAnimation(images);
                 }
@@ -48,30 +50,9 @@ export class MovableObject extends DrawableObject {
         );
     }
 
-    animateUntil(images, frequency = 10, fn = null, indexEnd) {
-        this.animateFreq = frequency;
-        this.idAnimate = TimingHub.setInterval(
-            () => {
-                if (fn !== null) {
-                    fn();
-                } else {
-                    this.playAnimationUntil(images, indexEnd);
-                }
-            },
-            1000 / frequency,
-            this
-        );
-    }
-
-    restartAnimate(images, frequency = 10, fn = null) {
+    restartAnimate(images, frequency = 10, fn = null, indexEnd = null) {
         if (TimingHub.stopInterval(this.idAnimate)) {
-            this.animate(images, frequency, fn);
-        }
-    }
-
-    restartAnimateUntil(images, frequency = 10, fn = null, indexEnd) {
-        if (TimingHub.stopInterval(this.idAnimate)) {
-            this.animateUntil(images, frequency, fn, indexEnd);
+            this.animate(images, frequency, fn, indexEnd);
         }
     }
 
@@ -92,23 +73,13 @@ export class MovableObject extends DrawableObject {
      * @param {number} frequency
      * @param {function} fn
      */
-    restartAnimateIfChangedFrequency(images, idFirst, frequency = 10, fn = null) {
+    restartAnimateIfChangedFrequency(images, idFirst, frequency = 10, fn = null, indexEnd = null) {
         if (
             (this.animateFreq !== frequency && TimingHub.isIntervalSet(this.idAnimate)) ||
             this.img !== this.imgCache[images[this.imgCurrent]]
         ) {
             this.playSingleImage(images, idFirst);
-            this.restartAnimate(images, frequency, fn);
-        }
-    }
-
-    restartOneAnimateIfChangedFrequency(images, idFirst, frequency = 10, fn = null, indexEnd) {
-        if (
-            (this.animateFreq !== frequency && TimingHub.isIntervalSet(this.idAnimate)) ||
-            this.img !== this.imgCache[images[this.imgCurrent]]
-        ) {
-            this.playSingleImage(images, idFirst);
-            this.restartAnimateUntil(images, frequency, fn, indexEnd);
+            this.restartAnimate(images, frequency, fn, indexEnd);
         }
     }
 
