@@ -62,6 +62,7 @@ export class World {
         // moving objects
         this.ctx.translate(this.cameraX, 0);
         this.addToMap(this.level.backgrounds);
+        this.addToMap(this.level.startLimiter);
         this.addToMap(this.level.hero);
         this.addToMap(this.level.collectables);
         this.addToMap(this.level.enemies);

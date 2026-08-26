@@ -7,6 +7,7 @@ import { Chicken } from '../models/game-objects/enemies/chicken.class.js';
 import { Hatchling } from '../models/game-objects/enemies/hatchling.class.js';
 import { Cloud } from '../models/game-objects/cloud.class.js';
 import { Background } from '../models/game-objects/background.class.js';
+import { StartLimiter } from '../models/game-objects/start-limiter.class.js';
 import { ImageLib } from '../models/utility/image-lib.class.js';
 
 export function createLevel_1(wCanvas, hCanvas) {
@@ -141,6 +142,7 @@ export function createLevel_1(wCanvas, hCanvas) {
             new Background(ImageLib.BG.layer_3[0], hCanvas),
             new Background(ImageLib.BG.layer_2[0], hCanvas),
             new Background(ImageLib.BG.layer_1[0], hCanvas),
-        ]
+        ], 
+        new StartLimiter(hCanvas),
     );
 }

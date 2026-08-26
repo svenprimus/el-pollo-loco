@@ -35,6 +35,8 @@ export class Hero extends MovableObject {
     lastAttack = 0;
     lastBottledUp = 0;
 
+    startLimit = 0;
+
     animations = [
         {
             condition: () => this.isDead(),
@@ -89,18 +91,7 @@ export class Hero extends MovableObject {
         this.x = wCanvas / 8;
         this.cameraOffset = this.x;
         this.setOffset(ImageLib.HERO.offset, ImageLib.HERO.wNatural, ImageLib.HERO.hNatural);
-    }
-
-    loadImagesToCache() {
-        this.loadImages(ImageLib.HERO.idle);
-        this.loadImages(ImageLib.HERO.idleLong);
-        this.loadImages(ImageLib.HERO.walk);
-        this.loadImages(ImageLib.HERO.jump);
-        this.loadImages(ImageLib.HERO.hurt);
-        this.loadImages(ImageLib.HERO.dead);
-        this.loadImages(ImageLib.HERO.drink);
-        this.loadImages(ImageLib.HERO.attack);
-        this.loadImages(ImageLib.HERO.collected);
+        this.startLimit = Level.START + (Level.wCanvas - this.w - this.cameraOffset + this.getSpeedInPixel() + 1);
     }
 
     // #region resolve
@@ -324,7 +315,7 @@ export class Hero extends MovableObject {
         if (this.world.level.boss.hasSpawned) {
             return this.x > this.world.level.boss.xStart - Level.wCanvas;
         } else {
-            return this.x > Level.START + (Level.wCanvas - this.w - this.cameraOffset + this.speedX + 1);
+            return this.x > this.startLimit;
         }
     }
 
@@ -338,20 +329,32 @@ export class Hero extends MovableObject {
     // #endregion conditions
 
     followCameraRight() {
-        const distanceToLeftStartingBorder = -this.x + this.cameraOffset;
+        const pxToLeftBorder = -this.x + this.cameraOffset;
         this.cameraEaseRight = Math.max(this.cameraEaseRight - 0.2, 1);
         // fix camera slowly to bossfight area, or follow character
         this.world.cameraX = this.world.level.boss.hasSpawned
             ? Math.max(this.world.cameraX - 0.1, -1 * (this.world.level.boss.xStart - Level.wCanvas - 5))
-            : Math.max(this.world.cameraX - this.cameraEaseRight * this.speedX - 10, distanceToLeftStartingBorder);
+            : Math.max(this.world.cameraX - this.cameraEaseRight * this.getSpeedInPixel() - 10, pxToLeftBorder);
     }
 
     followCameraLeft() {
-        const distanceToRightStartingBorder = -this.x + Level.wCanvas - this.w - this.cameraOffset;
+        const pxToRightBorder = -this.x + Level.wCanvas - this.w - this.cameraOffset;
         this.cameraEaseLeft = Math.max(this.cameraEaseLeft - 0.2, 1);
         // fix camera slowly to bossfight area, or follow character
         this.world.cameraX = this.world.level.boss.hasSpawned
             ? Math.max(this.world.cameraX - 0.1, -1 * (this.world.level.boss.xStart - Level.wCanvas - 5))
-            : Math.min(this.world.cameraX + this.cameraEaseLeft * this.speedX + 10, distanceToRightStartingBorder);
+            : Math.min(this.world.cameraX + this.cameraEaseLeft * this.getSpeedInPixel() + 10, pxToRightBorder);
+    }
+
+    loadImagesToCache() {
+        this.loadImages(ImageLib.HERO.idle);
+        this.loadImages(ImageLib.HERO.idleLong);
+        this.loadImages(ImageLib.HERO.walk);
+        this.loadImages(ImageLib.HERO.jump);
+        this.loadImages(ImageLib.HERO.hurt);
+        this.loadImages(ImageLib.HERO.dead);
+        this.loadImages(ImageLib.HERO.drink);
+        this.loadImages(ImageLib.HERO.attack);
+        this.loadImages(ImageLib.HERO.collected);
     }
 }
