@@ -12,6 +12,7 @@ export class Game {
         Game.world = new World(canvas);
         Game.world.draw();
         window.world = Game.world; // TODO: remove - only for debugging
+        window.timing = TimingHub.intervalIds; // TODO: remove - only for debugging
     }
 
     static pause() {

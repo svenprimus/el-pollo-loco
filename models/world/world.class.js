@@ -21,7 +21,6 @@ export class World {
         this.level.hero.world = this;
         Cloud.world = this;
         this.setStatusBarHero();
-        this.setStatusBarBoss();
         this.draw();
         this.checkCollisions();
     }
@@ -30,6 +29,7 @@ export class World {
         TimingHub.setInterval(() => {
             this.checkCollisionWithMobs();
             this.checkCollisionWithBoss();
+            this.checkCollisionWithCollectables();
         }, 50);
     }
 
@@ -51,12 +51,20 @@ export class World {
         }
     }
 
+    checkCollisionWithCollectables() {
+        this.level.collectables.forEach((collectable) => {
+            this.level.hero.resolveCollision(collectable);
+        });
+    }
+
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         // moving objects
         this.ctx.translate(this.cameraX, 0);
         this.addToMap(this.level.backgrounds);
+        this.addToMap(this.level.startLimiter);
         this.addToMap(this.level.hero);
+        this.addToMap(this.level.collectables);
         this.addToMap(this.level.enemies);
         this.addToMap(this.level.boss);
         this.addToMap(this.level.thrownAmmo);
@@ -96,7 +104,7 @@ export class World {
 
         drawble.draw(this.ctx);
         drawble.drawFrame(this.ctx);
-        
+
         if (drawble instanceof MovableObject) {
             drawble.drawRealFrame(this.ctx);
         }

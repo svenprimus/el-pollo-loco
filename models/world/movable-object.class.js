@@ -7,6 +7,8 @@ export class MovableObject extends DrawableObject {
     speedX = 0.15;
     speedY = 0;
     acceleration = 0.5;
+    isGravityAllowed = true;
+
     died = false;
     jumpCount = 0;
     extraJumpAvailable = false;
@@ -14,6 +16,7 @@ export class MovableObject extends DrawableObject {
     hpMax;
     atk;
     ground = 0;
+    idGravity;
     idAnimate;
     lastAnimateFreq = 0;
     lastHit = 0;
@@ -92,9 +95,10 @@ export class MovableObject extends DrawableObject {
      * Change vertical position by speedX and acceleration. The speedX gets reduced by acceleration.
      */
     applyGravity() {
-        TimingHub.setInterval(
+        // TODO: throwable still does not clean all intervals (more?)
+        this.idGravity = TimingHub.setInterval(
             () => {
-                if ((this.isJumping() || this.isDead() || this.isJumpStarted()) && this.isAboveCanvasBottom()) {
+                if (this.isGravityApplicable()) {
                     this.y = this.isDead()
                         ? this.y - (this.speedY * Level.hCanvas) / 100
                         : Math.min(this.y - (this.speedY * Level.hCanvas) / 100, this.ground - this.h);
@@ -106,7 +110,22 @@ export class MovableObject extends DrawableObject {
         );
     }
 
-    fallOut() {
+    stopGravity(timeout = 0) {
+        const idTimeout = TimingHub.setTimeout(() => {
+            TimingHub.stopInterval(this.idGravity);
+            TimingHub.clearTimeout(idTimeout);
+        }, timeout);
+    }
+
+    isGravityApplicable() {
+        return (
+            (this.isJumping() || this.isDead() || this.isJumpStarted()) &&
+            this.isAboveCanvasBottom() &&
+            this.isGravityAllowed
+        );
+    }
+
+    hop() {
         if (false === this.died) {
             this.died = true;
             this.speedY = 4;
@@ -117,14 +136,18 @@ export class MovableObject extends DrawableObject {
      * Adds 'speedX' by percentage to canvas to x position.
      */
     moveRight() {
-        this.x += (Level.wCanvas * this.speedX) / 1000;
+        this.x += this.getSpeedInPixel();
     }
 
     /**
      * Reduce 'speedX' by percentage to canvas from x position.
      */
     moveLeft() {
-        this.x -= (Level.wCanvas * this.speedX) / 1000;
+        this.x -= this.getSpeedInPixel();
+    }
+
+    getSpeedInPixel() {
+        return (Level.wCanvas * this.speedX) / 1000;
     }
 
     /**

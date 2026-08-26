@@ -50,7 +50,7 @@ export class Boss extends Enemy {
     }
 
     place(wCanvas) {
-        this.x = Level.END - wCanvas;
+        this.x = Level.END;
         this.y = this.ground - this.h + 10;
         this.xStart = this.x;
         this.setOffset(ImageLib.ENEMY.boss_1.offset, ImageLib.ENEMY.boss_1.wNatural, ImageLib.ENEMY.boss_1.hNatural);
@@ -70,7 +70,7 @@ export class Boss extends Enemy {
     statusHandler() {
         if (this.hasSpawned) {
             if (this.isDead()) {
-                this.fallOut();
+                this.hop();
                 if (false === this.isAboveCanvasBottom()) {
                     TimingHub.stopInterval(this.idAnimate);
                 }
