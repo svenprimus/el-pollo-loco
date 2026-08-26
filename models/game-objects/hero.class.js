@@ -5,7 +5,7 @@ import { Game } from '../utility/game.class.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 import { Controls } from '../utility/controls.class.js';
 import { ThrowableObject } from './throwable-object.class.js';
-import { Collectable } from './collectable.class.js';
+import { Collectable } from './collectables/collectable.class.js';
 import { Enemy } from './enemies/enemy.class.js';
 
 export class Hero extends MovableObject {
