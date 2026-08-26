@@ -1,5 +1,6 @@
 import { Collectable } from './collectable.class.js';
 import { ImageLib } from '../../utility/image-lib.class.js';
+import { ThrowableObject } from '../throwable-object.class.js';
 
 export class Bottle extends Collectable {
     constructor(hCanvas) {
@@ -17,6 +18,12 @@ export class Bottle extends Collectable {
             ImageLib.AMMO.collectable.wNatural,
             ImageLib.AMMO.collectable.hNatural
         );
+    }
+
+    collect(hero) {
+        this.collected = true;
+        hero.throwables.push(new ThrowableObject(hero, hero.hCanvas));
+        hero.lastBottledUp = new Date().getTime();
     }
 
     loadImagesToCache() {

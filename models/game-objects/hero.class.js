@@ -6,27 +6,34 @@ import { TimingHub } from '../utility/timing-hub.class.js';
 import { Controls } from '../utility/controls.class.js';
 import { ThrowableObject } from './throwable-object.class.js';
 import { Collectable } from './collectables/collectable.class.js';
+import { Bottle } from './collectables/bottle.class.js';
+import { Coin } from './collectables/coin.class.js';
 import { Enemy } from './enemies/enemy.class.js';
 
 export class Hero extends MovableObject {
     world;
     statusBar;
-    startIdleTime = 0;
-    startDrinkTime = 0;
-    cameraOffset = 0;
+    throwables = [];
+    coins = 0;
+
     speedX = 15;
     hp = 100;
     hpMax = 100;
     atk = 50;
     atkJump = 25;
+
     isAttackingAtr = false;
     isDrinkingAtr = false;
     isRunningAtr = false;
-    throwables = [];
-    easeLeftOut = 3;
-    easeRightOut = 3;
+
+    cameraOffset = 0;
+    cameraEaseLeft = 3;
+    cameraEaseRight = 3;
+
+    lastIdleTime = 0;
+    lastDrinkTime = 0;
     lastAttack = 0;
-    lastCollected = 0;
+    lastBottledUp = 0;
 
     animations = [
         {
@@ -115,7 +122,7 @@ export class Hero extends MovableObject {
             this.resolveDrinking();
             this.resolveRunning();
         } else {
-            this.fallOut();
+            this.hop();
         }
     }
 
@@ -170,8 +177,7 @@ export class Hero extends MovableObject {
     resolveSpawnpoint() {
         if (
             false === this.world.level.boss.hasSpawned &&
-            this.x >=
-                Level.END - Level.wCanvas + this.cameraOffset - Math.ceil((this.speedX * Level.wCanvas) / 1000)
+            this.x >= Level.END - Level.wCanvas + this.cameraOffset - Math.ceil((this.speedX * Level.wCanvas) / 1000)
         ) {
             this.world.setStatusBarBoss();
             this.world.level.boss.spawn();
@@ -189,7 +195,7 @@ export class Hero extends MovableObject {
      * @param {number} frequency
      */
     setAnimation(images, frequency, indexEnd = null) {
-        this.startIdleTime = 0;
+        this.lastIdleTime = 0;
         this.restartAnimateIfChangedFrequency(images, 0, frequency, null, indexEnd);
     }
 
@@ -207,7 +213,7 @@ export class Hero extends MovableObject {
     runLeft() {
         this.isRunningAtr = true;
         this.reverseDirection = true;
-        this.easeRightOut = 3;
+        this.cameraEaseRight = 3;
         if (this.isAfterStart() && false === this.world.level.boss.isSpawning) {
             super.moveLeft();
             this.followCameraLeft();
@@ -217,7 +223,7 @@ export class Hero extends MovableObject {
     runRight() {
         this.isRunningAtr = true;
         this.reverseDirection = false;
-        this.easeLeftOut = 3;
+        this.cameraEaseLeft = 3;
         if (this.isBeforeEnd() && false === this.world.level.boss.isSpawning) {
             this.resolveSpawnpoint();
             if (false === this.world.level.boss.isSpawning) {
@@ -245,12 +251,9 @@ export class Hero extends MovableObject {
     }
 
     collect(othr) {
-        if (othr instanceof Collectable) {
-            this.throwables.push(new ThrowableObject(this, this.hCanvas));
-            othr.collected = true;
-            this.lastCollected = new Date().getTime();
+        if (othr instanceof Bottle || othr instanceof Coin) {
+            othr.collect(this);
         }
-        // TODO: instance of bottle or coin
     }
 
     throw() {
@@ -274,13 +277,13 @@ export class Hero extends MovableObject {
     }
 
     drink() {
-        if (this.startDrinkTime === 0) {
-            this.startDrinkTime = new Date().getTime();
+        if (this.lastDrinkTime === 0) {
+            this.lastDrinkTime = new Date().getTime();
         }
         const timeNow = new Date().getTime();
-        if (timeNow - this.startDrinkTime > 1000) {
+        if (timeNow - this.lastDrinkTime > 1000) {
             this.hp = Math.min(this.hp + 10, this.hpMax);
-            this.startDrinkTime = 0;
+            this.lastDrinkTime = 0;
             this.statusBar.setPercentage((100 * this.hp) / this.hpMax);
         }
         this.isDrinkingAtr = true;
@@ -288,7 +291,7 @@ export class Hero extends MovableObject {
 
     stopDrinking() {
         this.isDrinkingAtr = false;
-        this.startDrinkTime = 0;
+        this.lastDrinkTime = 0;
     }
     // #endregion actions
 
@@ -306,15 +309,15 @@ export class Hero extends MovableObject {
     }
 
     isCollecting() {
-        return new Date().getTime() - this.lastCollected < 500;
+        return new Date().getTime() - this.lastBottledUp < 500;
     }
 
     isIdleLong() {
-        if (this.startIdleTime === 0) {
-            this.startIdleTime = new Date().getTime();
+        if (this.lastIdleTime === 0) {
+            this.lastIdleTime = new Date().getTime();
         }
         const timeNow = new Date().getTime();
-        return timeNow - this.startIdleTime > 10000;
+        return timeNow - this.lastIdleTime > 10000;
     }
 
     isAfterStart() {
@@ -329,28 +332,26 @@ export class Hero extends MovableObject {
         if (this.world.level.boss.hasSpawned) {
             return this.x < this.world.level.boss.xStart - this.w;
         } else {
-            return (
-                this.x < Level.END - Level.wCanvas + this.cameraOffset
-            );
+            return this.x < Level.END - Level.wCanvas + this.cameraOffset;
         }
     }
     // #endregion conditions
 
     followCameraRight() {
         const distanceToLeftStartingBorder = -this.x + this.cameraOffset;
-        this.easeRightOut = Math.max(this.easeRightOut - 0.2, 1);
+        this.cameraEaseRight = Math.max(this.cameraEaseRight - 0.2, 1);
         // fix camera slowly to bossfight area, or follow character
         this.world.cameraX = this.world.level.boss.hasSpawned
             ? Math.max(this.world.cameraX - 0.1, -1 * (this.world.level.boss.xStart - Level.wCanvas - 5))
-            : Math.max(this.world.cameraX - this.easeRightOut * this.speedX - 10, distanceToLeftStartingBorder);
+            : Math.max(this.world.cameraX - this.cameraEaseRight * this.speedX - 10, distanceToLeftStartingBorder);
     }
 
     followCameraLeft() {
         const distanceToRightStartingBorder = -this.x + Level.wCanvas - this.w - this.cameraOffset;
-        this.easeLeftOut = Math.max(this.easeLeftOut - 0.2, 1);
+        this.cameraEaseLeft = Math.max(this.cameraEaseLeft - 0.2, 1);
         // fix camera slowly to bossfight area, or follow character
         this.world.cameraX = this.world.level.boss.hasSpawned
             ? Math.max(this.world.cameraX - 0.1, -1 * (this.world.level.boss.xStart - Level.wCanvas - 5))
-            : Math.min(this.world.cameraX + this.easeLeftOut * this.speedX + 10, distanceToRightStartingBorder);
+            : Math.min(this.world.cameraX + this.cameraEaseLeft * this.speedX + 10, distanceToRightStartingBorder);
     }
 }

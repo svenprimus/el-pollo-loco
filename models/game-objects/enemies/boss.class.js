@@ -70,7 +70,7 @@ export class Boss extends Enemy {
     statusHandler() {
         if (this.hasSpawned) {
             if (this.isDead()) {
-                this.fallOut();
+                this.hop();
                 if (false === this.isAboveCanvasBottom()) {
                     TimingHub.stopInterval(this.idAnimate);
                 }

@@ -59,7 +59,8 @@ export class Hatchling extends Enemy {
         if (this.isDead() || this.x + this.w < Level.START) {
             TimingHub.stopInterval(this.idAnimate);
             TimingHub.stopInterval(this.idHandler);
-            this.fallOut();
+            this.stopGravity(1500);
+            this.hop();
         } else {
             this.randomFury();
         }

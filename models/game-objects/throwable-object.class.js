@@ -52,8 +52,9 @@ export class ThrowableObject extends MovableObject {
             this.restartAnimateIfChangedFrequency(ImageLib.AMMO.impact.imgs, 0, 2 * ImageLib.AMMO.impact.imgs.length);
             TimingHub.setTimeout(() => {
                 TimingHub.stopInterval(idInterval);
+                TimingHub.stopInterval(this.idGravity);
                 this.isFinished = true;
-            }, 1000 / ImageLib.AMMO.impact.imgs.length);
+            }, 400);
         }
     }
 

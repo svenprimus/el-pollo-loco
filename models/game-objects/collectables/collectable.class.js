@@ -1,11 +1,14 @@
+import { TimingHub } from '../../utility/timing-hub.class.js';
 import { MovableObject } from '../../world/movable-object.class.js';
 import { World } from '../../world/world.class.js';
 import { Level } from '../../world/level.class.js';
 
 export class Collectable extends MovableObject {
     static spread = 0;
+    hp = 1;
     hpMax = 1;
     collected = false;
+    isCollecting = false;
 
     constructor(hCanvas) {
         super(hCanvas);
@@ -15,6 +18,16 @@ export class Collectable extends MovableObject {
     place() {
         this.x = this.getDefaultX(this.getSection());
         this.y = this.getDefaultY() - Math.random() * 20;
+    }
+
+    collect(animation, frequency, timeout = 1000) {
+        if (false === this.isCollecting) {
+            this.isCollecting = true;
+            this.restartAnimateIfChangedFrequency(animation, 0, frequency);
+            TimingHub.setTimeout(() => {
+                this.collected = true;
+            }, timeout);
+        }
     }
 
     hasFinished() {

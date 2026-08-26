@@ -26,6 +26,8 @@ export class Coin extends Collectable {
         this.loadImagesToCache();
         this.setSizeByHeight(8, ImageLib.COIN.wNatural, ImageLib.COIN.hNatural);
         this.animate(ImageLib.COIN.rotate, Math.round(4 + Math.random() * 4));
+        this.isGravityAllowed = false;
+        this.applyGravity();
     }
 
     place() {
@@ -69,6 +71,16 @@ export class Coin extends Collectable {
             Coin.bowReverse = Math.round(Math.random()) === 0 ? 1 : -1;
         }
         this.snapshotBow();
+    }
+
+    collect(hero) {
+        if (false === this.isCollecting) {
+            super.collect(ImageLib.COIN.rotate, 40, 1500);
+            hero.coins++;
+            this.hop();
+            this.isGravityAllowed = true;
+            this.stopGravity(1500);
+        }
     }
 
     snapshotWall() {
