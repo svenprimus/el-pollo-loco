@@ -1,4 +1,5 @@
 import { StatusBar } from '../game-objects/status-bar.class.js';
+import { StatusCoins, StatusBottles } from '../game-objects/status-collectables.class.js';
 import { Background } from '../game-objects/background.class.js';
 import { Cloud } from '../game-objects/cloud.class.js';
 import { createLevel_1 } from '../../levels/level-1.js';
@@ -71,6 +72,8 @@ export class World {
         this.addToMap(this.level.clouds);
         this.ctx.translate(-this.cameraX, 0);
         // fixed objects
+        this.addToMap(this.level.hero.statusCoins);
+        this.addToMap(this.level.hero.statusBottles);
         this.addToMap(this.level.hero.statusBar);
         this.addToMap(this.level.boss.statusBar);
 
@@ -139,6 +142,8 @@ export class World {
     setStatusBarHero() {
         const pos = this.canvas.height * 0.05;
         this.level.hero.statusBar = new StatusBar(this.canvas.width, canvas.height, this.level.hero, pos, false);
+        this.level.hero.statusCoins = new StatusCoins(this.canvas.height, this.level.hero.statusBar);
+        this.level.hero.statusBottles = new StatusBottles(this.canvas.height, this.level.hero.statusBar);
     }
 
     setStatusBarBoss() {

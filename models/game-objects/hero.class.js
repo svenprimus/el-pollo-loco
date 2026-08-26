@@ -13,8 +13,10 @@ import { Enemy } from './enemies/enemy.class.js';
 export class Hero extends MovableObject {
     world;
     statusBar;
-    throwables = [];
+    statusCoins;
+    statusBottles;
     coins = 0;
+    throwables = [];
 
     speedX = 15;
     hp = 100;
