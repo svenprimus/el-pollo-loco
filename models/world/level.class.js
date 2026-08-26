@@ -64,6 +64,7 @@ export class Level {
             () => {
                 for (let i = objectArray.length - 1; i >= 0; i--) {
                     if (objectArray[i].hasFinished()) {
+                        TimingHub.stopInterval(objectArray[i].idAnimate);
                         objectArray.splice(i, 1);
                     }
                 }
