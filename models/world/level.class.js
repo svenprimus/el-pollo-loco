@@ -14,9 +14,22 @@ export class Level {
     clouds = [];
     bgsPerLayer = 0;
     backgrounds = [];
+    startLimiter;
     thrownAmmo = [];
 
-    constructor(wCanvas, hCanvas, hero, boss, enemies, collectables, cloudsPerLayer, clouds, bgsPerLayer, backgrounds) {
+    constructor(
+        wCanvas,
+        hCanvas,
+        hero,
+        boss,
+        enemies,
+        collectables,
+        cloudsPerLayer,
+        clouds,
+        bgsPerLayer,
+        backgrounds,
+        startLimiter
+    ) {
         Level.wCanvas = wCanvas;
         Level.hCanvas = hCanvas;
         this.hero = hero;
@@ -27,12 +40,11 @@ export class Level {
         this.cloudsPerLayer = cloudsPerLayer;
         this.bgsPerLayer = bgsPerLayer;
         this.backgrounds = backgrounds;
+        this.startLimiter = startLimiter;
         Level.START = -1 * World.BG_WIDTH;
         Level.END = (World.BG_WIDTH * (backgrounds.length - bgsPerLayer)) / bgsPerLayer;
         this.placeObjects();
-        this.cleanObjects(this.thrownAmmo);
-        this.cleanObjects(this.enemies);
-        this.cleanObjects(this.collectables);
+        this.startCleaningTasks();
     }
 
     /**
@@ -53,6 +65,13 @@ export class Level {
         this.backgrounds.forEach((bg) => {
             bg.place(this.bgsPerLayer);
         });
+        this.startLimiter.place(Level.wCanvas, this.hero.startLimit);
+    }
+
+    startCleaningTasks() {
+        this.cleanObjects(this.thrownAmmo);
+        this.cleanObjects(this.enemies);
+        this.cleanObjects(this.collectables);
     }
 
     /**

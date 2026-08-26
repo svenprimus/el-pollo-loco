@@ -190,6 +190,16 @@ export class ImageLib {
             './assets/sprites/5_background/layers/4_clouds/2.png',
         ],
         air: './assets/sprites/5_background/layers/air.png',
+        stop: {
+            wNatural: 560,
+            hNatural: 560,
+            imgs: [
+                './assets/sprites/5_background/no-way/no-1.png',
+                './assets/sprites/5_background/no-way/no-2.png',
+                './assets/sprites/5_background/no-way/no-3.png',
+                './assets/sprites/5_background/no-way/no-4.png',
+            ],
+        },
     };
 
     static AMMO = {
@@ -238,7 +248,6 @@ export class ImageLib {
                 './assets/sprites/6_salsa_bottle/collectable/c-4.png',
             ],
         },
-        icon: './assets/sprites/6_salsa_bottle/salsa_bottle.png',
     };
 
     static STATUSBAR = {
