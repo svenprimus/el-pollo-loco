@@ -194,10 +194,10 @@ export class ImageLib {
             wNatural: 560,
             hNatural: 560,
             imgs: [
-                './assets/sprites/5_background/no-way/no-1.png',
-                './assets/sprites/5_background/no-way/no-2.png',
-                './assets/sprites/5_background/no-way/no-3.png',
-                './assets/sprites/5_background/no-way/no-4.png',
+                './assets/sprites/5_background/no-way/N-1.png',
+                './assets/sprites/5_background/no-way/N-2.png',
+                './assets/sprites/5_background/no-way/N-3.png',
+                './assets/sprites/5_background/no-way/N-4.png',
             ],
         },
     };

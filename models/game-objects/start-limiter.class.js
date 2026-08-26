@@ -13,7 +13,7 @@ export class StartLimiter extends MovableObject {
 
     place(hero) {
         this.x = hero.startLimit - this.w - hero.getSpeedInPixel();
-        this.y = this.ground - this.h + 15;
+        this.y = this.ground - this.h + 30;
     }
 
     loadImagesToCache() {
