@@ -65,7 +65,7 @@ export class Level {
         this.backgrounds.forEach((bg) => {
             bg.place(this.bgsPerLayer);
         });
-        this.startLimiter.place(this.hero.startLimit);
+        this.startLimiter.place(this.hero);
     }
 
     startCleaningTasks() {

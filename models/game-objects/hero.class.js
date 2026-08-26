@@ -91,7 +91,7 @@ export class Hero extends MovableObject {
         this.x = wCanvas / 8;
         this.cameraOffset = this.x;
         this.setOffset(ImageLib.HERO.offset, ImageLib.HERO.wNatural, ImageLib.HERO.hNatural);
-        this.startLimit = Level.START + (Level.wCanvas - this.w - this.cameraOffset + this.speedX + 1);
+        this.startLimit = Level.START + (Level.wCanvas - this.w - this.cameraOffset + this.getSpeedInPixel() + 1);
     }
 
     // #region resolve
@@ -329,21 +329,21 @@ export class Hero extends MovableObject {
     // #endregion conditions
 
     followCameraRight() {
-        const distanceToLeftStartingBorder = -this.x + this.cameraOffset;
+        const pxToLeftBorder = -this.x + this.cameraOffset;
         this.cameraEaseRight = Math.max(this.cameraEaseRight - 0.2, 1);
         // fix camera slowly to bossfight area, or follow character
         this.world.cameraX = this.world.level.boss.hasSpawned
             ? Math.max(this.world.cameraX - 0.1, -1 * (this.world.level.boss.xStart - Level.wCanvas - 5))
-            : Math.max(this.world.cameraX - this.cameraEaseRight * this.speedX - 10, distanceToLeftStartingBorder);
+            : Math.max(this.world.cameraX - this.cameraEaseRight * this.getSpeedInPixel() - 10, pxToLeftBorder);
     }
 
     followCameraLeft() {
-        const distanceToRightStartingBorder = -this.x + Level.wCanvas - this.w - this.cameraOffset;
+        const pxToRightBorder = -this.x + Level.wCanvas - this.w - this.cameraOffset;
         this.cameraEaseLeft = Math.max(this.cameraEaseLeft - 0.2, 1);
         // fix camera slowly to bossfight area, or follow character
         this.world.cameraX = this.world.level.boss.hasSpawned
             ? Math.max(this.world.cameraX - 0.1, -1 * (this.world.level.boss.xStart - Level.wCanvas - 5))
-            : Math.min(this.world.cameraX + this.cameraEaseLeft * this.speedX + 10, distanceToRightStartingBorder);
+            : Math.min(this.world.cameraX + this.cameraEaseLeft * this.getSpeedInPixel() + 10, pxToRightBorder);
     }
 
     loadImagesToCache() {

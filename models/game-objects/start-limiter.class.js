@@ -11,10 +11,9 @@ export class StartLimiter extends MovableObject {
         this.animate(ImageLib.BG.stop.imgs, 4);
     }
 
-    place(heroStart) {
-        this.x = heroStart - this.w;
+    place(hero) {
+        this.x = hero.startLimit - this.w - hero.getSpeedInPixel();
         this.y = this.ground - this.h + 15;
-        console.log('placed at ', this.x, this.y);
     }
 
     loadImagesToCache() {
