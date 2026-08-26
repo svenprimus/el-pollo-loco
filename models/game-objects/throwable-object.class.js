@@ -64,4 +64,8 @@ export class ThrowableObject extends MovableObject {
             this.isCollided = true;
         }
     }
+
+    hasFinished() {
+        return this.isFinished;
+    }
 }

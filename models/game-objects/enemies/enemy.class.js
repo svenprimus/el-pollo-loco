@@ -9,7 +9,7 @@ export class Enemy extends MovableObject {
     isBelow = false;
     diedBySalsa = false;
     speedFlee = 0;
-    isFinishedAtr = false;
+    isFinished = false;
     isFinalizing = false;
 
     constructor(hCanvas) {
@@ -29,15 +29,15 @@ export class Enemy extends MovableObject {
         return this.speedFlee > 0;
     }
 
-    isFinished() {
+    hasFinished() {
         if (false === this.isFinalizing) {
             if (this.isDead() || this.x + this.w < Level.START || this.isFleeing()) {
                 this.isFinalizing = true;
                 TimingHub.setTimeout(() => {
-                    this.isFinishedAtr = true;
+                    this.isFinished = true;
                 }, 10000);
             }
         }
-        return this.isFinishedAtr;
+        return this.isFinished;
     }
 }

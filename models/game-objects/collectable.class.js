@@ -33,4 +33,8 @@ export class Collectable extends MovableObject {
     loadImagesToCache() {
         this.loadImages(ImageLib.AMMO.collectable.imgs);
     }
+
+    hasFinished() {
+        return this.collected;
+    }
 }

@@ -8,12 +8,12 @@ export class Level {
     static hCanvas = 0;
     hero;
     boss;
-    enemies;
-    collectables;
+    enemies = [];
+    collectables = [];
     cloudsPerLayer = 0;
-    clouds;
+    clouds = [];
     bgsPerLayer = 0;
-    backgrounds;
+    backgrounds = [];
     thrownAmmo = [];
 
     constructor(wCanvas, hCanvas, hero, boss, enemies, collectables, cloudsPerLayer, clouds, bgsPerLayer, backgrounds) {
@@ -31,11 +31,14 @@ export class Level {
         Level.END = (World.BG_WIDTH * (backgrounds.length - bgsPerLayer)) / bgsPerLayer;
 
         this.placeObjects();
-        this.cleanAmmo();
-        this.cleanEnemies();
-        this.cleanCollectables();
+        this.cleanObjects(this.thrownAmmo);
+        this.cleanObjects(this.enemies);
+        this.cleanObjects(this.collectables);
     }
 
+    /**
+     * Place game objects onto their desired destination on the map.
+     */
     placeObjects() {
         this.hero.place(Level.wCanvas, Level.hCanvas);
         this.boss.place(Level.wCanvas, Level.hCanvas);
@@ -53,40 +56,16 @@ export class Level {
         });
     }
 
-    cleanAmmo() {
+    /**
+     * Iterates through given array and removes all elements, that return hasFinished() true.
+     * @param {array} objectArray - Object must implement a hasFinished() method
+     */
+    cleanObjects(objectArray) {
         TimingHub.setInterval(
             () => {
-                for (let i = this.thrownAmmo.length - 1; i >= 0; i--) {
-                    if (this.thrownAmmo[i].isFinished) {
-                        this.thrownAmmo.splice(i, 1);
-                    }
-                }
-            },
-            100,
-            this
-        );
-    }
-
-    cleanEnemies() {
-        TimingHub.setInterval(
-            () => {
-                for (let i = this.enemies.length - 1; i >= 0; i--) {
-                    if (this.enemies[i].isFinished()) {
-                        this.enemies.splice(i, 1);
-                    }
-                }
-            },
-            100,
-            this
-        );
-    }
-
-    cleanCollectables() {
-        TimingHub.setInterval(
-            () => {
-                for (let i = this.collectables.length - 1; i >= 0; i--) {
-                    if (this.collectables[i].collected) {
-                        this.collectables.splice(i, 1);
+                for (let i = objectArray.length - 1; i >= 0; i--) {
+                    if (objectArray[i].hasFinished()) {
+                        objectArray.splice(i, 1);
                     }
                 }
             },
