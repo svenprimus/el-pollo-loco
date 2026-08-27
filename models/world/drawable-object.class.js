@@ -51,17 +51,31 @@ export class DrawableObject {
     drawFrame(ctx) {
         if (this.hpMax > 0) {
             ctx.beginPath();
-            ctx.lineWidth = '2';
+            ctx.lineWidth = '1';
             ctx.strokeStyle = 'blue';
             ctx.rect(this.x, this.y, this.w, this.h);
             ctx.stroke();
 
+            this.drawMarker(ctx, this.x, this.y, true);
+        }
+    }
+
+    drawCustomFrame(ctx, bounds) {
+        if (this.hpMax > 0) {
             ctx.beginPath();
-            ctx.lineWidth = '2';
+            ctx.lineWidth = '1';
             ctx.strokeStyle = 'red';
-            ctx.rect(this.x, this.y, 2, 2);
+            ctx.rect(bounds.x, bounds.y, bounds.w, bounds.h);
             ctx.stroke();
         }
+    }
+
+    drawMarker(ctx, x, y, isVertical = false) {
+        ctx.beginPath();
+        ctx.lineWidth = '1';
+        ctx.strokeStyle = 'red';
+        ctx.rect(x, y, isVertical ? 1 : 10, isVertical ? 10 : 1);
+        ctx.stroke();
     }
 
     /**

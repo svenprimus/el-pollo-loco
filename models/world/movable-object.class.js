@@ -281,17 +281,6 @@ export class MovableObject extends DrawableObject {
         return false === this.isJumping();
     }
 
-    drawRealFrame(ctx) {
-        const real = this.getRealDimension(this);
-        if (this.hpMax > 0) {
-            ctx.beginPath();
-            ctx.lineWidth = '2';
-            ctx.strokeStyle = 'red';
-            ctx.rect(real.x, real.y, real.w, real.h);
-            ctx.stroke();
-        }
-    }
-
     setOffset(offset, wNatural, hNatural) {
         this.offset.top = (offset.top * this.h) / hNatural;
         this.offset.bottom = (offset.bottom * this.h) / hNatural;

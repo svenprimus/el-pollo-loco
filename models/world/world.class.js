@@ -103,7 +103,7 @@ export class World {
         drawble.drawFrame(this.ctx);
 
         if (drawble instanceof MovableObject) {
-            drawble.drawRealFrame(this.ctx);
+            drawble.drawCustomFrame(this.ctx, drawble.getRealDimension(drawble));
         }
 
         if (drawble.reverseDirection) {
