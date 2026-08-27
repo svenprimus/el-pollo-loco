@@ -89,11 +89,12 @@ export class Hero extends MovableObject {
     }
 
     place(wCanvas) {
-        this.y = this.ground - this.h;
-        this.x = wCanvas / 8;
-        this.cameraOffset = this.x;
         this.setOffset(ImageLib.HERO.offset, ImageLib.HERO.wNatural, ImageLib.HERO.hNatural);
         this.startLimit = Level.START + (Level.wCanvas - this.w - this.cameraOffset + this.getSpeedInPixel() + 1);
+        this.y = this.ground - this.h;
+        this.x = Math.max(wCanvas / 8, this.startLimit);
+        this.cameraOffset = this.x;
+
     }
 
     // #region resolve

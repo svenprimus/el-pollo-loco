@@ -13,14 +13,8 @@ export class World {
     static BG_WIDTH = 0; // width of one background (can be larger than canvas width)
 
     constructor(canvas) {
-        this.ctx = canvas.getContext('2d');
-        this.canvas = canvas;
-        this.canvas.width = window.innerWidth * 0.9;
-        this.canvas.height = window.innerHeight * 0.9;
-        World.BG_WIDTH = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / canvas.height);
-        this.loadLevel();
-        this.level.hero.world = this;
-        Cloud.world = this;
+        this.setDimensions(canvas);
+        this.loadLevel(this);
         this.setStatusBarHero();
         this.draw();
         this.checkCollisions();
@@ -135,8 +129,18 @@ export class World {
         this.ctx.restore();
     }
 
-    loadLevel() {
-        this.level = createLevel_1(this.canvas.width, this.canvas.height);
+    setDimensions() {
+        this.ctx = canvas.getContext('2d');
+        this.canvas = canvas;
+        this.canvas.width = window.innerWidth * 0.9;
+        this.canvas.height = window.innerHeight * 0.9;
+        World.BG_WIDTH = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / canvas.height);
+    }
+
+    loadLevel(world) {
+        this.level = createLevel_1(this.canvas.width, this.canvas.height, world);
+        this.level.hero.world = this;
+        Cloud.world = this;
     }
 
     setStatusBarHero() {
