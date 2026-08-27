@@ -12,6 +12,7 @@ export class Cloud extends MovableObject {
     constructor(path, hCanvas) {
         super(hCanvas).loadImage(path);
         Cloud.wIndex = null; // used in place after all clouds have been created
+        this.setSizeByHeight(3, ImageLib.BG.wNatural, ImageLib.BG.hNatural);
         this.resolve();
         this.setSpeed(0.5);
     }
@@ -29,13 +30,13 @@ export class Cloud extends MovableObject {
 
     resolve() {
         this.moveLeftSteady(() => {
-            this.loopThroughCanvas();
+            this.loopThroughLevel();
         });
     }
 
-    loopThroughCanvas() {
+    loopThroughLevel() {
         if (this.x + this.w < Level.START) {
-            this.x = Cloud.world.cameraX + Level.wCanvas + this.w;
+            this.x = Level.END;
         }
     }
 }
