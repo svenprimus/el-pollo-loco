@@ -8,7 +8,6 @@ export class Boss extends Enemy {
     hp = 500;
     hpMax = 500;
     atk = 5;
-    xStart;
     lastAlert = 0;
     isRunningAtr = false;
     isAttackingAtr = false;
@@ -49,10 +48,10 @@ export class Boss extends Enemy {
         this.applyGravity();
     }
 
-    place(wCanvas) {
+    place() {
         this.x = Level.END;
-        this.y = this.ground - this.h + 10;
-        this.xStart = this.x;
+        this.ground = this.ground + this.getHFromPer(1);
+        this.y = this.ground - this.h;
         this.setOffset(ImageLib.ENEMY.boss_1.offset, ImageLib.ENEMY.boss_1.wNatural, ImageLib.ENEMY.boss_1.hNatural);
     }
 
@@ -82,9 +81,9 @@ export class Boss extends Enemy {
 
     steadyAttack() {
         if (new Date().getTime() - this.lastAlert > 3000) {
-            if (false === this.reverseDirection && this.x > this.xStart - Level.wCanvas) {
+            if (false === this.reverseDirection && this.x > Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas)) {
                 this.pursue();
-            } else if (this.x < this.xStart - this.w) {
+            } else if (this.x < Level.END - this.w) {
                 this.attackAndReturn();
             } else {
                 this.reverseDirection = false;
@@ -117,7 +116,7 @@ export class Boss extends Enemy {
             this.isRunningAtr = true;
             this.isSpawning = true;
             const id = this.moveLeftSteady(() => {
-                if (this.x < this.xStart - this.w) {
+                if (this.x < Level.END - this.w) {
                     this.isRunningAtr = false;
                     this.isSpawning = false;
                     this.hasSpawned = true;

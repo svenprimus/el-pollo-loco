@@ -1,9 +1,9 @@
-import { World } from './world.class.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 
 export class Level {
     static START;
     static END;
+    static BG_WIDTH;
     static wCanvas = 0;
     static hCanvas = 0;
     hero;
@@ -41,8 +41,8 @@ export class Level {
         this.bgsPerLayer = bgsPerLayer;
         this.backgrounds = backgrounds;
         this.startLimiter = startLimiter;
-        Level.START = -1 * World.BG_WIDTH;
-        Level.END = (World.BG_WIDTH * (backgrounds.length - bgsPerLayer)) / bgsPerLayer;
+        Level.START = -1 * Level.BG_WIDTH;
+        Level.END = (Level.BG_WIDTH * (backgrounds.length - bgsPerLayer)) / bgsPerLayer;
         this.placeObjects();
         this.startCleaningTasks();
     }
@@ -51,13 +51,13 @@ export class Level {
      * Place game objects onto their desired destination on the map.
      */
     placeObjects() {
-        this.hero.place(Level.wCanvas, Level.hCanvas);
-        this.boss.place(Level.wCanvas, Level.hCanvas);
+        this.hero.place();
+        this.boss.place();
         this.enemies.forEach((enemy) => {
-            enemy.place(Level.wCanvas, Level.hCanvas);
+            enemy.place();
         });
         this.collectables.forEach((collectable) => {
-            collectable.place(Level.wCanvas, Level.hCanvas);
+            collectable.place();
         });
         this.clouds.forEach((cloud) => {
             cloud.place(this.cloudsPerLayer);
@@ -65,7 +65,7 @@ export class Level {
         this.backgrounds.forEach((bg) => {
             bg.place(this.bgsPerLayer);
         });
-        this.startLimiter.place(this.hero);
+        this.startLimiter.place();
     }
 
     startCleaningTasks() {

@@ -37,11 +37,12 @@ export class Hatchling extends Enemy {
     }
 
     place() {
-        const sections = Math.floor(Level.END / World.BG_WIDTH);
+        const sections = Math.floor(Level.END / Level.BG_WIDTH);
         Hatchling.spread = Hatchling.spread + 2 >= sections ? 1 : (Hatchling.spread + 2) % sections;
 
-        this.x = Hatchling.spread * World.BG_WIDTH + Math.random() * 50 + 0.8 * World.BG_WIDTH;
-        this.y = this.ground - this.h - Math.random() * 15;
+        this.x = Hatchling.spread * Level.BG_WIDTH + Math.random() * 50 + 0.8 * Level.BG_WIDTH;
+        this.ground = this.ground - Math.random() * this.getHFromPer(1.5);
+        this.y = this.ground - this.h;
         this.setOffset(ImageLib.ENEMY.mob_2.offset, ImageLib.ENEMY.mob_2.wNatural, ImageLib.ENEMY.mob_2.hNatural);
     }
 

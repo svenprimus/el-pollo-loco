@@ -95,7 +95,6 @@ export class MovableObject extends DrawableObject {
      * Change vertical position by speedX and acceleration. The speedX gets reduced by acceleration.
      */
     applyGravity() {
-        // TODO: throwable still does not clean all intervals (more?)
         this.idGravity = TimingHub.setInterval(
             () => {
                 if (this.isGravityApplicable()) {
@@ -146,8 +145,16 @@ export class MovableObject extends DrawableObject {
         this.x -= this.getSpeedInPixel();
     }
 
+    getFutureRight() {
+        return this.x + this.getSpeedInPixel();
+    }
+
+    getFutureLeft() {
+        return this.x - this.getSpeedInPixel();
+    }
+
     getSpeedInPixel() {
-        return (Level.wCanvas * this.speedX) / 1000;
+        return (Level.BG_WIDTH * this.speedX) / 1000;
     }
 
     /**
@@ -279,17 +286,6 @@ export class MovableObject extends DrawableObject {
 
     isIdle() {
         return false === this.isJumping();
-    }
-
-    drawRealFrame(ctx) {
-        const real = this.getRealDimension(this);
-        if (this.hpMax > 0) {
-            ctx.beginPath();
-            ctx.lineWidth = '2';
-            ctx.strokeStyle = 'red';
-            ctx.rect(real.x, real.y, real.w, real.h);
-            ctx.stroke();
-        }
     }
 
     setOffset(offset, wNatural, hNatural) {

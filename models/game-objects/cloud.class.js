@@ -12,6 +12,7 @@ export class Cloud extends MovableObject {
     constructor(path, hCanvas) {
         super(hCanvas).loadImage(path);
         Cloud.wIndex = null; // used in place after all clouds have been created
+        this.setSizeByHeight(3, ImageLib.BG.wNatural, ImageLib.BG.hNatural);
         this.resolve();
         this.setSpeed(0.5);
     }
@@ -22,20 +23,20 @@ export class Cloud extends MovableObject {
                 Cloud.wIndex = -1 * amountPerLayer;
             }
             const index = Math.floor(Cloud.wIndex++ / amountPerLayer);
-            this.x = World.BG_WIDTH * index + Math.random() * World.BG_WIDTH;
+            this.x = Level.BG_WIDTH * index + Math.random() * Level.BG_WIDTH;
             this.y = (Math.random() * this.hCanvas) / 4;
         }
     }
 
     resolve() {
         this.moveLeftSteady(() => {
-            this.loopThroughCanvas();
+            this.loopThroughLevel();
         });
     }
 
-    loopThroughCanvas() {
+    loopThroughLevel() {
         if (this.x + this.w < Level.START) {
-            this.x = Cloud.world.cameraX + Level.wCanvas + this.w;
+            this.x = Level.END;
         }
     }
 }

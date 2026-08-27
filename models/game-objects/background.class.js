@@ -1,5 +1,6 @@
-import { DrawableObject } from '../world/drawable-object.class.js';
 import { ImageLib } from '../../models/utility/image-lib.class.js';
+import { DrawableObject } from '../world/drawable-object.class.js';
+import { Level } from '../world/level.class.js';
 
 export class Background extends DrawableObject {
     static wIndex = null;
@@ -23,12 +24,12 @@ export class Background extends DrawableObject {
             }
             // shift draw position by canvas width after all layers have been planted
             const index = Math.floor(Background.wIndex++ / Background.LAYERS);
-            this.x = index > 0 ? index * this.w - 1 : index * this.w + 1;
+            this.x = index > 0 ? index * this.w : index * this.w + 1;
         }
     }
 
     setSize() {
-        this.w = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.hCanvas);
+        this.w = Level.BG_WIDTH;
         this.h = this.hCanvas;
     }
 }
