@@ -1,7 +1,7 @@
 import { Level } from '../models/world/level.class.js';
 import { Hero } from '../models/game-objects/hero.class.js';
-import { Bottle} from '../models/game-objects/collectables/bottle.class.js';
-import { Coin} from '../models/game-objects/collectables/coin.class.js';
+import { Bottle } from '../models/game-objects/collectables/bottle.class.js';
+import { Coin } from '../models/game-objects/collectables/coin.class.js';
 import { Boss } from '../models/game-objects/enemies/boss.class.js';
 import { Chicken } from '../models/game-objects/enemies/chicken.class.js';
 import { Hatchling } from '../models/game-objects/enemies/hatchling.class.js';
@@ -92,6 +92,10 @@ export function createLevel_1(wCanvas, hCanvas) {
         ],
         2,
         [
+            new Cloud(ImageLib.BG.clouds[0], hCanvas), 
+            new Cloud(ImageLib.BG.clouds[1], hCanvas),
+            new Cloud(ImageLib.BG.clouds[0], hCanvas), 
+            new Cloud(ImageLib.BG.clouds[1], hCanvas),
             new Cloud(ImageLib.BG.clouds[0], hCanvas), 
             new Cloud(ImageLib.BG.clouds[1], hCanvas),
             new Cloud(ImageLib.BG.clouds[0], hCanvas), 

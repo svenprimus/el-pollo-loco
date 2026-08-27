@@ -17,7 +17,7 @@ export class Collectable extends MovableObject {
 
     place() {
         this.x = this.getDefaultX(this.getSection());
-        this.y = this.getDefaultY() - Math.random() * 20;
+        this.y = this.getDefaultY() - Math.random() * this.getHFromPer(2);
     }
 
     collect(animation, frequency, timeout = 1000) {
@@ -35,12 +35,12 @@ export class Collectable extends MovableObject {
     }
 
     getSection() {
-        const sections = Math.floor(Level.END / World.BG_WIDTH);
+        const sections = Math.floor(Level.END / Level.BG_WIDTH);
         return Collectable.spread++ % sections;
     }
 
     getDefaultX(section) {
-        return section * World.BG_WIDTH + Math.random() * World.BG_WIDTH;
+        return section * Level.BG_WIDTH + Math.random() * Level.BG_WIDTH;
     }
 
     getDefaultY() {

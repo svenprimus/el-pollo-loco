@@ -2,15 +2,15 @@ import { StatusBar } from '../game-objects/status-bar.class.js';
 import { StatusCoins, StatusBottles } from '../game-objects/status-collectables.class.js';
 import { Background } from '../game-objects/background.class.js';
 import { Cloud } from '../game-objects/cloud.class.js';
+import { Level } from './level.class.js';
 import { createLevel_1 } from '../../levels/level-1.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 import { MovableObject } from './movable-object.class.js';
 export class World {
     canvas;
     ctx;
-    cameraX = 0;
+    camX = 0;
     level;
-    static BG_WIDTH = 0; // width of one background (can be larger than canvas width)
 
     constructor(canvas) {
         this.setDimensions(canvas);
@@ -55,7 +55,7 @@ export class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         // moving objects
-        this.ctx.translate(this.cameraX, 0);
+        this.ctx.translate(this.camX, 0);
         this.addToMap(this.level.backgrounds);
         this.addToMap(this.level.startLimiter);
         this.addToMap(this.level.hero);
@@ -64,7 +64,15 @@ export class World {
         this.addToMap(this.level.boss);
         this.addToMap(this.level.thrownAmmo);
         this.addToMap(this.level.clouds);
-        this.ctx.translate(-this.cameraX, 0);
+        this.level.hero.drawMarker(this.ctx, Level.START + 1, 0);
+        this.level.hero.drawMarker(this.ctx, 0, 0, 'purple');
+        this.level.hero.drawMarker(this.ctx, Level.END, 0);
+        this.level.hero.drawMarker(this.ctx, 0, this.level.hero.ground, 'green', false);
+        this.level.hero.drawMarker(this.ctx, Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas), 0, 'black');
+
+        
+
+        this.ctx.translate(-this.camX, 0);
         // fixed objects
         this.addToMap(this.level.hero.statusCoins);
         this.addToMap(this.level.hero.statusBottles);
@@ -134,13 +142,15 @@ export class World {
         this.canvas = canvas;
         this.canvas.width = window.innerWidth * 0.9;
         this.canvas.height = window.innerHeight * 0.9;
-        World.BG_WIDTH = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / canvas.height);
+        Level.BG_WIDTH = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height);
     }
 
     loadLevel(world) {
         this.level = createLevel_1(this.canvas.width, this.canvas.height, world);
         this.level.hero.world = this;
         Cloud.world = this;
+        this.camX = this.level.hero.camOffset;
+        this.level.hero.applyLevelSmallerThanCanvasFix();
     }
 
     setStatusBarHero() {

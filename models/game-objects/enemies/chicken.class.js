@@ -43,14 +43,15 @@ export class Chicken extends Enemy {
     }
 
     place() {
-        const sections = Math.floor(Level.END / World.BG_WIDTH);
+        const sections = Math.floor(Level.END / Level.BG_WIDTH);
         const section = Chicken.spread++ % sections;
         if (0 === section) {
-            this.x = World.BG_WIDTH / 2 + Math.random() * World.BG_WIDTH;
+            this.x = Level.BG_WIDTH / 2 + Math.random() * Level.BG_WIDTH;
         } else {
-            this.x = section * World.BG_WIDTH + Math.random() * World.BG_WIDTH;
+            this.x = section * Level.BG_WIDTH + Math.random() * Level.BG_WIDTH;
         }
-        this.y = this.ground - this.h - Math.random() * 15;
+        this.ground = this.ground - Math.random() * this.getHFromPer(1.5);
+        this.y = this.ground - this.h;
         this.setOffset(ImageLib.ENEMY.mob_1.offset, ImageLib.ENEMY.mob_1.wNatural, ImageLib.ENEMY.mob_1.hNatural);
     }
 

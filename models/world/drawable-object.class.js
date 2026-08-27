@@ -56,7 +56,7 @@ export class DrawableObject {
             ctx.rect(this.x, this.y, this.w, this.h);
             ctx.stroke();
 
-            this.drawMarker(ctx, this.x, this.y, true);
+            this.drawMarker(ctx, this.x, this.y);
         }
     }
 
@@ -70,10 +70,10 @@ export class DrawableObject {
         }
     }
 
-    drawMarker(ctx, x, y, isVertical = false) {
+    drawMarker(ctx, x, y, color = 'red', isVertical = true) {
         ctx.beginPath();
         ctx.lineWidth = '1';
-        ctx.strokeStyle = 'red';
+        ctx.strokeStyle = color;
         ctx.rect(x, y, isVertical ? 1 : 10, isVertical ? 10 : 1);
         ctx.stroke();
     }
@@ -114,6 +114,10 @@ export class DrawableObject {
         const img = new Image();
         img.src = path;
         return img;
+    }
+
+    getHFromPer(percent) {
+        return (this.hCanvas * percent) / 100;
     }
 
     setSizeByHeight(divider, wNatural, hNatural) {

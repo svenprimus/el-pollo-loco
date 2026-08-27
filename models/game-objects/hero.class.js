@@ -5,6 +5,7 @@ import { Game } from '../utility/game.class.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 import { Controls } from '../utility/controls.class.js';
 import { ThrowableObject } from './throwable-object.class.js';
+import { StartLimiter } from './start-limiter.class.js';
 import { Collectable } from './collectables/collectable.class.js';
 import { Bottle } from './collectables/bottle.class.js';
 import { Coin } from './collectables/coin.class.js';
@@ -28,16 +29,16 @@ export class Hero extends MovableObject {
     isDrinkingAtr = false;
     isRunningAtr = false;
 
-    cameraOffset = 0;
-    cameraEaseLeft = 3;
-    cameraEaseRight = 3;
-
+    camOffset = 0;
+    camEaseLeft = 3;
+    camEaseRight = 3;
+    camMax = 0;
+    camMin = 0;
+    bossSpawnX = 0;
     lastIdleTime = 0;
     lastDrinkTime = 0;
     lastAttack = 0;
     lastBottledUp = 0;
-
-    startLimit = 0;
 
     animations = [
         {
@@ -88,13 +89,14 @@ export class Hero extends MovableObject {
         this.applyGravity();
     }
 
-    place(wCanvas) {
+    place() {
         this.setOffset(ImageLib.HERO.offset, ImageLib.HERO.wNatural, ImageLib.HERO.hNatural);
-        this.startLimit = Level.START + (Level.wCanvas - this.w - this.cameraOffset + this.getSpeedInPixel() + 1);
         this.y = this.ground - this.h;
-        this.x = Math.max(wCanvas / 8, this.startLimit);
-        this.cameraOffset = this.x;
-
+        this.x = 0;
+        this.camOffset = Level.BG_WIDTH / 8;
+        this.camMax = Level.wCanvas - Level.END;
+        this.camMin = Level.BG_WIDTH - 1;
+        this.bossSpawnX = Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas) + this.camOffset;
     }
 
     // #region resolve
@@ -169,12 +171,10 @@ export class Hero extends MovableObject {
     }
 
     resolveSpawnpoint() {
-        if (
-            false === this.world.level.boss.hasSpawned &&
-            this.x >= Level.END - Level.wCanvas + this.cameraOffset - Math.ceil((this.speedX * Level.wCanvas) / 1000)
-        ) {
+        if (false === this.world.level.boss.hasSpawned && this.x >= this.bossSpawnX) {
             this.world.setStatusBarBoss();
             this.world.level.boss.spawn();
+            this.world.level.startLimiter.setNewBorder(this.bossSpawnX - this.camOffset - 1);
             this.world.level.enemies.forEach((enemy) => {
                 enemy.flee();
             });
@@ -207,24 +207,36 @@ export class Hero extends MovableObject {
     runLeft() {
         this.isRunningAtr = true;
         this.reverseDirection = true;
-        this.cameraEaseRight = 3;
+        this.camEaseRight = 3;
         if (this.isAfterStart() && false === this.world.level.boss.isSpawning) {
+            this.moveLeft();
+            this.followcamLeft();
+        }
+    }
+
+    moveLeft() {
+        if (this.getFutureLeft() <= StartLimiter.BORDER) {
+            this.x = StartLimiter.BORDER;
+        } else {
             super.moveLeft();
-            this.followCameraLeft();
         }
     }
 
     runRight() {
         this.isRunningAtr = true;
         this.reverseDirection = false;
-        this.cameraEaseLeft = 3;
+        this.camEaseLeft = 3;
         if (this.isBeforeEnd() && false === this.world.level.boss.isSpawning) {
             this.resolveSpawnpoint();
             if (false === this.world.level.boss.isSpawning) {
-                super.moveRight();
-                this.followCameraRight();
+                this.moveRight();
+                this.followcamRight();
             }
         }
+    }
+
+    moveRight() {
+        super.moveRight();
     }
 
     stopRunning() {
@@ -315,47 +327,40 @@ export class Hero extends MovableObject {
     }
 
     isAfterStart() {
-        if (this.world.level.boss.hasSpawned) {
-            return this.x > this.world.level.boss.xStart - Level.wCanvas;
-        } else {
-            return this.x > this.startLimit;
-        }
+        return this.x > StartLimiter.BORDER;
     }
 
     isBeforeEnd() {
-        if (this.world.level.boss.hasSpawned) {
-            return this.x < this.world.level.boss.xStart - this.w;
-        } else {
-            return this.x < Level.END - Level.wCanvas + this.cameraOffset;
-        }
+        return this.x < Level.END - 1 - this.w;
     }
     // #endregion conditions
 
-    followCameraRight() {
-        this.cameraEaseRight = Math.max(this.cameraEaseRight - 0.2, 1);
-        const onBossAdjust = this.world.cameraX - 0.1;
-        const onBossStatic = -1 * (this.world.level.boss.xStart - Level.wCanvas - 5);
-        const onRunnAdjust = this.world.cameraX - this.cameraEaseRight * this.getSpeedInPixel() - 10;
-        const onRunnStatic = -this.x + this.cameraOffset;
+    followcamRight() {
+        this.camEaseRight = Math.max(this.camEaseRight - 0.2, 1);
+        const onRunnAdjust = this.world.camX - this.camEaseRight * this.getSpeedInPixel() - 10;
+        const onRunnStatic = -this.x + this.camOffset;
+        this.world.camX = this.world.level.boss.hasSpawned
+            ? this.camMax
+            : Math.max(onRunnAdjust, onRunnStatic, this.camMax);
 
-        this.world.cameraX = this.world.level.boss.hasSpawned
-            ? Math.max(onBossAdjust, onBossStatic)
-            : Math.max(onRunnAdjust, onRunnStatic);
+        this.applyLevelSmallerThanCanvasFix();
     }
 
-    followCameraLeft() {
-        this.cameraEaseLeft = Math.max(this.cameraEaseLeft - 0.2, 1);
-        const onBossAdjust = this.world.cameraX - 0.1;
-        const onBossStatic = -1 * (this.world.level.boss.xStart - Level.wCanvas - 5);
-        const onRunnAdjust = this.world.cameraX + this.cameraEaseLeft * this.getSpeedInPixel() + 10;
-        const onRunnStatic = -this.x + Level.wCanvas - this.w - this.cameraOffset;
-        const absoluteMin = Background.WIDTH - 1;
-        this.world.cameraX = Math.min(
-            this.world.level.boss.hasSpawned
-                ? Math.max(onBossAdjust, onBossStatic)
-                : Math.min(onRunnAdjust, onRunnStatic),
-            absoluteMin
-        );
+    followcamLeft() {
+        this.camEaseLeft = Math.max(this.camEaseLeft - 0.2, 1);
+        const onRunnAdjust = this.world.camX + this.camEaseLeft * this.getSpeedInPixel() + 10;
+        const onRunnStatic = -this.x + Level.wCanvas - this.w - this.camOffset;
+        this.world.camX = this.world.level.boss.hasSpawned
+            ? this.camMax
+            : Math.min(onRunnAdjust, onRunnStatic, this.camMin);
+        this.applyLevelSmallerThanCanvasFix();
+    }
+
+    applyLevelSmallerThanCanvasFix() {
+        if (Level.wCanvas > Level.END) {
+            this.world.camX = -1 * Level.START - 1;
+            this.world.canvas.width = this.world.camX + Level.END;
+        }
     }
 
     loadImagesToCache() {

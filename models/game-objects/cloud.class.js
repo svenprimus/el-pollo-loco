@@ -23,7 +23,7 @@ export class Cloud extends MovableObject {
                 Cloud.wIndex = -1 * amountPerLayer;
             }
             const index = Math.floor(Cloud.wIndex++ / amountPerLayer);
-            this.x = World.BG_WIDTH * index + Math.random() * World.BG_WIDTH;
+            this.x = Level.BG_WIDTH * index + Math.random() * Level.BG_WIDTH;
             this.y = (Math.random() * this.hCanvas) / 4;
         }
     }

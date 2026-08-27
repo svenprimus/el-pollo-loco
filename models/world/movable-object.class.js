@@ -95,7 +95,6 @@ export class MovableObject extends DrawableObject {
      * Change vertical position by speedX and acceleration. The speedX gets reduced by acceleration.
      */
     applyGravity() {
-        // TODO: throwable still does not clean all intervals (more?)
         this.idGravity = TimingHub.setInterval(
             () => {
                 if (this.isGravityApplicable()) {
@@ -144,6 +143,14 @@ export class MovableObject extends DrawableObject {
      */
     moveLeft() {
         this.x -= this.getSpeedInPixel();
+    }
+
+    getFutureRight() {
+        return this.x + this.getSpeedInPixel();
+    }
+
+    getFutureLeft() {
+        return this.x - this.getSpeedInPixel();
     }
 
     getSpeedInPixel() {
