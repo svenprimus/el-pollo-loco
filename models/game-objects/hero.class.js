@@ -332,21 +332,30 @@ export class Hero extends MovableObject {
     // #endregion conditions
 
     followCameraRight() {
-        const pxToLeftBorder = -this.x + this.cameraOffset;
         this.cameraEaseRight = Math.max(this.cameraEaseRight - 0.2, 1);
-        // fix camera slowly to bossfight area, or follow character
+        const onBossAdjust = this.world.cameraX - 0.1;
+        const onBossStatic = -1 * (this.world.level.boss.xStart - Level.wCanvas - 5);
+        const onRunnAdjust = this.world.cameraX - this.cameraEaseRight * this.getSpeedInPixel() - 10;
+        const onRunnStatic = -this.x + this.cameraOffset;
+
         this.world.cameraX = this.world.level.boss.hasSpawned
-            ? Math.max(this.world.cameraX - 0.1, -1 * (this.world.level.boss.xStart - Level.wCanvas - 5))
-            : Math.max(this.world.cameraX - this.cameraEaseRight * this.getSpeedInPixel() - 10, pxToLeftBorder);
+            ? Math.max(onBossAdjust, onBossStatic)
+            : Math.max(onRunnAdjust, onRunnStatic);
     }
 
     followCameraLeft() {
-        const pxToRightBorder = -this.x + Level.wCanvas - this.w - this.cameraOffset;
         this.cameraEaseLeft = Math.max(this.cameraEaseLeft - 0.2, 1);
-        // fix camera slowly to bossfight area, or follow character
-        this.world.cameraX = this.world.level.boss.hasSpawned
-            ? Math.max(this.world.cameraX - 0.1, -1 * (this.world.level.boss.xStart - Level.wCanvas - 5))
-            : Math.min(this.world.cameraX + this.cameraEaseLeft * this.getSpeedInPixel() + 10, pxToRightBorder);
+        const onBossAdjust = this.world.cameraX - 0.1;
+        const onBossStatic = -1 * (this.world.level.boss.xStart - Level.wCanvas - 5);
+        const onRunnAdjust = this.world.cameraX + this.cameraEaseLeft * this.getSpeedInPixel() + 10;
+        const onRunnStatic = -this.x + Level.wCanvas - this.w - this.cameraOffset;
+        const absoluteMin = Background.WIDTH - 1;
+        this.world.cameraX = Math.min(
+            this.world.level.boss.hasSpawned
+                ? Math.max(onBossAdjust, onBossStatic)
+                : Math.min(onRunnAdjust, onRunnStatic),
+            absoluteMin
+        );
     }
 
     loadImagesToCache() {
