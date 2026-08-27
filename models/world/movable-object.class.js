@@ -154,7 +154,7 @@ export class MovableObject extends DrawableObject {
     }
 
     getSpeedInPixel() {
-        return (Level.wCanvas * this.speedX) / 1000;
+        return (Level.BG_WIDTH * this.speedX) / 1000;
     }
 
     /**
