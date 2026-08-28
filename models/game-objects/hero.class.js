@@ -339,10 +339,9 @@ export class Hero extends MovableObject {
         this.camEaseRight = Math.max(this.camEaseRight - 0.2, 1);
         const onRunnAdjust = this.world.camX - this.camEaseRight * this.getSpeedInPixel() - 10;
         const onRunnStatic = -this.x + this.camOffset;
-        this.world.camX = this.world.level.boss.hasSpawned
-            ? this.camMax
-            : Math.max(onRunnAdjust, onRunnStatic, this.camMax);
-
+        this.world.setCamX(
+            this.world.level.boss.hasSpawned ? this.camMax : Math.max(onRunnAdjust, onRunnStatic, this.camMax)
+        );
         this.applyLevelSmallerThanCanvasFix();
     }
 
@@ -350,15 +349,15 @@ export class Hero extends MovableObject {
         this.camEaseLeft = Math.max(this.camEaseLeft - 0.2, 1);
         const onRunnAdjust = this.world.camX + this.camEaseLeft * this.getSpeedInPixel() + 10;
         const onRunnStatic = -this.x + Level.wCanvas - this.w - this.camOffset;
-        this.world.camX = this.world.level.boss.hasSpawned
-            ? this.camMax
-            : Math.min(onRunnAdjust, onRunnStatic, this.camMin);
+        this.world.setCamX(
+            this.world.level.boss.hasSpawned ? this.camMax : Math.min(onRunnAdjust, onRunnStatic, this.camMin)
+        );
         this.applyLevelSmallerThanCanvasFix();
     }
 
     applyLevelSmallerThanCanvasFix() {
         if (Level.wCanvas > Level.END) {
-            this.world.camX = -1 * Level.START - 1;
+            this.world.setCamX(-1 * Level.START - 1);
             this.world.canvas.width = this.world.camX + Level.END;
         }
     }
