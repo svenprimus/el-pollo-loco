@@ -163,8 +163,8 @@ export class World {
     setStatusBarHero() {
         const pos = this.canvas.height * 0.05;
         this.level.hero.statusBar = new StatusBar(this.canvas.width, canvas.height, this.level.hero, pos, false);
-        this.level.hero.statusCoins = new StatusCoins(this.canvas.height, this.level.hero.statusBar);
-        this.level.hero.statusBottles = new StatusBottles(this.canvas.height, this.level.hero.statusBar);
+        this.level.hero.statusCoins = new StatusCoins(this.canvas.height, this.level.hero);
+        this.level.hero.statusBottles = new StatusBottles(this.canvas.height, this.level.hero);
     }
 
     setStatusBarBoss() {
