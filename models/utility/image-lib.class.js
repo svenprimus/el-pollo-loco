@@ -213,10 +213,10 @@ export class ImageLib {
                 left: 63,
             },
             imgs: [
-                './assets/sprites/6_salsa_bottle/bottle_rotation/1_bottle_rotation.webp',
-                './assets/sprites/6_salsa_bottle/bottle_rotation/2_bottle_rotation.webp',
-                './assets/sprites/6_salsa_bottle/bottle_rotation/3_bottle_rotation.webp',
-                './assets/sprites/6_salsa_bottle/bottle_rotation/4_bottle_rotation.webp',
+                './assets/sprites/6_salsa_bottle/rotation/1_bottle_rotation.webp',
+                './assets/sprites/6_salsa_bottle/rotation/2_bottle_rotation.webp',
+                './assets/sprites/6_salsa_bottle/rotation/3_bottle_rotation.webp',
+                './assets/sprites/6_salsa_bottle/rotation/4_bottle_rotation.webp',
             ],
         },
 
@@ -224,12 +224,12 @@ export class ImageLib {
             wNatural: 524,
             hNatural: 400,
             imgs: [
-                './assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.webp',
-                './assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.webp',
-                './assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.webp',
-                './assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.webp',
-                './assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.webp',
-                './assets/sprites/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.webp',
+                './assets/sprites/6_salsa_bottle/splash/1_bottle_splash.webp',
+                './assets/sprites/6_salsa_bottle/splash/2_bottle_splash.webp',
+                './assets/sprites/6_salsa_bottle/splash/3_bottle_splash.webp',
+                './assets/sprites/6_salsa_bottle/splash/4_bottle_splash.webp',
+                './assets/sprites/6_salsa_bottle/splash/5_bottle_splash.webp',
+                './assets/sprites/6_salsa_bottle/splash/6_bottle_splash.webp',
             ],
         },
         collectable: {
@@ -276,11 +276,15 @@ export class ImageLib {
             ],
         },
         icons: {
-            wNatural: 158,
-            hNatural: 158,
+            wNatural: 226,
+            hNatural: 226,
             hp: './assets/sprites/7_statusbars/3_icons/icon_health.webp',
-            coin: './assets/sprites/7_statusbars/3_icons/icon_coin.webp',
-            bottle: './assets/sprites/7_statusbars/3_icons/icon_salsa_bottle.webp',
+            bottle: [
+                './assets/sprites/7_statusbars/3_icons/salsa_bottle/I-1.webp',
+                './assets/sprites/7_statusbars/3_icons/salsa_bottle/I-2.webp',
+                './assets/sprites/7_statusbars/3_icons/salsa_bottle/I-3.webp',
+                './assets/sprites/7_statusbars/3_icons/salsa_bottle/I-4.webp',
+            ],
         },
     };
 

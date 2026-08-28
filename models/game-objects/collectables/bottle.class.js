@@ -23,6 +23,7 @@ export class Bottle extends Collectable {
     collect(hero) {
         this.collected = true;
         hero.throwables.push(new ThrowableObject(hero, hero.hCanvas));
+        hero.statusBottles.collect();
         hero.lastBottledUp = new Date().getTime();
     }
 

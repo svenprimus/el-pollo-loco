@@ -16,7 +16,6 @@ export class Hero extends MovableObject {
     statusBar;
     statusCoins;
     statusBottles;
-    coins = 0;
     throwables = [];
 
     speedX = 15;
@@ -263,6 +262,7 @@ export class Hero extends MovableObject {
     }
 
     throw() {
+        this.statusBottles.spend();
         this.world.level.thrownAmmo.push(this.throwables.shift());
         this.world.level.thrownAmmo[this.world.level.thrownAmmo.length - 1].throw(
             this.x + this.w / 2,

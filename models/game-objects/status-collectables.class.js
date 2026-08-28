@@ -1,21 +1,66 @@
-import { DrawableObject } from '../world/drawable-object.class.js';
 import { ImageLib } from '../utility/image-lib.class.js';
+import { MovableObject } from '../world/movable-object.class.js';
+export class StatusCoins extends MovableObject {
+    count = 0;
 
-export class StatusCoins extends DrawableObject {
-    constructor(hCanvas, statusBar) {
-        super(hCanvas).loadImage(ImageLib.STATUSBAR.icons.coin);
-        this.y = statusBar.y + statusBar.h;
-        this.x = statusBar.x
+    constructor(hCanvas, hero) {
+        super(hCanvas).loadImage(ImageLib.COIN.rotate[0]);
         this.setSizeByWidth(12, ImageLib.STATUSBAR.icons.wNatural, ImageLib.STATUSBAR.icons.hNatural);
+        this.y = hero.statusBar.y + hero.statusBar.h;
+        this.x = hero.statusBar.x;
+        this.loadImages(ImageLib.COIN.rotate);
+        this.animate(ImageLib.COIN.rotate, 30, null, 4);
+    }
+
+    draw(ctx) {
+        super.draw(ctx);
+        this.drawCount(ctx);
+    }
+
+    drawCount(ctx) {
+        const x = this.x + this.w;
+        const y = this.y + this.h / 2;
+        const h = this.h / 2;
+        this.writeWithPresetStyle(this.count.toString(), ctx, x, y, h);
+    }
+
+    collect() {
+        this.count++;
+        this.restartAnimate(ImageLib.COIN.rotate, 30, null, 4);
     }
 }
 
+export class StatusBottles extends MovableObject {
+    count = 0; // length of hero array
 
-export class StatusBottles extends DrawableObject {
-    constructor(hCanvas, statusBar) {
-        super(hCanvas).loadImage(ImageLib.STATUSBAR.icons.bottle);
-        this.y = statusBar.y + statusBar.h;
-        this.x = statusBar.x + statusBar.w / 2;
+    constructor(hCanvas, hero) {
+        super(hCanvas).loadImage(ImageLib.STATUSBAR.icons.bottle[0]);
         this.setSizeByWidth(12, ImageLib.STATUSBAR.icons.wNatural, ImageLib.STATUSBAR.icons.hNatural);
+        this.y = hero.statusBar.y + hero.statusBar.h;
+        this.x = hero.statusBar.x + hero.statusBar.w / 2 + this.w - this.w / 1.25;
+        this.count = hero.throwables.length;
+        this.loadImages(ImageLib.STATUSBAR.icons.bottle);
+        this.animate(ImageLib.STATUSBAR.icons.bottle, 6, null, 3);
+    }
+
+    draw(ctx) {
+        super.draw(ctx);
+        this.drawCount(ctx);
+    }
+
+    drawCount(ctx) {
+        const x = this.x + this.w / 1.25;
+        const y = this.y + this.h / 2;
+        const h = this.h / 2;
+        this.writeWithPresetStyle(this.count.toString(), ctx, x, y, h);
+    }
+
+    collect() {
+        this.count++;
+        this.restartAnimate(ImageLib.STATUSBAR.icons.bottle, 6, null, 3);
+    }
+
+    spend() {
+        this.count = Math.max(this.count - 1, 0);
     }
 }
