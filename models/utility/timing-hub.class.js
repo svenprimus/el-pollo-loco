@@ -64,8 +64,11 @@ export class TimingHub {
      * Cache and stop all timeouts and clear all intervals.
      */
     static pause() {
-        TimingHub.timeoutsBackup = TimingHub.timeoutIds.slice();
-        TimingHub.intervalBackup = TimingHub.intervalIds.slice();
+        if (TimingHub.timeoutsBackup.length === 0 && TimingHub.intervalBackup.length === 0) {
+            TimingHub.timeoutsBackup = TimingHub.timeoutIds.slice();
+            TimingHub.intervalBackup = TimingHub.intervalIds.slice();
+        }
+
         // Important: clear (remove) backwards, as after remove, the start index shifts
         for (let i = TimingHub.timeoutIds.length; i > 0; i--) {
             TimingHub.clearTimeout(TimingHub.timeoutIds[i - 1].id);
