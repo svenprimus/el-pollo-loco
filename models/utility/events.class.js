@@ -10,6 +10,7 @@ export class Events {
 
     static startGame = () => {
         Game.start();
+        Game.pause(); // game should not start without interaction
     };
 
     static pauseGame = () => {
