@@ -24,12 +24,12 @@ export class Background extends DrawableObject {
             }
             // shift draw position by canvas width after all layers have been planted
             const index = Math.floor(Background.wIndex++ / Background.LAYERS);
-            this.x = index > 0 ? index * this.w : index * this.w + 1;
+            this.x = Math.round(index * this.w);
         }
     }
 
     setSize() {
-        this.w = Level.BG_WIDTH;
+        this.w = Math.round(Level.BG_WIDTH);
         this.h = this.hCanvas;
     }
 }

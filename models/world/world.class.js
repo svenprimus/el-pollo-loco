@@ -64,13 +64,19 @@ export class World {
         this.addToMap(this.level.boss);
         this.addToMap(this.level.thrownAmmo);
         this.addToMap(this.level.clouds);
+
+        // TODO: remove markers
         this.level.hero.drawMarker(this.ctx, Level.START + 1, 0);
         this.level.hero.drawMarker(this.ctx, 0, 0, 'purple');
         this.level.hero.drawMarker(this.ctx, Level.END, 0);
         this.level.hero.drawMarker(this.ctx, 0, this.level.hero.ground, 'green', false);
         this.level.hero.drawMarker(this.ctx, Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas), 0, 'black');
-
-        
+        this.level.hero.drawMarker(
+            this.ctx,
+            Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas) + this.level.hero.camOffset,
+            0,
+            'green'
+        );
 
         this.ctx.translate(-this.camX, 0);
         // fixed objects
@@ -145,11 +151,15 @@ export class World {
         Level.BG_WIDTH = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height);
     }
 
+    setCamX(x) {
+        this.camX = Math.round(x);
+    }
+    
     loadLevel(world) {
         this.level = createLevel_1(this.canvas.width, this.canvas.height, world);
         this.level.hero.world = this;
         Cloud.world = this;
-        this.camX = this.level.hero.camOffset;
+        this.setCamX(this.level.hero.camOffset);
         this.level.hero.applyLevelSmallerThanCanvasFix();
     }
 
