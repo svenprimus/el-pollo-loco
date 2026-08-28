@@ -16,7 +16,6 @@ export class Hero extends MovableObject {
     statusBar;
     statusCoins;
     statusBottles;
-    coins = 0;
     throwables = [];
 
     speedX = 15;

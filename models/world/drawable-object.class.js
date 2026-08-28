@@ -78,6 +78,22 @@ export class DrawableObject {
         ctx.stroke();
     }
 
+    writeWithPresetStyle(text, ctx, x, y, h) {
+        ctx.save();
+        ctx.font = `${h}px Titan One`;
+        ctx.textBaseline = 'middle';
+        // const grad = ctx.createLinearGradient(x, y, x + h, y);
+        // grad.addColorStop(0.2, 'green');
+        // grad.addColorStop(0.6, 'red');
+        // grad.addColorStop(1, 'purple');
+        // ctx.fillStyle = grad;
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "black";
+        ctx.fillText(text, x, y);
+        ctx.strokeText(text, x, y);  
+        ctx.restore();
+    }
+
     /**
      * Iterate and set img-attribute repeatedly through sequence of images.
      * @param {array} images - Sequence of image paths for current animation

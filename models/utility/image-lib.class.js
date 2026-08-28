@@ -276,8 +276,8 @@ export class ImageLib {
             ],
         },
         icons: {
-            wNatural: 158,
-            hNatural: 158,
+            wNatural: 226,
+            hNatural: 226,
             hp: './assets/sprites/7_statusbars/3_icons/icon_health.webp',
             coin: './assets/sprites/7_statusbars/3_icons/icon_coin.webp',
             bottle: './assets/sprites/7_statusbars/3_icons/icon_salsa_bottle.webp',

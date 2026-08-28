@@ -76,7 +76,7 @@ export class Coin extends Collectable {
     collect(hero) {
         if (false === this.isCollecting) {
             super.collect(ImageLib.COIN.rotate, 40, 1500);
-            hero.coins++;
+            hero.statusCoins.collect();
             this.hop();
             this.isGravityAllowed = true;
             this.stopGravity(1500);

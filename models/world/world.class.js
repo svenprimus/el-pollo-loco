@@ -112,14 +112,11 @@ export class World {
         if (drawble.reverseDirection) {
             this.flipImage(drawble);
         }
-
         drawble.draw(this.ctx);
         drawble.drawFrame(this.ctx);
-
         if (drawble instanceof MovableObject) {
             drawble.drawCustomFrame(this.ctx, drawble.getRealDimension(drawble));
         }
-
         if (drawble.reverseDirection) {
             this.flipImageBack(drawble);
         }
@@ -147,7 +144,7 @@ export class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.canvas.width = window.innerWidth * 0.9;
-        this.canvas.height = window.innerHeight * 0.9;
+        this.canvas.height = window.innerHeight * 0.8;
         Level.BG_WIDTH = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height);
     }
 

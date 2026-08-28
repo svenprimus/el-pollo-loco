@@ -18,6 +18,12 @@ canvas {
 
 button {
     cursor: pointer;
+    font-family: 'Titan One';
+}
+
+.headline {
+    height: 15svh;
+    width: auto;
 }
 
 .game-wrapper {

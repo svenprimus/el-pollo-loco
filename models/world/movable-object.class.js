@@ -60,6 +60,7 @@ export class MovableObject extends DrawableObject {
 
     restartAnimate(images, frequency = 10, fn = null, indexEnd = null) {
         if (TimingHub.stopInterval(this.idAnimate)) {
+            this.imgCurrent = 0;
             this.animate(images, frequency, fn, indexEnd);
         }
     }
