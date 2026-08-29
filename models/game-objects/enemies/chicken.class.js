@@ -2,8 +2,9 @@ import { Enemy } from './enemy.class.js';
 import { Game } from '../../utility/game.class.js';
 import { TimingHub } from '../../utility/timing-hub.class.js';
 import { ImageLib } from '../../utility/image-lib.class.js';
+import { AudioLib } from '../../utility/audio-lib.class.js';
+import { AudioHub } from '../../utility/audio-hub.class.js';
 import { Level } from '../../world/level.class.js';
-import { World } from '../../world/world.class.js';
 
 export class Chicken extends Enemy {
     static spread = 0;
@@ -35,6 +36,7 @@ export class Chicken extends Enemy {
         super(hCanvas).loadImage(ImageLib.ENEMY.mob_1.walk[2]);
         Chicken.spread = 0; // used in place() after all chicken have been created
         this.loadImagesToCache();
+        AudioHub.loadSounds(AudioLib.ENEMY.mob_1);
         this.setSizeByHeight(8, ImageLib.ENEMY.mob_1.wNatural, ImageLib.ENEMY.mob_1.hNatural);
         this.setSpeed(2);
         this.animate(ImageLib.ENEMY.mob_1.walk, this.speedX * 5);
@@ -75,7 +77,9 @@ export class Chicken extends Enemy {
         if (Math.random() > 0.99 && !this.isJumping()) {
             const funFactor = Math.random() * 3 + 3;
             this.speedX = funFactor + this.speedFlee;
-            this.jump(funFactor);
+            if (this.jump(funFactor)) {
+                AudioHub.playFromStartIfNearby(AudioLib.ENEMY.mob_1.jump, this.x);
+            }
             this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.jump, 0, this.speedX * 5);
             this.startResetTimeout();
         }

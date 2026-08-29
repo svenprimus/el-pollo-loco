@@ -1,4 +1,6 @@
 import { DrawableObject } from './drawable-object.class.js';
+import { AudioHub } from '../utility/audio-hub.class.js';
+
 import { TimingHub } from '../utility/timing-hub.class.js';
 import { Game } from '../utility/game.class.js';
 import { Level } from './level.class.js';
@@ -188,6 +190,7 @@ export class MovableObject extends DrawableObject {
                 this.extraJumpAvailable = false;
             }
         }
+        return this.speedY === percentImpulse;
     }
 
     /**

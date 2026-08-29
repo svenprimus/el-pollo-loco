@@ -5,6 +5,7 @@ import { Cloud } from '../game-objects/cloud.class.js';
 import { Level } from './level.class.js';
 import { createLevel_1 } from '../../levels/level-1.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
+import { AudioHub } from '../utility/audio-hub.class.js';
 import { MovableObject } from './movable-object.class.js';
 export class World {
     canvas;
@@ -150,6 +151,7 @@ export class World {
 
     setCamX(x) {
         this.camX = Math.round(x);
+        AudioHub.setCamX(this.camX);
     }
     
     loadLevel(world) {

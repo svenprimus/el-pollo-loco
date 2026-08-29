@@ -4,6 +4,7 @@ export class AudioLib {
         idleLong: './assets/audio/character/characterSnoring.mp3',
         walk: './assets/audio/character/characterRun.mp3',
         jump: '../assets/audio/character/characterJump.wav',
+        bounce: '../assets/audio/character/characterBounce.mp3',
         hurt: './assets/audio/character/characterDamage.mp3',
         dead: './assets/audio/character/characterDead.wav',
         drink: './assets/audio/character/characterDrink.mp3',

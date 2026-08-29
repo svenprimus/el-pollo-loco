@@ -1,5 +1,7 @@
 import { MovableObject } from '../world/movable-object.class.js';
 import { ImageLib } from '../utility/image-lib.class.js';
+import { AudioLib } from '../utility/audio-lib.class.js';
+import { AudioHub } from '../utility/audio-hub.class.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 import { Game } from '../utility/game.class.js';
 
@@ -26,15 +28,7 @@ export class ThrowableObject extends MovableObject {
     }
 
     throw(x, y, relativeSpeed, isReversed) {
-        const factor = isReversed ? 1 : -1;
-
-        this.x = x - this.w / 2;
-        this.y = y;
-        this.setOffset(ImageLib.AMMO.midair.offset, ImageLib.AMMO.midair.wNatural, ImageLib.AMMO.midair.hNatural);
-
-        this.speedY = 5;
-        this.speedX = factor * 20 + factor * relativeSpeed;
-
+        this.setDimension(x, y, relativeSpeed, isReversed);
         const idInterval = TimingHub.setInterval(() => {
             if (false === this.isJumping() || this.isCollided) {
                 this.impact(idInterval);
@@ -68,5 +62,16 @@ export class ThrowableObject extends MovableObject {
 
     hasFinished() {
         return this.isFinished;
+    }
+
+    setDimension(x, y, relativeSpeed, isReversed) {
+        const factor = isReversed ? 1 : -1;
+
+        this.x = x - this.w / 2;
+        this.y = y;
+        this.setOffset(ImageLib.AMMO.midair.offset, ImageLib.AMMO.midair.wNatural, ImageLib.AMMO.midair.hNatural);
+
+        this.speedY = 5;
+        this.speedX = factor * 20 + factor * relativeSpeed;
     }
 }
