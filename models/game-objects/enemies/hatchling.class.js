@@ -1,8 +1,9 @@
 import { Enemy } from './enemy.class.js';
 import { TimingHub } from '../../utility/timing-hub.class.js';
 import { ImageLib } from '../../utility/image-lib.class.js';
+import { AudioLib } from '../../utility/audio-lib.class.js';
+import { AudioHub } from '../../utility/audio-hub.class.js';
 import { Level } from '../../world/level.class.js';
-import { World } from '../../world/world.class.js';
 
 export class Hatchling extends Enemy {
     static spread = -1;
@@ -13,15 +14,15 @@ export class Hatchling extends Enemy {
     animations = [
         {
             condition: () => this.isDeadBySalsa(),
-            animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_2.drum, 0, this.speedX * 5),
+            animation: () => this.restartAnimateIfChanged(ImageLib.ENEMY.mob_2.drum, 0, this.speedX * 5),
         },
         {
             condition: () => this.isDead(),
-            animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_2.dead, 0, this.speedX * 5),
+            animation: () => this.restartAnimateIfChanged(ImageLib.ENEMY.mob_2.dead, 0, this.speedX * 5),
         },
         {
             condition: () => this.isIdle(),
-            animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_2.walk, 2, this.speedX * 5),
+            animation: () => this.restartAnimateIfChanged(ImageLib.ENEMY.mob_2.walk, 2, this.speedX * 5),
         },
     ];
 
@@ -29,6 +30,7 @@ export class Hatchling extends Enemy {
         super(hCanvas).loadImage(ImageLib.ENEMY.mob_2.walk[2]);
         Hatchling.spread = -1; // used in place() after all hatchlings have been created
         this.loadImagesToCache();
+        this.loadSounds(AudioLib.ENEMY.mob_2);
         this.setSizeByHeight(16, ImageLib.ENEMY.mob_2.wNatural, ImageLib.ENEMY.mob_2.hNatural);
         this.setSpeed(2);
         this.animate(ImageLib.ENEMY.mob_2.walk, this.speedX * 5);
@@ -71,10 +73,11 @@ export class Hatchling extends Enemy {
     randomFury() {
         if (Math.random() > 0.99) {
             this.speedX = 4 + this.speedFlee;
-            this.restartAnimate(ImageLib.ENEMY.mob_2.walk, this.speedX * 5);
+            AudioHub.playIfNearby(AudioLib.ENEMY.mob_2.fury, this.x, this.w);
+            this.restartAnimate(ImageLib.ENEMY.mob_2.walk, 0, this.speedX * 5);
             TimingHub.setTimeout(() => {
                 this.speedX = Math.random() * 3 + this.speedFlee;
-                this.restartAnimate(ImageLib.ENEMY.mob_2.walk, this.speedX * 5);
+                this.restartAnimate(ImageLib.ENEMY.mob_2.walk, 0, this.speedX * 5);
             }, 750);
         }
     }

@@ -1,4 +1,6 @@
 import { ImageLib } from '../utility/image-lib.class.js';
+import { AudioLib } from '../utility/audio-lib.class.js';
+import { AudioHub } from '../utility/audio-hub.class.js';
 import { MovableObject } from '../world/movable-object.class.js';
 export class StatusCoins extends MovableObject {
     count = 0;
@@ -9,6 +11,7 @@ export class StatusCoins extends MovableObject {
         this.y = hero.statusBar.y + hero.statusBar.h;
         this.x = hero.statusBar.x;
         this.loadImages(ImageLib.COIN.rotate);
+        AudioHub.loadSound(AudioLib.COLLECTABLE.coin);
         this.animate(ImageLib.COIN.rotate, 30, null, 4);
     }
 
@@ -26,7 +29,8 @@ export class StatusCoins extends MovableObject {
 
     collect() {
         this.count++;
-        this.restartAnimate(ImageLib.COIN.rotate, 30, null, 4);
+        AudioHub.playFromStart(AudioLib.COLLECTABLE.coin);
+        this.restartAnimate(ImageLib.COIN.rotate, 0, 30, null, 4);
     }
 }
 
@@ -40,6 +44,7 @@ export class StatusBottles extends MovableObject {
         this.x = hero.statusBar.x + hero.statusBar.w / 2 + this.w - this.w / 1.25;
         this.count = hero.throwables.length;
         this.loadImages(ImageLib.STATUSBAR.icons.bottle);
+        AudioHub.loadSounds(AudioLib.COLLECTABLE.bottle);
         this.animate(ImageLib.STATUSBAR.icons.bottle, 6, null, 3);
     }
 
@@ -57,10 +62,16 @@ export class StatusBottles extends MovableObject {
 
     collect() {
         this.count++;
-        this.restartAnimate(ImageLib.STATUSBAR.icons.bottle, 6, null, 3);
+        AudioHub.playFromStart(AudioLib.COLLECTABLE.bottle.collect);
+        this.restartAnimate(ImageLib.STATUSBAR.icons.bottle, 0, 6, null, 3);
     }
 
     spend() {
         this.count = Math.max(this.count - 1, 0);
+    }
+
+    shake() {
+        AudioHub.play(AudioLib.COLLECTABLE.bottle.empty);
+        this.restartAnimate(ImageLib.STATUSBAR.icons.bottle, 0, 6, null, 3);
     }
 }

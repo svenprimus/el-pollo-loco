@@ -1,4 +1,6 @@
 import { DrawableObject } from './drawable-object.class.js';
+import { AudioHub } from '../utility/audio-hub.class.js';
+
 import { TimingHub } from '../utility/timing-hub.class.js';
 import { Game } from '../utility/game.class.js';
 import { Level } from './level.class.js';
@@ -33,6 +35,9 @@ export class MovableObject extends DrawableObject {
     rW = 0;
     rH = 0;
 
+    soundDead = null;
+    soundHurt = null;
+
     constructor(hCanvas) {
         super(hCanvas);
         this.ground = hCanvas - hCanvas * 0.11;
@@ -53,14 +58,13 @@ export class MovableObject extends DrawableObject {
                     this.playAnimation(images);
                 }
             },
-            1000 / frequency,
-            this
+            1000 / frequency
         );
     }
 
-    restartAnimate(images, frequency = 10, fn = null, indexEnd = null) {
+    restartAnimate(images, idFirst = 0, frequency = 10, fn = null, indexEnd = null) {
         if (TimingHub.stopInterval(this.idAnimate)) {
-            this.imgCurrent = 0;
+            this.playSingleImage(images, idFirst);
             this.animate(images, frequency, fn, indexEnd);
         }
     }
@@ -82,14 +86,20 @@ export class MovableObject extends DrawableObject {
      * @param {number} frequency
      * @param {function} fn
      */
-    restartAnimateIfChangedFrequency(images, idFirst, frequency = 10, fn = null, indexEnd = null) {
+    restartAnimateIfChanged(images, idFirst, frequency = 10, fn = null, indexEnd = null) {
         if (
             (this.lastAnimateFreq !== frequency && TimingHub.isIntervalSet(this.idAnimate)) ||
             this.img !== this.imgCache[images[this.imgCurrent]]
         ) {
             this.playSingleImage(images, idFirst);
-            this.restartAnimate(images, frequency, fn, indexEnd);
+            this.restartAnimate(images, idFirst, frequency, fn, indexEnd);
         }
+    }
+
+    loadSounds(basePath) {
+        AudioHub.loadSounds(basePath);
+        this.soundDead = basePath['dead'];
+        this.soundHurt = basePath['hurt'];
     }
 
     /**
@@ -105,8 +115,7 @@ export class MovableObject extends DrawableObject {
                     this.speedY -= this.acceleration;
                 }
             },
-            1000 / Game.FPS,
-            this
+            1000 / Game.FPS
         );
     }
 
@@ -170,8 +179,7 @@ export class MovableObject extends DrawableObject {
                     fn();
                 }
             },
-            1000 / Game.FPS,
-            this
+            1000 / Game.FPS
         );
         return id;
     }
@@ -188,6 +196,7 @@ export class MovableObject extends DrawableObject {
                 this.extraJumpAvailable = false;
             }
         }
+        return this.speedY === percentImpulse;
     }
 
     /**
@@ -199,6 +208,11 @@ export class MovableObject extends DrawableObject {
         this.hp = Math.max(this.hp - damage, 0);
         if (this.statusBar) {
             this.statusBar.setPercentage((100 * this.hp) / this.hpMax);
+        }
+        if (this.isDead() && this.soundDead) {
+            AudioHub.playFromStart(this.soundDead);
+        } else if (this.soundHurt) {
+            AudioHub.play(this.soundHurt);
         }
     }
 

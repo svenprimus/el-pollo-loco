@@ -1,6 +1,7 @@
 import { Controls } from './controls.class.js';
 import { World } from '../world/world.class.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
+import { AudioHub } from '../utility/audio-hub.class.js';
 
 export class Game {
     static FPS = 25;
@@ -17,16 +18,27 @@ export class Game {
 
     static pause() {
         TimingHub.pause();
+        AudioHub.stopAll();
     }
 
     static resume() {
         TimingHub.resume();
+        AudioHub.resume();
     }
 
     static restart() {
         TimingHub.clearGame();
+        AudioHub.stopAll();
         const canvas = document.getElementById('canvas');
         Game.world = new World(canvas);
         Game.world.draw();
+    }
+
+    static toggleMute() {
+        AudioHub.toggleMute();
+    }
+
+    static setVolume(volumePercentage) {
+        AudioHub.setVolume(volumePercentage);
     }
 }

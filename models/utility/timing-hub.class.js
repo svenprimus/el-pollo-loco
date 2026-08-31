@@ -8,12 +8,11 @@ export class TimingHub {
      * Sets an interval that can be paused and resumed.
      * @param {function} fn - function to execute
      * @param {number} time - interval in ms
-     * @param {moveableObject} obj - moveableObject that wants should be resumeable
      * @returns id of new interval
      */
-    static setInterval(fn, time, obj = null) {
+    static setInterval(fn, time, idOrigin = null) {
         const id = setInterval(fn, time);
-        TimingHub.intervalIds.push({ id: id, fn: fn, time: time, obj: obj });
+        TimingHub.intervalIds.push({ id: id, fn: fn, time: time, idOrigin: idOrigin ? idOrigin : id });
         return id;
     }
 
@@ -23,12 +22,23 @@ export class TimingHub {
      * @returns index of id in managed container, or -1 if not existing
      */
     static stopInterval(id) {
-        const index = TimingHub.getIntervalIndex(id);
+        let index = TimingHub.getIntervalIndex(id);
         if (index >= 0) {
             clearInterval(id);
             TimingHub.intervalIds.splice(index, 1);
+        } else {
+            index = TimingHub.stopIntervalOrigin(id);
         }
         return index >= 0;
+    }
+
+    static stopIntervalOrigin(idOrigin) {
+        const index = TimingHub.getIntervalIndexOrigin(idOrigin);
+        if (index >= 0) {
+            clearInterval(TimingHub.intervalIds[index].id);
+            TimingHub.intervalIds.splice(index, 1);
+        }
+        return index;
     }
 
     /**
@@ -37,12 +47,12 @@ export class TimingHub {
      * @param {number} time - ms to trigger to timeout
      * @returns id of new timeout
      */
-    static setTimeout(fn, time) {
+    static setTimeout(fn, time, idOrigin = null) {
         const id = setTimeout(() => {
             fn();
             this.clearTimeout(id);
         }, time);
-        TimingHub.timeoutIds.push({ id: id, fn: fn, time: time });
+        TimingHub.timeoutIds.push({ id: id, fn: fn, time: time, idOrigin: idOrigin ? idOrigin : id });
         return id;
     }
 
@@ -52,12 +62,23 @@ export class TimingHub {
      * @returns
      */
     static clearTimeout(id) {
-        const index = TimingHub.getTimeoutIndex(id);
+        let index = TimingHub.getTimeoutIndex(id);
         if (index >= 0) {
             clearTimeout(id);
             TimingHub.timeoutIds.splice(index, 1);
+        } else {
+            index = TimingHub.stopTimeoutOrigin(id);
         }
         return index >= 0;
+    }
+
+    static stopTimeoutOrigin(idOrigin) {
+        const index = TimingHub.getTimeoutIndexOrigin(idOrigin);
+        if (index >= 0) {
+            clearTimeout(TimingHub.timeoutIds[index].id);
+            TimingHub.timeoutIds.splice(index, 1);
+        }
+        return index;
     }
 
     /**
@@ -92,14 +113,10 @@ export class TimingHub {
      */
     static resume() {
         TimingHub.timeoutsBackup.forEach((timeout) => {
-            TimingHub.setTimeout(timeout.fn, timeout.time);
+            TimingHub.setTimeout(timeout.fn, timeout.time, timeout.idOrigin);
         });
         TimingHub.intervalBackup.forEach((interval) => {
-            const newId = TimingHub.setInterval(interval.fn, interval.time);
-            // revive old animation id with new one, so that animation can continue
-            if (interval.obj != null && interval.obj.idAnimate === interval.id) {
-                interval.obj.idAnimate = newId;
-            }
+            TimingHub.setInterval(interval.fn, interval.time, interval.idOrigin);
         });
         TimingHub.timeoutsBackup = [];
         TimingHub.intervalBackup = [];
@@ -114,13 +131,22 @@ export class TimingHub {
         return TimingHub.intervalIds.findIndex((interval) => interval.id === id);
     }
 
+    static getIntervalIndexOrigin(idOrigin) {
+        return TimingHub.intervalIds.findIndex((interval) => interval.idOrigin === idOrigin);
+    }
+
     /**
      * Check if interval id is set.
      * @param {number} id - interval id
      * @returns index if found, else -1
      */
     static isIntervalSet(id) {
-        return TimingHub.getIntervalIndex(id) >= 0;
+        // return TimingHub.getIntervalIndex(id) >= 0 || TimingHub.getIntervalIndexOrigin(id) >= 0;
+        let first = TimingHub.getIntervalIndex(id) >= 0;
+        if (!first) {
+            first = TimingHub.getIntervalIndexOrigin(id) >= 0;
+        }
+        return first;
     }
 
     /**
@@ -132,12 +158,16 @@ export class TimingHub {
         return TimingHub.timeoutIds.findIndex((timeout) => timeout.id === id);
     }
 
+    static getTimeoutIndexOrigin(id) {
+        return TimingHub.timeoutIds.findIndex((timeout) => timeout.idOrigin === id);
+    }
+
     /**
      * Check if timeout id is set.
      * @param {number} id - timeout id
      * @returns index if found, else -1
      */
     static isTimeoutSet(id) {
-        return TimingHub.getTimeoutIndex(id) >= 0;
+        return TimingHub.getTimeoutIndex(id) >= 0 || TimingHub.getTimeoutIndexOrigin(id) >= 0;
     }
 }

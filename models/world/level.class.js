@@ -1,3 +1,5 @@
+import { AudioLib } from '../utility/audio-lib.class.js';
+import { AudioHub } from '../utility/audio-hub.class.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 
 export class Level {
@@ -45,6 +47,9 @@ export class Level {
         Level.END = (Level.BG_WIDTH * (backgrounds.length - bgsPerLayer)) / bgsPerLayer;
         this.placeObjects();
         this.startCleaningTasks();
+        this.startAmbientSoundLoop();
+        AudioHub.loadSound(AudioLib.GAME.ambient);
+        AudioHub.loadSound(AudioLib.GAME.ambientBoss);
     }
 
     /**
@@ -74,22 +79,30 @@ export class Level {
         this.cleanObjects(this.collectables);
     }
 
+    startAmbientSoundLoop() {
+        TimingHub.setInterval(() => {
+            if (this.boss.hasSpawned && false === this.boss.isDead()) {
+                AudioHub.stop(AudioLib.GAME.ambient);
+                AudioHub.play(AudioLib.GAME.ambientBoss);
+            } else {
+                AudioHub.play(AudioLib.GAME.ambient);
+                AudioHub.stop(AudioLib.GAME.ambientBoss);
+            }
+        }, 500);
+    }
+
     /**
      * Iterates through given array and removes all elements, that return hasFinished() true.
      * @param {array} objectArray - Object must implement a hasFinished() method
      */
     cleanObjects(objectArray) {
-        TimingHub.setInterval(
-            () => {
-                for (let i = objectArray.length - 1; i >= 0; i--) {
-                    if (objectArray[i].hasFinished()) {
-                        TimingHub.stopInterval(objectArray[i].idAnimate);
-                        objectArray.splice(i, 1);
-                    }
+        TimingHub.setInterval(() => {
+            for (let i = objectArray.length - 1; i >= 0; i--) {
+                if (objectArray[i].hasFinished()) {
+                    TimingHub.stopInterval(objectArray[i].idAnimate);
+                    objectArray.splice(i, 1);
                 }
-            },
-            100,
-            this
-        );
+            }
+        }, 100);
     }
 }

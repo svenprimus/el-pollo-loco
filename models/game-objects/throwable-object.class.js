@@ -1,5 +1,7 @@
 import { MovableObject } from '../world/movable-object.class.js';
 import { ImageLib } from '../utility/image-lib.class.js';
+import { AudioLib } from '../utility/audio-lib.class.js';
+import { AudioHub } from '../utility/audio-hub.class.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 import { Game } from '../utility/game.class.js';
 
@@ -14,6 +16,7 @@ export class ThrowableObject extends MovableObject {
         super(hCanvas).loadImage(ImageLib.AMMO.midair.imgs[0]);
         this.hero = hero;
         this.loadImagesToCache();
+        AudioHub.loadSound(AudioLib.AMMO.impact);
         this.setSizeByHeight(6, ImageLib.AMMO.midair.wNatural, ImageLib.AMMO.midair.hNatural);
         this.applyGravity();
         this.animate(ImageLib.AMMO.midair.imgs);
@@ -26,21 +29,13 @@ export class ThrowableObject extends MovableObject {
     }
 
     throw(x, y, relativeSpeed, isReversed) {
-        const factor = isReversed ? 1 : -1;
-
-        this.x = x - this.w / 2;
-        this.y = y;
-        this.setOffset(ImageLib.AMMO.midair.offset, ImageLib.AMMO.midair.wNatural, ImageLib.AMMO.midair.hNatural);
-
-        this.speedY = 5;
-        this.speedX = factor * 20 + factor * relativeSpeed;
-
+        this.setDimension(x, y, relativeSpeed, isReversed);
         const idInterval = TimingHub.setInterval(() => {
             if (false === this.isJumping() || this.isCollided) {
                 this.impact(idInterval);
             } else {
                 this.moveLeft();
-                this.restartAnimateIfChangedFrequency(ImageLib.AMMO.midair.imgs, 0);
+                this.restartAnimateIfChanged(ImageLib.AMMO.midair.imgs, 0);
             }
         }, 1000 / Game.FPS);
     }
@@ -49,7 +44,8 @@ export class ThrowableObject extends MovableObject {
         if (false === this.isImpacting) {
             this.isImpacting = true;
             this.speedX = 0;
-            this.restartAnimateIfChangedFrequency(ImageLib.AMMO.impact.imgs, 0, 2 * ImageLib.AMMO.impact.imgs.length);
+            AudioHub.playFromStart(AudioLib.AMMO.impact);
+            this.restartAnimateIfChanged(ImageLib.AMMO.impact.imgs, 0, 2 * ImageLib.AMMO.impact.imgs.length);
             TimingHub.setTimeout(() => {
                 TimingHub.stopInterval(idInterval);
                 TimingHub.stopInterval(this.idGravity);
@@ -68,5 +64,16 @@ export class ThrowableObject extends MovableObject {
 
     hasFinished() {
         return this.isFinished;
+    }
+
+    setDimension(x, y, relativeSpeed, isReversed) {
+        const factor = isReversed ? 1 : -1;
+
+        this.x = x - this.w / 2;
+        this.y = y;
+        this.setOffset(ImageLib.AMMO.midair.offset, ImageLib.AMMO.midair.wNatural, ImageLib.AMMO.midair.hNatural);
+
+        this.speedY = 5;
+        this.speedX = factor * 20 + factor * relativeSpeed;
     }
 }

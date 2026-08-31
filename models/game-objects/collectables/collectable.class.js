@@ -23,7 +23,7 @@ export class Collectable extends MovableObject {
     collect(animation, frequency, timeout = 1000) {
         if (false === this.isCollecting) {
             this.isCollecting = true;
-            this.restartAnimateIfChangedFrequency(animation, 0, frequency);
+            this.restartAnimateIfChanged(animation, 0, frequency);
             TimingHub.setTimeout(() => {
                 this.collected = true;
             }, timeout);

@@ -1,8 +1,10 @@
 import { MovableObject } from '../world/movable-object.class.js';
 import { Level } from '../world/level.class.js';
 import { ImageLib } from '../utility/image-lib.class.js';
-import { Game } from '../utility/game.class.js';
+import { AudioLib } from '../utility/audio-lib.class.js';
+import { AudioHub } from '../utility/audio-hub.class.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
+import { Game } from '../utility/game.class.js';
 import { Controls } from '../utility/controls.class.js';
 import { ThrowableObject } from './throwable-object.class.js';
 import { StartLimiter } from './start-limiter.class.js';
@@ -81,6 +83,7 @@ export class Hero extends MovableObject {
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.HERO.idle[0]);
         this.loadImagesToCache();
+        this.loadSounds(AudioLib.HERO);
         this.setSizeByHeight(2, ImageLib.HERO.wNatural, ImageLib.HERO.hNatural);
         this.reload();
         this.animate(ImageLib.HERO.idle, Game.FPS);
@@ -100,14 +103,10 @@ export class Hero extends MovableObject {
 
     // #region resolve
     resolve() {
-        TimingHub.setInterval(
-            () => {
-                this.resolveControl();
-                this.resolveAnimation(this.animations);
-            },
-            25,
-            this
-        );
+        TimingHub.setInterval(() => {
+            this.resolveControl();
+            this.resolveAnimation(this.animations);
+        }, 25);
     }
 
     resolveControl() {
@@ -131,7 +130,10 @@ export class Hero extends MovableObject {
 
     resolveJump() {
         if (Controls.UP) {
-            this.jump(5);
+            if (this.jump(5)) {
+                AudioHub.stop(AudioLib.HERO.walk);
+                AudioHub.playFromStart(AudioLib.HERO.jump);
+            }
         } else if (1 === this.jumpCount) {
             this.extraJumpAvailable = true;
         }
@@ -160,6 +162,7 @@ export class Hero extends MovableObject {
             const isViableEnemy = false === othr.hitByJump && othr instanceof Enemy;
             if (isViableEnemy && this.isCollidingFromTop(othr)) {
                 othr.hit(this.atkJump);
+                AudioHub.playFromStart(AudioLib.HERO.bounce);
                 this.speedY = 5;
             } else if (isViableEnemy && this.isColliding(othr) && false === othr.isFleeing()) {
                 this.hit(othr.atk);
@@ -189,7 +192,7 @@ export class Hero extends MovableObject {
      */
     setAnimation(images, frequency, indexEnd = null) {
         this.lastIdleTime = 0;
-        this.restartAnimateIfChangedFrequency(images, 0, frequency, null, indexEnd);
+        this.restartAnimateIfChanged(images, 0, frequency, null, indexEnd);
     }
 
     /**
@@ -199,12 +202,12 @@ export class Hero extends MovableObject {
      * @param {number} frequency
      */
     setIdleAnimation(images, frequency) {
-        this.restartAnimateIfChangedFrequency(images, 0, frequency);
+        this.restartAnimateIfChanged(images, 0, frequency);
     }
 
     // #region actions
     runLeft() {
-        this.isRunningAtr = true;
+        this.setRunning();
         this.reverseDirection = true;
         this.camEaseRight = 3;
         if (this.isAfterStart() && false === this.world.level.boss.isSpawning) {
@@ -222,7 +225,7 @@ export class Hero extends MovableObject {
     }
 
     runRight() {
-        this.isRunningAtr = true;
+        this.setRunning();
         this.reverseDirection = false;
         this.camEaseLeft = 3;
         if (this.isBeforeEnd() && false === this.world.level.boss.isSpawning) {
@@ -234,11 +237,19 @@ export class Hero extends MovableObject {
         }
     }
 
+    setRunning() {
+        this.isRunningAtr = true;
+        if (false === this.isJumping()) {
+            AudioHub.play(AudioLib.HERO.walk);
+        }
+    }
+
     moveRight() {
         super.moveRight();
     }
 
     stopRunning() {
+        AudioHub.stop(AudioLib.HERO.walk);
         this.isRunningAtr = false;
     }
 
@@ -252,6 +263,8 @@ export class Hero extends MovableObject {
             this.lastAttack = new Date().getTime();
             this.throw();
             this.isAttackingAtr = true;
+        } else if (this.throwables.length === 0) {
+            this.statusBottles.shake();
         }
     }
 
@@ -262,6 +275,7 @@ export class Hero extends MovableObject {
     }
 
     throw() {
+        AudioHub.playFromStart(AudioLib.HERO.attack);
         this.statusBottles.spend();
         this.world.level.thrownAmmo.push(this.throwables.shift());
         this.world.level.thrownAmmo[this.world.level.thrownAmmo.length - 1].throw(
@@ -283,8 +297,9 @@ export class Hero extends MovableObject {
     }
 
     drink() {
-        if (this.lastDrinkTime === 0) {
+        if (this.lastDrinkTime === 0 && false === this.isJumping()) {
             this.lastDrinkTime = new Date().getTime();
+            AudioHub.play(AudioLib.HERO.drink);
         }
         const timeNow = new Date().getTime();
         if (timeNow - this.lastDrinkTime > 1000) {
@@ -296,6 +311,7 @@ export class Hero extends MovableObject {
     }
 
     stopDrinking() {
+        AudioHub.stopReset(AudioLib.HERO.drink);
         this.isDrinkingAtr = false;
         this.lastDrinkTime = 0;
     }
@@ -322,8 +338,11 @@ export class Hero extends MovableObject {
         if (this.lastIdleTime === 0) {
             this.lastIdleTime = new Date().getTime();
         }
-        const timeNow = new Date().getTime();
-        return timeNow - this.lastIdleTime > 10000;
+        const isIdleLong = new Date().getTime() - this.lastIdleTime > 10000;
+        if (isIdleLong) {
+            AudioHub.play(AudioLib.HERO.idleLong);
+        }
+        return isIdleLong;
     }
 
     isAfterStart() {
@@ -335,6 +354,7 @@ export class Hero extends MovableObject {
     }
     // #endregion conditions
 
+    // TODO: Move cam adjustments to world class?
     followcamRight() {
         this.camEaseRight = Math.max(this.camEaseRight - 0.2, 1);
         const onRunnAdjust = this.world.camX - this.camEaseRight * this.getSpeedInPixel() - 10;
