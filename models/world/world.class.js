@@ -64,6 +64,7 @@ export class World {
         this.addToMap(this.level.enemies);
         this.addToMap(this.level.boss);
         this.addToMap(this.level.thrownAmmo);
+        this.addToMap(this.level.lostCoins);
         this.addToMap(this.level.clouds);
 
         // TODO: remove markers

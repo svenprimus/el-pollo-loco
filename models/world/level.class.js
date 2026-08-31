@@ -19,6 +19,7 @@ export class Level {
     backgrounds = [];
     startLimiter;
     thrownAmmo = [];
+    lostCoins = [];
 
     constructor(
         wCanvas,
@@ -82,6 +83,7 @@ export class Level {
         this.cleanObjects(this.thrownAmmo);
         this.cleanObjects(this.enemies);
         this.cleanObjects(this.collectables);
+        this.cleanObjects(this.lostCoins);
     }
 
     startAmbientSoundLoop() {

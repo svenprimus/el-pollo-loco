@@ -9,7 +9,7 @@ export class Boss extends Enemy {
     statusBar;
     hp = 500;
     hpMax = 500;
-    atk = 5;
+    atk = 25;
     lastAlert = 0;
     isRunningAtr = false;
     isAttackingAtr = false;

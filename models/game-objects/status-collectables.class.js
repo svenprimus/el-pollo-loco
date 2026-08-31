@@ -32,6 +32,10 @@ export class StatusCoins extends MovableObject {
         AudioHub.playFromStart(AudioLib.COLLECTABLE.coin);
         this.restartAnimate(ImageLib.COIN.rotate, 0, 30, null, 4);
     }
+
+    lose() {
+        this.count = Math.max(this.count - 1, 0);
+    }
 }
 
 export class StatusBottles extends MovableObject {

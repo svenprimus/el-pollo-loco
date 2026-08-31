@@ -120,9 +120,8 @@ export class MovableObject extends DrawableObject {
     }
 
     stopGravity(timeout = 0) {
-        const idTimeout = TimingHub.setTimeout(() => {
+        TimingHub.setTimeout(() => {
             TimingHub.stopInterval(this.idGravity);
-            TimingHub.clearTimeout(idTimeout);
         }, timeout);
     }
 

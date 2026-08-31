@@ -11,6 +11,7 @@ import { StartLimiter } from './start-limiter.class.js';
 import { Collectable } from './collectables/collectable.class.js';
 import { Bottle } from './collectables/bottle.class.js';
 import { Coin } from './collectables/coin.class.js';
+import { LostCoin } from './lost-coin.class.js';
 import { Enemy } from './enemies/enemy.class.js';
 
 export class Hero extends MovableObject {
@@ -164,8 +165,9 @@ export class Hero extends MovableObject {
                 othr.hit(this.atkJump);
                 AudioHub.playFromStart(AudioLib.HERO.bounce);
                 this.speedY = 5;
-            } else if (isViableEnemy && this.isColliding(othr) && false === othr.isFleeing()) {
+            } else if (isViableEnemy && this.isColliding(othr) && !othr.isFleeing() && !this.isHurt()) {
                 this.hit(othr.atk);
+                this.loseCoin();
             } else if (othr instanceof Collectable && this.isColliding(othr) && false === othr.collected) {
                 this.collect(othr);
             }
@@ -286,9 +288,18 @@ export class Hero extends MovableObject {
         );
     }
 
+    loseCoin() {
+        if (this.statusCoins.count > 0) {
+            const lostCoin = new LostCoin(Level.hCanvas);
+            lostCoin.lose(this.x + this.w / 2, this.y + this.h / 2);
+            this.world.level.lostCoins.push(lostCoin);
+            this.statusCoins.lose();
+        }
+    }
+
     reload() {
         for (let i = 0; i < 5; i++) {
-            this.throwables.push(new ThrowableObject(this, this.hCanvas));
+            this.throwables.push(new ThrowableObject(this.hCanvas));
         }
     }
 
