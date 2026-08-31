@@ -103,13 +103,10 @@ export class Hero extends MovableObject {
 
     // #region resolve
     resolve() {
-        TimingHub.setInterval(
-            () => {
-                this.resolveControl();
-                this.resolveAnimation(this.animations);
-            },
-            25
-        );
+        TimingHub.setInterval(() => {
+            this.resolveControl();
+            this.resolveAnimation(this.animations);
+        }, 25);
     }
 
     resolveControl() {
@@ -278,6 +275,7 @@ export class Hero extends MovableObject {
     }
 
     throw() {
+        AudioHub.playFromStart(AudioLib.HERO.attack);
         this.statusBottles.spend();
         this.world.level.thrownAmmo.push(this.throwables.shift());
         this.world.level.thrownAmmo[this.world.level.thrownAmmo.length - 1].throw(

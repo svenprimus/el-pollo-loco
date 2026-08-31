@@ -33,7 +33,7 @@ export class AudioLib {
             mult: 1,
         },
         attack: {
-            path: '',
+            path: './assets/audio/character/characterAttack.mp3',
             mult: 1,
         },
     };
@@ -110,7 +110,7 @@ export class AudioLib {
             },
             empty: {
                 path: './assets/audio/collectibles/bottleEmpty.mp3',
-                mult: 1.4,
+                mult: 2,
             },
         },
         coin: {
