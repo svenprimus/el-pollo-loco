@@ -26,7 +26,7 @@ export class World {
             this.checkCollisionWithMobs();
             this.checkCollisionWithBoss();
             this.checkCollisionWithCollectables();
-        }, 50);
+        }, 25);
     }
 
     checkCollisionWithMobs() {

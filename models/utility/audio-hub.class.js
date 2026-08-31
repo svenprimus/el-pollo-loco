@@ -2,11 +2,10 @@ import { Level } from '../world/level.class.js';
 class MyAudio {
     file;
     isLoaded;
-    // isPlaying;
 
-    constructor(file) {
+    constructor(file, mult) {
         this.file = new Audio(file);
-        this.file.volume = 0.2;
+        this.file.volume = Math.min(Math.max(0.2 * mult, 0), 1);
         this.file.currentTime = 0;
     }
 
@@ -26,49 +25,42 @@ class MyAudio {
 
 export class AudioHub {
     static sounds = {};
-    static playing = [];
     static camX = 0;
 
     // TODO: play from queue? e.g. multiple equal sounds: coins, chicken
-    static play(path) {
-        const sound = AudioHub.sounds[path];
+    static play(soundJson) {
+        const sound = AudioHub.sounds[soundJson.path];
         if (sound) {
             if (sound.file.readyState === 4 || sound.isLoaded) {
                 sound.isLoaded = true;
                 sound.play();
-                // if (false === sound.isPlaying) {
-                //     AudioHub.playing.push(sound);
-                // }
             }
         }
     }
 
-    static playFromStart(path) {
-        const sound = AudioHub.sounds[path];
+    static playFromStart(soundJson) {
+        const sound = AudioHub.sounds[soundJson.path];
         if (sound) {
             if (sound.file.readyState === 4 || sound.isLoaded) {
                 sound.file.pause();
                 sound.file.currentTime = 0;
                 sound.isLoaded = true;
                 sound.play();
-                // if (false === sound.isPlaying) {
-                //     AudioHub.playing.push(sound);
-                // }
             }
         }
     }
 
-    static playIfNearby(path, x, w) {
+    static playIfNearby(soundJson, x, w) {
         const distance = AudioHub.camX + x;
         if (-w < distance && distance < Level.BG_WIDTH) {
-            AudioHub.play(path);
+            AudioHub.play(soundJson);
         }
     }
 
-    static playFromStartIfNearby(path, x, w) {
+    static playFromStartIfNearby(soundJson, x, w) {
         const distance = AudioHub.camX + x;
         if (-w < distance && distance < Level.BG_WIDTH) {
-            AudioHub.playFromStart(path);
+            AudioHub.playFromStart(soundJson);
         }
     }
 
@@ -87,30 +79,30 @@ export class AudioHub {
         }
     }
 
-    static stop(path) {
-        const sound = AudioHub.sounds[path];
+    static stop(soundJson) {
+        const sound = AudioHub.sounds[soundJson.path];
         if (sound) {
             sound.file.pause();
         }
     }
 
-    static stopReset(path) {
-        const sound = AudioHub.sounds[path];
+    static stopReset(soundJson) {
+        const sound = AudioHub.sounds[soundJson.path];
         if (sound) {
             sound.file.pause();
             sound.file.currentTime = 0;
         }
     }
 
-    static loadSound(path) {
-        AudioHub.sounds[path] = new MyAudio(path);
+    static loadSound(soundJson) {
+        AudioHub.sounds[soundJson.path] = new MyAudio(soundJson.path, soundJson.mult);
     }
 
-    static loadSounds(audioPaths) {
-        for (const key in audioPaths) {
-            const path = audioPaths[key];
+    static loadSounds(soundJsons) {
+        for (const key in soundJsons) {
+            const path = soundJsons[key].path;
             if (path && !Object.hasOwn(AudioHub.sounds, path)) {
-                AudioHub.sounds[path] = new MyAudio(path);
+                AudioHub.sounds[path] = new MyAudio(path, soundJsons[key].mult);
             }
         }
     }

@@ -28,6 +28,7 @@ export class Game {
 
     static restart() {
         TimingHub.clearGame();
+        AudioHub.stopAll();
         const canvas = document.getElementById('canvas');
         Game.world = new World(canvas);
         Game.world.draw();

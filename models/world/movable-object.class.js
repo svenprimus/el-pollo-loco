@@ -212,7 +212,7 @@ export class MovableObject extends DrawableObject {
         if (this.isDead() && this.soundDead) {
             AudioHub.playFromStart(this.soundDead);
         } else if (this.soundHurt) {
-            AudioHub.playFromStart(this.soundHurt);
+            AudioHub.play(this.soundHurt);
         }
     }
 

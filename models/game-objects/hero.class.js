@@ -164,12 +164,10 @@ export class Hero extends MovableObject {
         if (false == this.isDead()) {
             const isViableEnemy = false === othr.hitByJump && othr instanceof Enemy;
             if (isViableEnemy && this.isCollidingFromTop(othr)) {
-                // othr.hit(this.atkJump, AudioLib.ENEMY.mob_1.dead);
                 othr.hit(this.atkJump);
                 AudioHub.playFromStart(AudioLib.HERO.bounce);
                 this.speedY = 5;
             } else if (isViableEnemy && this.isColliding(othr) && false === othr.isFleeing()) {
-                // this.hit(othr.atk, AudioLib.HERO.dead, AudioLib.HERO.hurt);
                 this.hit(othr.atk);
             } else if (othr instanceof Collectable && this.isColliding(othr) && false === othr.collected) {
                 this.collect(othr);
