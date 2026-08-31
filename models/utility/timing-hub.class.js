@@ -8,12 +8,11 @@ export class TimingHub {
      * Sets an interval that can be paused and resumed.
      * @param {function} fn - function to execute
      * @param {number} time - interval in ms
-     * @param {moveableObject} obj - moveableObject that wants should be resumeable
      * @returns id of new interval
      */
-    static setInterval(fn, time, obj = null, idOrigin = null) {
+    static setInterval(fn, time, idOrigin = null) {
         const id = setInterval(fn, time);
-        TimingHub.intervalIds.push({ id: id, fn: fn, time: time, obj: obj, idOrigin: idOrigin ? idOrigin : id });
+        TimingHub.intervalIds.push({ id: id, fn: fn, time: time, idOrigin: idOrigin ? idOrigin : id });
         return id;
     }
 
@@ -117,11 +116,7 @@ export class TimingHub {
             TimingHub.setTimeout(timeout.fn, timeout.time, timeout.idOrigin);
         });
         TimingHub.intervalBackup.forEach((interval) => {
-            const newId = TimingHub.setInterval(interval.fn, interval.time, interval.obj, interval.idOrigin);
-            // revive old animation id with new one, so that animation can continue
-            if (interval.obj != null && interval.obj.idAnimate === interval.id) {
-                interval.obj.idAnimate = newId;
-            }
+            TimingHub.setInterval(interval.fn, interval.time, interval.idOrigin);
         });
         TimingHub.timeoutsBackup = [];
         TimingHub.intervalBackup = [];
@@ -146,7 +141,12 @@ export class TimingHub {
      * @returns index if found, else -1
      */
     static isIntervalSet(id) {
-        return TimingHub.getIntervalIndex(id) >= 0 || TimingHub.getIntervalIndexOrigin(id) >= 0;
+        // return TimingHub.getIntervalIndex(id) >= 0 || TimingHub.getIntervalIndexOrigin(id) >= 0;
+        let first = TimingHub.getIntervalIndex(id) >= 0;
+        if (!first) {
+            first = TimingHub.getIntervalIndexOrigin(id) >= 0;
+        }
+        return first;
     }
 
     /**
@@ -168,6 +168,6 @@ export class TimingHub {
      * @returns index if found, else -1
      */
     static isTimeoutSet(id) {
-        return TimingHub.getTimeoutIndex(id) >= 0 || TimingHub.getTimeoutIndexOrigin(id) >= 0;;
+        return TimingHub.getTimeoutIndex(id) >= 0 || TimingHub.getTimeoutIndexOrigin(id) >= 0;
     }
 }

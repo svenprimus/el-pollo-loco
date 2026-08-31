@@ -64,8 +64,7 @@ export class Boss extends Enemy {
                 this.statusHandler();
                 this.resolveAnimation(this.animations);
             },
-            25,
-            this
+            25
         );
     }
 

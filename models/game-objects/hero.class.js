@@ -108,8 +108,7 @@ export class Hero extends MovableObject {
                 this.resolveControl();
                 this.resolveAnimation(this.animations);
             },
-            25,
-            this
+            25
         );
     }
 

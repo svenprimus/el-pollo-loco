@@ -88,8 +88,7 @@ export class Level {
                     }
                 }
             },
-            100,
-            this
+            100
         );
     }
 }

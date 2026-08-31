@@ -58,8 +58,7 @@ export class MovableObject extends DrawableObject {
                     this.playAnimation(images);
                 }
             },
-            1000 / frequency,
-            this
+            1000 / frequency
         );
     }
 
@@ -115,8 +114,7 @@ export class MovableObject extends DrawableObject {
                     this.speedY -= this.acceleration;
                 }
             },
-            1000 / Game.FPS,
-            this
+            1000 / Game.FPS
         );
     }
 
@@ -180,8 +178,7 @@ export class MovableObject extends DrawableObject {
                     fn();
                 }
             },
-            1000 / Game.FPS,
-            this
+            1000 / Game.FPS
         );
         return id;
     }
