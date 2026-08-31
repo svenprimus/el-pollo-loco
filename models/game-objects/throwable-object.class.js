@@ -16,6 +16,7 @@ export class ThrowableObject extends MovableObject {
         super(hCanvas).loadImage(ImageLib.AMMO.midair.imgs[0]);
         this.hero = hero;
         this.loadImagesToCache();
+        AudioHub.loadSound(AudioLib.AMMO.impact);
         this.setSizeByHeight(6, ImageLib.AMMO.midair.wNatural, ImageLib.AMMO.midair.hNatural);
         this.applyGravity();
         this.animate(ImageLib.AMMO.midair.imgs);
@@ -43,6 +44,7 @@ export class ThrowableObject extends MovableObject {
         if (false === this.isImpacting) {
             this.isImpacting = true;
             this.speedX = 0;
+            AudioHub.play(AudioLib.AMMO.impact);
             this.restartAnimateIfChangedFrequency(ImageLib.AMMO.impact.imgs, 0, 2 * ImageLib.AMMO.impact.imgs.length);
             TimingHub.setTimeout(() => {
                 TimingHub.stopInterval(idInterval);

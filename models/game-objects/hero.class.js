@@ -83,7 +83,7 @@ export class Hero extends MovableObject {
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.HERO.idle[0]);
         this.loadImagesToCache();
-        AudioHub.loadSounds(AudioLib.HERO);
+        this.loadSounds(AudioLib.HERO);
         this.setSizeByHeight(2, ImageLib.HERO.wNatural, ImageLib.HERO.hNatural);
         this.reload();
         this.animate(ImageLib.HERO.idle, Game.FPS);
@@ -165,16 +165,13 @@ export class Hero extends MovableObject {
         if (false == this.isDead()) {
             const isViableEnemy = false === othr.hitByJump && othr instanceof Enemy;
             if (isViableEnemy && this.isCollidingFromTop(othr)) {
+                // othr.hit(this.atkJump, AudioLib.ENEMY.mob_1.dead);
                 othr.hit(this.atkJump);
                 AudioHub.playFromStart(AudioLib.HERO.bounce);
                 this.speedY = 5;
             } else if (isViableEnemy && this.isColliding(othr) && false === othr.isFleeing()) {
+                // this.hit(othr.atk, AudioLib.HERO.dead, AudioLib.HERO.hurt);
                 this.hit(othr.atk);
-                if (this.isDead()) {
-                    AudioHub.play(AudioLib.HERO.dead);
-                } else {
-                    AudioHub.play(AudioLib.HERO.hurt);
-                }
             } else if (othr instanceof Collectable && this.isColliding(othr) && false === othr.collected) {
                 this.collect(othr);
             }
@@ -360,7 +357,7 @@ export class Hero extends MovableObject {
     }
     // #endregion conditions
 
-    // TODO: Mave cam adjustments to world class?
+    // TODO: Move cam adjustments to world class?
     followcamRight() {
         this.camEaseRight = Math.max(this.camEaseRight - 0.2, 1);
         const onRunnAdjust = this.world.camX - this.camEaseRight * this.getSpeedInPixel() - 10;

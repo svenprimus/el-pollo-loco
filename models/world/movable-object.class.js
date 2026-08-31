@@ -35,6 +35,9 @@ export class MovableObject extends DrawableObject {
     rW = 0;
     rH = 0;
 
+    soundDead = null;
+    soundHurt = null;
+
     constructor(hCanvas) {
         super(hCanvas);
         this.ground = hCanvas - hCanvas * 0.11;
@@ -92,6 +95,12 @@ export class MovableObject extends DrawableObject {
             this.playSingleImage(images, idFirst);
             this.restartAnimate(images, frequency, fn, indexEnd);
         }
+    }
+
+    loadSounds(basePath) {
+        AudioHub.loadSounds(basePath);
+        this.soundDead = basePath['dead'];
+        this.soundHurt = basePath['hurt'];
     }
 
     /**
@@ -202,6 +211,11 @@ export class MovableObject extends DrawableObject {
         this.hp = Math.max(this.hp - damage, 0);
         if (this.statusBar) {
             this.statusBar.setPercentage((100 * this.hp) / this.hpMax);
+        }
+        if (this.isDead() && this.soundDead) {
+            AudioHub.playFromStart(this.soundDead);
+        } else if (this.soundHurt) {
+            AudioHub.playFromStart(this.soundHurt);
         }
     }
 

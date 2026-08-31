@@ -1,5 +1,7 @@
 import { Enemy } from './enemy.class.js';
 import { ImageLib } from '../../utility/image-lib.class.js';
+import { AudioLib } from '../../utility/audio-lib.class.js';
+import { AudioHub } from '../../utility/audio-hub.class.js';
 import { Level } from '../../world/level.class.js';
 import { TimingHub } from '../../utility/timing-hub.class.js';
 
@@ -42,6 +44,7 @@ export class Boss extends Enemy {
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.ENEMY.boss_1.walk[0]);
         this.loadImagesToCache();
+        this.loadSounds(AudioLib.ENEMY.boss_1);
         this.setSizeByHeight(1.8, ImageLib.ENEMY.boss_1.wNatural, ImageLib.ENEMY.boss_1.hNatural);
         this.animate(ImageLib.ENEMY.boss_1.alert, 2);
         this.resolve();
@@ -95,6 +98,7 @@ export class Boss extends Enemy {
     }
 
     pursue() {
+        AudioHub.play(AudioLib.ENEMY.boss_1.walk);
         this.speedX = 5;
         this.moveLeft();
         this.isRunningAtr = true;
@@ -105,6 +109,7 @@ export class Boss extends Enemy {
         if (false === this.isAttackingAtr && false === this.isAttackFinished) {
             this.attack();
         } else if (this.isAttackFinished) {
+            AudioHub.play(AudioLib.ENEMY.boss_1.walk);
             this.moveRight();
             this.isRunningAtr = true;
             this.reverseDirection = true;
@@ -115,21 +120,26 @@ export class Boss extends Enemy {
         if (false === this.isSpawning && false === this.hasSpawned) {
             this.isRunningAtr = true;
             this.isSpawning = true;
-            const id = this.moveLeftSteady(() => {
-                if (this.x < Level.END - this.w) {
-                    this.isRunningAtr = false;
-                    this.isSpawning = false;
-                    this.hasSpawned = true;
-                    this.lastAlert = new Date().getTime();
-                    this.attack();
-                    TimingHub.stopInterval(id);
-                }
-            });
+            AudioHub.play(AudioLib.ENEMY.boss_1.spawn);
+            this.startSpawnMovement();
         }
+    }
+    startSpawnMovement() {
+        const id = this.moveLeftSteady(() => {
+            if (this.x < Level.END - this.w) {
+                this.isRunningAtr = false;
+                this.isSpawning = false;
+                this.hasSpawned = true;
+                this.lastAlert = new Date().getTime();
+                this.attack();
+                TimingHub.stopInterval(id);
+            }
+        });
     }
 
     attack() {
         if (false === this.isAttackingAtr) {
+            AudioHub.play(AudioLib.ENEMY.boss_1.attack);
             const id = TimingHub.setTimeout(() => {
                 this.isAttackingAtr = false;
                 this.isAttackFinished = true;
