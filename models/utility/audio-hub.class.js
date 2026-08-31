@@ -2,15 +2,16 @@ import { Level } from '../world/level.class.js';
 class MyAudio {
     file;
     isLoaded;
+    volMult = 1;
 
-    constructor(file, mult) {
+    constructor(file, volBase, mult) {
         this.file = new Audio(file);
-        this.file.volume = Math.min(Math.max(0.2 * mult, 0), 1);
         this.file.currentTime = 0;
+        this.volMult = mult;
     }
 
-    play() {
-        this.isPlaying = true;
+    play(volBase) {
+        this.file.volume = Math.min(Math.max(AudioHub.volBase * this.volMult, 0), 1);
         const playPromise = this.file.play();
 
         if (playPromise !== undefined) {
@@ -26,6 +27,8 @@ class MyAudio {
 export class AudioHub {
     static sounds = {};
     static camX = 0;
+    static volLast = 0.2;
+    static volBase = 0.2;
 
     // TODO: play from queue? e.g. multiple equal sounds: coins, chicken
     static play(soundJson) {
@@ -95,19 +98,25 @@ export class AudioHub {
     }
 
     static loadSound(soundJson) {
-        AudioHub.sounds[soundJson.path] = new MyAudio(soundJson.path, soundJson.mult);
+        AudioHub.sounds[soundJson.path] = new MyAudio(soundJson.path, AudioHub.volBase, soundJson.mult);
     }
 
     static loadSounds(soundJsons) {
         for (const key in soundJsons) {
             const path = soundJsons[key].path;
             if (path && !Object.hasOwn(AudioHub.sounds, path)) {
-                AudioHub.sounds[path] = new MyAudio(path, soundJsons[key].mult);
+                AudioHub.sounds[path] = new MyAudio(path, AudioHub.volBase, soundJsons[key].mult);
             }
         }
     }
 
     static setCamX(camX) {
         AudioHub.camX = camX;
+    }
+
+    static toggleMute() {
+        const tempLast = AudioHub.volLast;
+        AudioHub.volLast = AudioHub.volBase;
+        AudioHub.volBase = AudioHub.volBase === 0 ? tempLast : 0;
     }
 }

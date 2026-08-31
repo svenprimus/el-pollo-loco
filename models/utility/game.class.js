@@ -33,4 +33,8 @@ export class Game {
         Game.world = new World(canvas);
         Game.world.draw();
     }
+
+    static toggleMute() {
+        AudioHub.toggleMute();
+    }
 }

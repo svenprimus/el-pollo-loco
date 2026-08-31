@@ -6,6 +6,7 @@ export class Events {
         document.getElementById('btn-pause').addEventListener('click', Events.pauseGame);
         document.getElementById('btn-resume').addEventListener('click', Events.resumeGame);
         document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
+        document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
     }
 
     static startGame = () => {
@@ -27,6 +28,11 @@ export class Events {
         Game.restart();
         Events.unfocusButton('btn-restart');
     };
+
+    static toggleMute() {
+        Game.toggleMute();
+        Events.unfocusButton('btn-mute');
+    }
 
     /**
      * un-focus button, so that e.g. space (jump) will not restart again
