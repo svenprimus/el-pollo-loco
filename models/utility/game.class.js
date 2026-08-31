@@ -37,4 +37,8 @@ export class Game {
     static toggleMute() {
         AudioHub.toggleMute();
     }
+
+    static setVolume(volumePercentage) {
+        AudioHub.setVolume(volumePercentage);
+    }
 }

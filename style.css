@@ -31,3 +31,11 @@ button {
     flex-direction: column;
     align-items: center;
 }
+
+.dev-buttons{
+    margin-block: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}

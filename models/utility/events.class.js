@@ -1,4 +1,5 @@
 import { Game } from './game.class.js';
+import { AudioHub } from '../utility/audio-hub.class.js'
 
 export class Events {
     static init() {
@@ -7,6 +8,8 @@ export class Events {
         document.getElementById('btn-resume').addEventListener('click', Events.resumeGame);
         document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
         document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
+        document.getElementById('volume').addEventListener('input', Events.setVolume);
+        Events.updateVolumeSlider();
     }
 
     static startGame = () => {
@@ -31,7 +34,16 @@ export class Events {
 
     static toggleMute() {
         Game.toggleMute();
+        Events.updateVolumeSlider();
         Events.unfocusButton('btn-mute');
+    }
+
+    static setVolume(event) {
+        Game.setVolume(event.target.value);
+    }
+
+    static updateVolumeSlider() {
+        document.getElementById('volume').value = AudioHub.volBase * 100;
     }
 
     /**
@@ -39,6 +51,6 @@ export class Events {
      * @param {string} button - id
      */
     static unfocusButton(button) {
-        document.getElementById(button).blur(); 
+        document.getElementById(button).blur();
     }
 }

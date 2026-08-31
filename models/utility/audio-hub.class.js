@@ -119,4 +119,8 @@ export class AudioHub {
         AudioHub.volLast = AudioHub.volBase;
         AudioHub.volBase = AudioHub.volBase === 0 ? tempLast : 0;
     }
+
+    static setVolume(volumePercentage) {
+        AudioHub.volBase = volumePercentage / 100;
+    }
 }
