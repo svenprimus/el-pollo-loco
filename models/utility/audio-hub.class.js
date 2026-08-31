@@ -58,18 +58,16 @@ export class AudioHub {
         }
     }
 
-    static playIfNearby(path, x) {
-        // TODO not working as intended
-        const distance = Math.abs(AudioHub.camX + x);
-        if (distance < Level.BG_WIDTH) {
+    static playIfNearby(path, x, w) {
+        const distance = AudioHub.camX + x;
+        if (-w < distance && distance < Level.BG_WIDTH) {
             AudioHub.play(path);
         }
     }
 
-    static playFromStartIfNearby(path, x) {
-        // TODO not working as intended
-        const distance = Math.abs(AudioHub.camX + x);
-        if (distance < Level.BG_WIDTH) {
+    static playFromStartIfNearby(path, x, w) {
+        const distance = AudioHub.camX + x;
+        if (-w < distance && distance < Level.BG_WIDTH) {
             AudioHub.playFromStart(path);
         }
     }

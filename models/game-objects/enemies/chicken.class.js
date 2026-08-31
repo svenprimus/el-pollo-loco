@@ -78,7 +78,7 @@ export class Chicken extends Enemy {
             const funFactor = Math.random() * 3 + 3;
             this.speedX = funFactor + this.speedFlee;
             if (this.jump(funFactor)) {
-                AudioHub.playFromStartIfNearby(AudioLib.ENEMY.mob_1.jump, this.x);
+                AudioHub.playFromStartIfNearby(AudioLib.ENEMY.mob_1.jump, this.x, this.w);
             }
             this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.jump, 0, this.speedX * 5);
             this.startResetTimeout();
