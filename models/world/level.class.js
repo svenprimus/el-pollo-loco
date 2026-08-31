@@ -1,7 +1,7 @@
 import { AudioLib } from '../utility/audio-lib.class.js';
 import { AudioHub } from '../utility/audio-hub.class.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
-import { Coin } from '../game-objects/collectables/coin.class.js'
+import { Coin } from '../game-objects/collectables/coin.class.js';
 
 export class Level {
     static START;
@@ -28,7 +28,7 @@ export class Level {
         boss,
         enemies,
         coinWallAmount,
-        coinBowAmount, 
+        coinBowAmount,
         collectables,
         cloudsPerLayer,
         clouds,
@@ -41,7 +41,7 @@ export class Level {
         this.hero = hero;
         this.boss = boss;
         this.enemies = enemies;
-        Coin.wallAmount = coinWallAmount
+        Coin.wallAmount = coinWallAmount;
         Coin.bowAmount = coinBowAmount;
         this.collectables = collectables;
         this.clouds = clouds;
@@ -111,5 +111,11 @@ export class Level {
                 }
             }
         }, 100);
+    }
+
+    getScore() {
+        const scored = this.hero.statusCoins.count;
+        const total = Coin.totalCoinCount;
+        return scored + '/' + total + ' (' + Math.round((100 * scored) / total) + '%)';
     }
 }

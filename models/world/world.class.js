@@ -19,6 +19,7 @@ export class World {
         this.setStatusBarHero();
         this.draw();
         this.checkCollisions();
+        this.checkLevelState(); // TODO endscreen
     }
 
     checkCollisions() {
@@ -51,6 +52,18 @@ export class World {
         this.level.collectables.forEach((collectable) => {
             this.level.hero.resolveCollision(collectable);
         });
+    }
+
+    checkLevelState() {
+        const id = TimingHub.setInterval(() => {
+            if (this.level.boss.isDead() && false === this.level.hero.isDead()) {
+                console.log('WON! Score: ', this.level.getScore());
+                TimingHub.stopInterval(id);
+            } else if (this.level.hero.isDead()){
+                console.log('LOST! Score: ', this.level.getScore());
+                TimingHub.stopInterval(id);
+            }
+        }, 500);
     }
 
     draw() {

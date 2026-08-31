@@ -110,7 +110,7 @@ export class AudioLib {
             },
             empty: {
                 path: './assets/audio/collectibles/bottleEmpty.mp3',
-                mult: 2,
+                mult: 3,
             },
         },
         coin: {
