@@ -6,15 +6,13 @@ import { TimingHub } from '../utility/timing-hub.class.js';
 import { Game } from '../utility/game.class.js';
 
 export class ThrowableObject extends MovableObject {
-    hero;
     isImpacting = false;
     isFinished = false;
     isCollided = false;
     hpMax = 1;
 
-    constructor(hero, hCanvas) {
+    constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.AMMO.midair.imgs[0]);
-        this.hero = hero;
         this.loadImagesToCache();
         AudioHub.loadSound(AudioLib.AMMO.impact);
         this.setSizeByHeight(6, ImageLib.AMMO.midair.wNatural, ImageLib.AMMO.midair.hNatural);

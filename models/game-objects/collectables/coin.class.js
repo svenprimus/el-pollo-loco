@@ -18,10 +18,10 @@ export class Coin extends Collectable {
     static bowCount = 0;
     static bowReverse = false;
 
-    constructor(hCanvas, wallAmount = 0, bowAmount = 0) {
+    static totalCoinCount = 0;
+    
+    constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.COIN.rotate[2]);
-        Coin.wallAmount = wallAmount;
-        Coin.bowAmount = bowAmount;
         this.resetStatics();
         this.loadImagesToCache();
         this.setSizeByHeight(8, ImageLib.COIN.wNatural, ImageLib.COIN.hNatural);
@@ -32,7 +32,6 @@ export class Coin extends Collectable {
 
     place() {
         const section = this.getSection();
-
         if (Coin.wallCount < Coin.wallAmount) {
             this.placeWall(section);
         } else if (Coin.bowCount < Coin.bowAmount) {
@@ -42,6 +41,7 @@ export class Coin extends Collectable {
             this.y -= (Math.random() * Level.hCanvas) / 1.5;
         }
         this.setOffset(ImageLib.COIN.offset, ImageLib.COIN.wNatural, ImageLib.COIN.hNatural);
+        Coin.totalCoinCount++;
     }
 
     loadImagesToCache() {
@@ -106,5 +106,6 @@ export class Coin extends Collectable {
         Coin.bowLastX = 0;
         Coin.bowLastY = 0;
         Coin.bowCount = 0;
+        Coin.totalCoinCount = 0;
     }
 }

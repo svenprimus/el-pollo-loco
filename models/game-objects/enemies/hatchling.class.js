@@ -9,7 +9,7 @@ export class Hatchling extends Enemy {
     static spread = -1;
     hp = 20;
     hpMax = 20;
-    atk = 1;
+    atk = 8;
 
     animations = [
         {

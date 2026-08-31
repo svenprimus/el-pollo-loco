@@ -11,7 +11,7 @@ export class Chicken extends Enemy {
     idHandler;
     hp = 50;
     hpMax = 50;
-    atk = 2.5;
+    atk = 15;
 
     animations = [
         {
