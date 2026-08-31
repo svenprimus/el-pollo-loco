@@ -153,13 +153,44 @@ export class World {
         this.camX = Math.round(x);
         AudioHub.setCamX(this.camX);
     }
-    
+
+    followCamRight() {
+        this.level.hero.camEaseRight = Math.max(this.level.hero.camEaseRight - 0.2, 1);
+        const onRunnAdjust = this.camX - this.level.hero.camEaseRight * this.level.hero.getSpeedInPixel() - 10;
+        const onRunnStatic = -this.level.hero.x + this.level.hero.camOffset;
+        this.setCamX(
+            this.level.boss.hasSpawned
+                ? this.level.hero.camMax
+                : Math.max(onRunnAdjust, onRunnStatic, this.level.hero.camMax)
+        );
+        this.applyLevelSmallerThanCanvasFix();
+    }
+
+    followCamLeft() {
+        this.level.hero.camEaseLeft = Math.max(this.level.hero.camEaseLeft - 0.2, 1);
+        const onRunnAdjust = this.camX + this.level.hero.camEaseLeft * this.level.hero.getSpeedInPixel() + 10;
+        const onRunnStatic = -this.level.hero.x + Level.wCanvas - this.level.hero.w - this.level.hero.camOffset;
+        this.setCamX(
+            this.level.boss.hasSpawned
+                ? this.level.hero.camMax
+                : Math.min(onRunnAdjust, onRunnStatic, this.level.hero.camMin)
+        );
+        this.applyLevelSmallerThanCanvasFix();
+    }
+
+    applyLevelSmallerThanCanvasFix() {
+        if (Level.wCanvas > Level.END) {
+            this.setCamX(-1 * Level.START - 1);
+            this.canvas.width = this.camX + Level.END;
+        }
+    }
+
     loadLevel(world) {
         this.level = createLevel_1(this.canvas.width, this.canvas.height, world);
         this.level.hero.world = this;
         Cloud.world = this;
         this.setCamX(this.level.hero.camOffset);
-        this.level.hero.applyLevelSmallerThanCanvasFix();
+        this.applyLevelSmallerThanCanvasFix();
     }
 
     setStatusBarHero() {

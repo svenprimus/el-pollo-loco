@@ -82,11 +82,6 @@ export class DrawableObject {
         ctx.save();
         ctx.font = `${h}px Titan One`;
         ctx.textBaseline = 'middle';
-        // const grad = ctx.createLinearGradient(x, y, x + h, y);
-        // grad.addColorStop(0.2, 'green');
-        // grad.addColorStop(0.6, 'red');
-        // grad.addColorStop(1, 'purple');
-        // ctx.fillStyle = grad;
         ctx.fillStyle = "white";
         ctx.strokeStyle = "black";
         ctx.fillText(text, x, y);
