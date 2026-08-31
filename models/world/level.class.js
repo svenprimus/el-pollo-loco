@@ -1,6 +1,7 @@
 import { AudioLib } from '../utility/audio-lib.class.js';
 import { AudioHub } from '../utility/audio-hub.class.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
+import { Coin } from '../game-objects/collectables/coin.class.js'
 
 export class Level {
     static START;
@@ -25,6 +26,8 @@ export class Level {
         hero,
         boss,
         enemies,
+        coinWallAmount,
+        coinBowAmount, 
         collectables,
         cloudsPerLayer,
         clouds,
@@ -37,6 +40,8 @@ export class Level {
         this.hero = hero;
         this.boss = boss;
         this.enemies = enemies;
+        Coin.wallAmount = coinWallAmount
+        Coin.bowAmount = coinBowAmount;
         this.collectables = collectables;
         this.clouds = clouds;
         this.cloudsPerLayer = cloudsPerLayer;

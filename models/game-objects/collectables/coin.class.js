@@ -18,10 +18,8 @@ export class Coin extends Collectable {
     static bowCount = 0;
     static bowReverse = false;
 
-    constructor(hCanvas, wallAmount = 0, bowAmount = 0) {
+    constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.COIN.rotate[2]);
-        Coin.wallAmount = wallAmount;
-        Coin.bowAmount = bowAmount;
         this.resetStatics();
         this.loadImagesToCache();
         this.setSizeByHeight(8, ImageLib.COIN.wNatural, ImageLib.COIN.hNatural);
