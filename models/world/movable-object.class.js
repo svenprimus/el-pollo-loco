@@ -91,6 +91,7 @@ export class MovableObject extends DrawableObject {
             (this.lastAnimateFreq !== frequency && TimingHub.isIntervalSet(this.idAnimate)) ||
             this.img !== this.imgCache[images[this.imgCurrent]]
         ) {
+            this.playSingleImage(images, idFirst);
             this.restartAnimate(images, idFirst, frequency, fn, indexEnd);
         }
     }
