@@ -269,6 +269,8 @@ export class Hero extends MovableObject {
             this.lastAttack = new Date().getTime();
             this.throw();
             this.isAttackingAtr = true;
+        } else if (this.throwables.length === 0) {
+            this.statusBottles.shake();
         }
     }
 

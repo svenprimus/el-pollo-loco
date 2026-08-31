@@ -38,7 +38,10 @@ export class AudioLib {
     };
 
     static COLLECTABLE = {
-        bottle: './assets/audio/collectibles/collectBottle.mp3',
+        bottle: {
+            collect: './assets/audio/collectibles/collectBottle.mp3',
+            empty: './assets/audio/collectibles/bottleEmpty.mp3',
+        },
         coin: './assets/audio/collectibles/collectCoin.mp3',
     };
 

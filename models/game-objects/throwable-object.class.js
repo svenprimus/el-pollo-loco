@@ -44,7 +44,7 @@ export class ThrowableObject extends MovableObject {
         if (false === this.isImpacting) {
             this.isImpacting = true;
             this.speedX = 0;
-            AudioHub.play(AudioLib.AMMO.impact);
+            AudioHub.playFromStart(AudioLib.AMMO.impact);
             this.restartAnimateIfChangedFrequency(ImageLib.AMMO.impact.imgs, 0, 2 * ImageLib.AMMO.impact.imgs.length);
             TimingHub.setTimeout(() => {
                 TimingHub.stopInterval(idInterval);

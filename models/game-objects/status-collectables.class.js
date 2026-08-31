@@ -44,7 +44,7 @@ export class StatusBottles extends MovableObject {
         this.x = hero.statusBar.x + hero.statusBar.w / 2 + this.w - this.w / 1.25;
         this.count = hero.throwables.length;
         this.loadImages(ImageLib.STATUSBAR.icons.bottle);
-        AudioHub.loadSound(AudioLib.COLLECTABLE.bottle);
+        AudioHub.loadSounds(AudioLib.COLLECTABLE.bottle);
         this.animate(ImageLib.STATUSBAR.icons.bottle, 6, null, 3);
     }
 
@@ -62,11 +62,16 @@ export class StatusBottles extends MovableObject {
 
     collect() {
         this.count++;
-        AudioHub.playFromStart(AudioLib.COLLECTABLE.bottle);
+        AudioHub.playFromStart(AudioLib.COLLECTABLE.bottle.collect);
         this.restartAnimate(ImageLib.STATUSBAR.icons.bottle, 6, null, 3);
     }
 
     spend() {
         this.count = Math.max(this.count - 1, 0);
+    }
+
+    shake() {
+        AudioHub.play(AudioLib.COLLECTABLE.bottle.empty);
+        this.restartAnimate(ImageLib.STATUSBAR.icons.bottle, 6, null, 3);
     }
 }
