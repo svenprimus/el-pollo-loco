@@ -16,19 +16,19 @@ export class Chicken extends Enemy {
     animations = [
         {
             condition: () => this.isDeadBySalsa(),
-            animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.drum, 0, this.speedX * 5),
+            animation: () => this.restartAnimateIfChanged(ImageLib.ENEMY.mob_1.drum, 0, this.speedX * 5),
         },
         {
             condition: () => this.isDead(),
-            animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.dead, 0, this.speedX * 5),
+            animation: () => this.restartAnimateIfChanged(ImageLib.ENEMY.mob_1.dead, 0, this.speedX * 5),
         },
         {
             condition: () => this.isJumping(),
-            animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.jump, 0, this.speedX * 5),
+            animation: () => this.restartAnimateIfChanged(ImageLib.ENEMY.mob_1.jump, 0, this.speedX * 5),
         },
         {
             condition: () => this.isIdle(),
-            animation: () => this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.walk, 2, this.speedX * 5),
+            animation: () => this.restartAnimateIfChanged(ImageLib.ENEMY.mob_1.walk, 2, this.speedX * 5),
         },
     ];
 
@@ -80,7 +80,7 @@ export class Chicken extends Enemy {
             if (this.jump(funFactor)) {
                 AudioHub.playFromStartIfNearby(AudioLib.ENEMY.mob_1.jump, this.x, this.w);
             }
-            this.restartAnimateIfChangedFrequency(ImageLib.ENEMY.mob_1.jump, 0, this.speedX * 5);
+            this.restartAnimateIfChanged(ImageLib.ENEMY.mob_1.jump, 0, this.speedX * 5);
             this.startResetTimeout();
         }
     }

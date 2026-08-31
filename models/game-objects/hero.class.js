@@ -198,7 +198,7 @@ export class Hero extends MovableObject {
      */
     setAnimation(images, frequency, indexEnd = null) {
         this.lastIdleTime = 0;
-        this.restartAnimateIfChangedFrequency(images, 0, frequency, null, indexEnd);
+        this.restartAnimateIfChanged(images, 0, frequency, null, indexEnd);
     }
 
     /**
@@ -208,7 +208,7 @@ export class Hero extends MovableObject {
      * @param {number} frequency
      */
     setIdleAnimation(images, frequency) {
-        this.restartAnimateIfChangedFrequency(images, 0, frequency);
+        this.restartAnimateIfChanged(images, 0, frequency);
     }
 
     // #region actions

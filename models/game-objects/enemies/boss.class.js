@@ -164,7 +164,7 @@ export class Boss extends Enemy {
      * @param {number} frequency
      */
     setAnimation(images, frequency, indexEnd = null) {
-        this.restartAnimateIfChangedFrequency(images, 0, frequency, null, indexEnd);
+        this.restartAnimateIfChanged(images, 0, frequency, null, indexEnd);
     }
 
     loadImagesToCache() {

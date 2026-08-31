@@ -63,9 +63,9 @@ export class MovableObject extends DrawableObject {
         );
     }
 
-    restartAnimate(images, frequency = 10, fn = null, indexEnd = null) {
+    restartAnimate(images, idFirst = 0, frequency = 10, fn = null, indexEnd = null) {
         if (TimingHub.stopInterval(this.idAnimate)) {
-            this.imgCurrent = 0;
+            this.playSingleImage(images, idFirst);
             this.animate(images, frequency, fn, indexEnd);
         }
     }
@@ -87,13 +87,12 @@ export class MovableObject extends DrawableObject {
      * @param {number} frequency
      * @param {function} fn
      */
-    restartAnimateIfChangedFrequency(images, idFirst, frequency = 10, fn = null, indexEnd = null) {
+    restartAnimateIfChanged(images, idFirst, frequency = 10, fn = null, indexEnd = null) {
         if (
             (this.lastAnimateFreq !== frequency && TimingHub.isIntervalSet(this.idAnimate)) ||
             this.img !== this.imgCache[images[this.imgCurrent]]
         ) {
-            this.playSingleImage(images, idFirst);
-            this.restartAnimate(images, frequency, fn, indexEnd);
+            this.restartAnimate(images, idFirst, frequency, fn, indexEnd);
         }
     }
 

@@ -35,7 +35,7 @@ export class ThrowableObject extends MovableObject {
                 this.impact(idInterval);
             } else {
                 this.moveLeft();
-                this.restartAnimateIfChangedFrequency(ImageLib.AMMO.midair.imgs, 0);
+                this.restartAnimateIfChanged(ImageLib.AMMO.midair.imgs, 0);
             }
         }, 1000 / Game.FPS);
     }
@@ -45,7 +45,7 @@ export class ThrowableObject extends MovableObject {
             this.isImpacting = true;
             this.speedX = 0;
             AudioHub.playFromStart(AudioLib.AMMO.impact);
-            this.restartAnimateIfChangedFrequency(ImageLib.AMMO.impact.imgs, 0, 2 * ImageLib.AMMO.impact.imgs.length);
+            this.restartAnimateIfChanged(ImageLib.AMMO.impact.imgs, 0, 2 * ImageLib.AMMO.impact.imgs.length);
             TimingHub.setTimeout(() => {
                 TimingHub.stopInterval(idInterval);
                 TimingHub.stopInterval(this.idGravity);

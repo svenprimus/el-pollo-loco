@@ -30,7 +30,7 @@ export class StatusCoins extends MovableObject {
     collect() {
         this.count++;
         AudioHub.playFromStart(AudioLib.COLLECTABLE.coin);
-        this.restartAnimate(ImageLib.COIN.rotate, 30, null, 4);
+        this.restartAnimate(ImageLib.COIN.rotate, 0, 30, null, 4);
     }
 }
 
@@ -63,7 +63,7 @@ export class StatusBottles extends MovableObject {
     collect() {
         this.count++;
         AudioHub.playFromStart(AudioLib.COLLECTABLE.bottle.collect);
-        this.restartAnimate(ImageLib.STATUSBAR.icons.bottle, 6, null, 3);
+        this.restartAnimate(ImageLib.STATUSBAR.icons.bottle, 0, 6, null, 3);
     }
 
     spend() {
@@ -72,6 +72,6 @@ export class StatusBottles extends MovableObject {
 
     shake() {
         AudioHub.play(AudioLib.COLLECTABLE.bottle.empty);
-        this.restartAnimate(ImageLib.STATUSBAR.icons.bottle, 6, null, 3);
+        this.restartAnimate(ImageLib.STATUSBAR.icons.bottle, 0, 6, null, 3);
     }
 }
