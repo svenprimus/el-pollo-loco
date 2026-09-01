@@ -150,7 +150,7 @@ export class AudioLib {
         },
         catrina: {
             path: './assets/audio/game/catrina.mp3',
-            mult: 1,
+            mult: 1.5,
         },
     };
 }

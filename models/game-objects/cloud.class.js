@@ -1,13 +1,12 @@
 import { MovableObject } from '../world/movable-object.class.js';
 import { Level } from '../world/level.class.js';
-import { World } from '../world/world.class.js';
 import { ImageLib } from '../../models/utility/image-lib.class.js';
 
 export class Cloud extends MovableObject {
     static wIndex = null;
     w = ImageLib.BG.wNatural / 4;
     h = ImageLib.BG.hNatural / 4;
-    static world;
+    xAbsolute = 0;
 
     constructor(path, hCanvas) {
         super(hCanvas).loadImage(path);
@@ -24,6 +23,7 @@ export class Cloud extends MovableObject {
             }
             const index = Math.floor(Cloud.wIndex++ / amountPerLayer);
             this.x = Level.BG_WIDTH * index + Math.random() * Level.BG_WIDTH;
+            this.xAbsolute = this.x;
             this.y = (Math.random() * this.hCanvas) / 4;
         }
     }

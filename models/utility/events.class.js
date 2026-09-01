@@ -9,6 +9,7 @@ export class Events {
         document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
         document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
         document.getElementById('volume').addEventListener('input', Events.setVolume);
+        AudioHub.init();
         Events.updateVolumeSlider();
     }
 
@@ -43,7 +44,6 @@ export class Events {
     }
 
     static updateVolumeSlider() {
-        AudioHub.init();
         document.getElementById('volume').value = AudioHub.volBase * 100;
     }
 
