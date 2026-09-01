@@ -30,6 +30,10 @@ export class AudioHub {
     static volLast = 0.2;
     static volBase = 0.2;
 
+    static init() {
+        AudioHub.getVolumeFromLocalStorage();
+    }
+
     // TODO: play from queue? e.g. multiple equal sounds: coins, chicken
     static play(soundJson) {
         const sound = AudioHub.sounds[soundJson.path];
@@ -118,9 +122,22 @@ export class AudioHub {
         const tempLast = AudioHub.volLast;
         AudioHub.volLast = AudioHub.volBase;
         AudioHub.volBase = AudioHub.volBase === 0 ? tempLast : 0;
+        AudioHub.saveVolumeToLocalStorage();
     }
 
     static setVolume(volumePercentage) {
         AudioHub.volBase = volumePercentage / 100;
+        AudioHub.saveVolumeToLocalStorage();
+    }
+
+    static saveVolumeToLocalStorage() {
+        localStorage.setItem('AudioHub.volBase', AudioHub.volBase);
+    }
+
+    static getVolumeFromLocalStorage() {
+        const volume = localStorage.getItem('AudioHub.volBase');
+        if (volume != null) {
+            AudioHub.volBase = volume;
+        }
     }
 }

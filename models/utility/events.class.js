@@ -43,6 +43,7 @@ export class Events {
     }
 
     static updateVolumeSlider() {
+        AudioHub.init();
         document.getElementById('volume').value = AudioHub.volBase * 100;
     }
 
