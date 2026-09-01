@@ -3,29 +3,35 @@ import { DrawableObject } from '../world/drawable-object.class.js';
 import { Level } from '../world/level.class.js';
 
 export class Background extends DrawableObject {
-    static wIndex = null;
-    static LAYERS = null;
     static NATURAL_WIDTH = ImageLib.BG.wNatural;
     static NATURAL_HEIGHT = ImageLib.BG.hNatural;
     y = 0;
 
-    constructor(path, hCanvas) {
+    static lastPos = 0;
+    static lastLayer = -1;
+    layer = 0;
+    posIndex = 0;
+    xAbsolute = 0;
+
+    constructor(layer, path, hCanvas) {
         super(hCanvas).loadImage(path);
-        Background.wIndex = null; // set at place() after all bg are created
-        Background.LAYERS = null; // set at place() after all bg are created
         this.setSize(hCanvas);
+
+        if (Background.lastLayer !== layer) {
+            Background.lastPos = 0;
+        } else {
+            Background.lastPos++;
+            this.posIndex = Background.lastPos;
+        }
+        this.layer = layer;
+        Background.lastLayer = layer;
     }
 
-    place(amountPerLayer) {
-        if (0 !== amountPerLayer) {
-            if (null == Background.wIndex) {
-                Background.wIndex = -1 * amountPerLayer;
-                Background.LAYERS = amountPerLayer;
-            }
-            // shift draw position by canvas width after all layers have been planted
-            const index = Math.floor(Background.wIndex++ / Background.LAYERS);
-            this.x = Math.round(index * this.w);
-        }
+    place() {
+        Background.lastPos = 0;
+        Background.lastLayer = -1;
+        this.x = Math.round((this.posIndex - 1) * this.w);
+        this.xAbsolute = this.x;
     }
 
     setSize() {

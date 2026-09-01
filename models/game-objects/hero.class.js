@@ -298,6 +298,9 @@ export class Hero extends MovableObject {
             this.world.level.lostCoins.push(lostCoin);
             this.statusCoins.lose();
         }
+        if (this.isDead()) {
+            AudioHub.stop(AudioLib.HERO.walk);
+        }
     }
 
     reload() {

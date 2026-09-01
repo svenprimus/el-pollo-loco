@@ -32,7 +32,8 @@ export class Level {
         collectables,
         cloudsPerLayer,
         clouds,
-        bgsPerLayer,
+        bgPerPattern,
+        bgPatternPerLayer,
         backgrounds,
         startLimiter
     ) {
@@ -46,11 +47,12 @@ export class Level {
         this.collectables = collectables;
         this.clouds = clouds;
         this.cloudsPerLayer = cloudsPerLayer;
-        this.bgsPerLayer = bgsPerLayer;
+        this.bgPerPattern = bgPerPattern;
+        this.bgPatternPerLayer = bgPatternPerLayer;
         this.backgrounds = backgrounds;
         this.startLimiter = startLimiter;
         Level.START = -1 * Level.BG_WIDTH;
-        Level.END = (Level.BG_WIDTH * (backgrounds.length - bgsPerLayer)) / bgsPerLayer - 2;
+        Level.END = Level.BG_WIDTH * bgPatternPerLayer * bgPerPattern - bgPerPattern * Level.BG_WIDTH - 2;
         this.placeObjects();
         this.startCleaningTasks();
         this.startAmbientSoundLoop();

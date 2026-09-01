@@ -59,7 +59,7 @@ export class World {
             if (this.level.boss.isDead() && false === this.level.hero.isDead()) {
                 console.log('WON! Score: ', this.level.getScore());
                 TimingHub.stopInterval(id);
-            } else if (this.level.hero.isDead()){
+            } else if (this.level.hero.isDead()) {
                 console.log('LOST! Score: ', this.level.getScore());
                 TimingHub.stopInterval(id);
             }
@@ -160,12 +160,27 @@ export class World {
         this.canvas = canvas;
         this.canvas.width = window.innerWidth * 0.9;
         this.canvas.height = window.innerHeight * 0.8;
-        Level.BG_WIDTH = Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height);
+        Level.BG_WIDTH = Math.round(Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height));
     }
 
     setCamX(x) {
         this.camX = Math.round(x);
         AudioHub.setCamX(this.camX);
+        this.immerseBackgrounds();
+    }
+
+    immerseBackgrounds() {
+        this.level.backgrounds.forEach((bg) => {
+            if (bg.layer === 1) {
+                bg.x = Math.round(bg.xAbsolute - this.camX * 0.8);
+            } else if (bg.layer === 2) {
+                bg.x = Math.round(bg.xAbsolute - this.camX * 0.6);
+            }
+        });
+
+        this.level.clouds.forEach((cloud) => {
+            cloud.x = cloud.xAbsolute - this.camX * 0.5;
+        });
     }
 
     followCamRight() {
@@ -202,7 +217,6 @@ export class World {
     loadLevel(world) {
         this.level = createLevel_1(this.canvas.width, this.canvas.height, world);
         this.level.hero.world = this;
-        Cloud.world = this;
         this.setCamX(this.level.hero.camOffset);
         this.applyLevelSmallerThanCanvasFix();
     }
