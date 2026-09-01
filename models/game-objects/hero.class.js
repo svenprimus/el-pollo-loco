@@ -84,7 +84,7 @@ export class Hero extends MovableObject {
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.HERO.idle[0]);
         this.loadImagesToCache();
-        this.loadSounds(AudioLib.HERO);
+        this.loadSounds();
         this.setSizeByHeight(2, ImageLib.HERO.wNatural, ImageLib.HERO.hNatural);
         this.reload();
         this.animate(ImageLib.HERO.idle, Game.FPS);
@@ -215,6 +215,9 @@ export class Hero extends MovableObject {
         if (this.isAfterStart() && false === this.world.level.boss.isSpawning) {
             this.moveLeft();
             this.world.followCamLeft();
+        } else if (false === this.isAfterStart()) {
+            this.isAfterStart();
+            AudioHub.play(AudioLib.GAME.catrina);
         }
     }
 
@@ -375,5 +378,10 @@ export class Hero extends MovableObject {
         this.loadImages(ImageLib.HERO.drink);
         this.loadImages(ImageLib.HERO.attack);
         this.loadImages(ImageLib.HERO.collected);
+    }
+
+    loadSounds() {
+        super.loadSounds(AudioLib.HERO);
+        AudioHub.loadSound(AudioLib.GAME.catrina);
     }
 }
