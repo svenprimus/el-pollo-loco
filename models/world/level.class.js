@@ -50,7 +50,7 @@ export class Level {
         this.backgrounds = backgrounds;
         this.startLimiter = startLimiter;
         Level.START = -1 * Level.BG_WIDTH;
-        Level.END = (Level.BG_WIDTH * (backgrounds.length - bgsPerLayer)) / bgsPerLayer;
+        Level.END = (Level.BG_WIDTH * (backgrounds.length - bgsPerLayer)) / bgsPerLayer - 2;
         this.placeObjects();
         this.startCleaningTasks();
         this.startAmbientSoundLoop();

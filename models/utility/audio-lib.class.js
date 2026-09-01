@@ -148,5 +148,9 @@ export class AudioLib {
             path: './assets/audio/game/ambientBoss.mp3',
             mult: 0.4,
         },
+        catrina: {
+            path: './assets/audio/game/catrina.mp3',
+            mult: 1,
+        },
     };
 }
