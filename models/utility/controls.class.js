@@ -131,11 +131,15 @@ export class Controls {
         document.getElementById('canvas').addEventListener('touchmove', Controls.handleTouchMove);
         document.getElementById('canvas').addEventListener('touchend', Controls.handleTouchEnd);
         document.getElementById('canvas').addEventListener('touchcancel', Controls.handleTouchEnd);
+        document.getElementById('canvas').addEventListener('click', () => {
+            Controls.UP = true;
+            TimingHub.setTimeout(() => {
+                Controls.UP = false;
+            }, 50);
+        });
     }
 
     static handleTouchStart(event) {
-        event.preventDefault();
-
         for (const changedTouch of event.changedTouches) {
             Controls.ongoingTouches.set(changedTouch.identifier, { x: changedTouch.pageX, moved: false });
         }
@@ -153,8 +157,7 @@ export class Controls {
             if (start.x > changedTouch.pageX && Math.abs(start.x - changedTouch.pageX) > Controls.minDelta) {
                 Controls.LEFT = true;
                 Controls.RIGHT = false;
-            }
-            if (start.x < changedTouch.pageX && Math.abs(start.x - changedTouch.pageX) > Controls.minDelta) {
+            } else if (start.x < changedTouch.pageX && Math.abs(start.x - changedTouch.pageX) > Controls.minDelta) {
                 Controls.LEFT = false;
                 Controls.RIGHT = true;
             }
@@ -166,8 +169,6 @@ export class Controls {
     }
 
     static handleTouchEnd(event) {
-        event.preventDefault();
-
         for (const changedTouch of event.changedTouches) {
             const touch = Controls.ongoingTouches.get(changedTouch.identifier);
             if (false === touch) {
@@ -177,8 +178,11 @@ export class Controls {
 
             if (false === touch.moved) {
                 Controls.UP = true;
+                console.log("end");
                 TimingHub.setTimeout(() => {
                     Controls.UP = false;
+                console.log("end2");
+
                 }, 50);
             } else {
                 Controls.LEFT = false;
