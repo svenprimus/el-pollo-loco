@@ -1,7 +1,6 @@
 import { StatusBar } from '../game-objects/status-bar.class.js';
 import { StatusCoins, StatusBottles } from '../game-objects/status-collectables.class.js';
 import { Background } from '../game-objects/background.class.js';
-import { Cloud } from '../game-objects/cloud.class.js';
 import { Level } from './level.class.js';
 import { createLevel_1 } from '../../levels/level-1.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
@@ -71,6 +70,7 @@ export class World {
         // moving objects
         this.ctx.translate(this.camX, 0);
         this.addToMap(this.level.backgrounds);
+        this.addToMap(this.level.clouds);
         this.addToMap(this.level.startLimiter);
         this.addToMap(this.level.hero);
         this.addToMap(this.level.collectables);
@@ -78,7 +78,6 @@ export class World {
         this.addToMap(this.level.boss);
         this.addToMap(this.level.thrownAmmo);
         this.addToMap(this.level.lostCoins);
-        this.addToMap(this.level.clouds);
 
         // TODO: remove markers
         this.level.hero.drawMarker(this.ctx, Level.START + 1, 0);
