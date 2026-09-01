@@ -1,6 +1,6 @@
 import { Game } from './game.class.js';
 import { AudioHub } from '../utility/audio-hub.class.js';
-
+import { toggleFullscreen } from '../../js/fullscreen.js';
 export class Events {
     static init() {
         Events.initUI();
@@ -55,6 +55,7 @@ export class Events {
         document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
         document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
         document.getElementById('volume').addEventListener('input', Events.setVolume);
+        document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
         AudioHub.init();
         Events.updateVolumeSlider();
     }
