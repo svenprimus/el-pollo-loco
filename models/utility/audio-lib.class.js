@@ -14,11 +14,11 @@ export class AudioLib {
         },
         jump: {
             path: '../assets/audio/character/characterJump.mp3',
-            mult: 1.8,
+            mult: 2.5,
         },
         bounce: {
             path: '../assets/audio/character/characterBounce.mp3',
-            mult: 1.8,
+            mult: 2.5,
         },
         hurt: {
             path: './assets/audio/character/characterDamage.mp3',
@@ -110,7 +110,7 @@ export class AudioLib {
             },
             empty: {
                 path: './assets/audio/collectibles/bottleEmpty.mp3',
-                mult: 3,
+                mult: 4,
             },
         },
         coin: {

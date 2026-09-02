@@ -178,11 +178,8 @@ export class Controls {
 
             if (false === touch.moved) {
                 Controls.UP = true;
-                console.log("end");
                 TimingHub.setTimeout(() => {
                     Controls.UP = false;
-                console.log("end2");
-
                 }, 50);
             } else {
                 Controls.LEFT = false;
