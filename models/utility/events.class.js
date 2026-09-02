@@ -24,6 +24,7 @@ export class Events {
 
     static restartGame(fullscreen = false) {
         Game.restart(fullscreen);
+        Game.pause();
         Events.unfocusButton('btn-restart');
     }
 
