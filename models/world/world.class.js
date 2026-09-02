@@ -177,9 +177,11 @@ export class World {
             }
         });
 
-        this.level.clouds.forEach((cloud) => {
-            cloud.x = cloud.xAbsolute - this.camX * 0.5;
-        });
+        if (false === this.level.boss.isSpawning && false === this.level.boss.hasSpawned) {
+            this.level.clouds.forEach((cloud) => {
+                cloud.x = cloud.xAbsolute - this.camX * 0.5;
+            });
+        }
     }
 
     followCamRight() {

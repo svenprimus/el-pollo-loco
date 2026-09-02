@@ -19,6 +19,10 @@ canvas {
 button {
     cursor: pointer;
     font-family: 'Titan One';
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
 }
 
 .headline {
@@ -32,10 +36,16 @@ button {
     align-items: center;
 }
 
-.dev-buttons{
+.dev-buttons {
     margin-block: 10px;
     width: 100%;
     display: flex;
     justify-content: center;
     gap: 20px;
+}
+
+@media (hover: hover) {
+    .btn-mobile {
+        display: none;
+    }
 }

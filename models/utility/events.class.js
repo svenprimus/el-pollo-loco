@@ -1,16 +1,10 @@
 import { Game } from './game.class.js';
-import { AudioHub } from '../utility/audio-hub.class.js'
-
+import { AudioHub } from '../utility/audio-hub.class.js';
+import { toggleFullscreen } from '../../js/fullscreen.js';
 export class Events {
     static init() {
+        Events.initUI();
         window.addEventListener('load', Events.startGame);
-        document.getElementById('btn-pause').addEventListener('click', Events.pauseGame);
-        document.getElementById('btn-resume').addEventListener('click', Events.resumeGame);
-        document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
-        document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
-        document.getElementById('volume').addEventListener('input', Events.setVolume);
-        AudioHub.init();
-        Events.updateVolumeSlider();
     }
 
     static startGame = () => {
@@ -53,5 +47,16 @@ export class Events {
      */
     static unfocusButton(button) {
         document.getElementById(button).blur();
+    }
+
+    static initUI() {
+        document.getElementById('btn-pause').addEventListener('click', Events.pauseGame);
+        document.getElementById('btn-resume').addEventListener('click', Events.resumeGame);
+        document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
+        document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
+        document.getElementById('volume').addEventListener('input', Events.setVolume);
+        document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
+        AudioHub.init();
+        Events.updateVolumeSlider();
     }
 }
