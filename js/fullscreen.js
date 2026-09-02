@@ -4,12 +4,12 @@ export function toggleFullscreen() {
     if (!document.fullscreenElement) {
         openFullscreen();
         TimingHub.setTimeout(() => {
-            Events.restartGame();
+            Events.restartGame(true);
         }, 100);
     } else {
         closeFullscreen();
         TimingHub.setTimeout(() => {
-            Events.restartGame();
+            Events.restartGame(false);
         }, 100);
     }
 }

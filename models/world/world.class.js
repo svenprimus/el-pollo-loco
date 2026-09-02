@@ -12,8 +12,8 @@ export class World {
     camX = 0;
     level;
 
-    constructor(canvas) {
-        this.setDimensions(canvas);
+    constructor(canvas, fullscreen) {
+        this.setDimensions(fullscreen);
         this.loadLevel(this);
         this.setStatusBarHero();
         this.draw();
@@ -154,11 +154,11 @@ export class World {
         this.ctx.restore();
     }
 
-    setDimensions() {
+    setDimensions(fullscreen = false) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
-        this.canvas.width = window.innerWidth * 0.9;
-        this.canvas.height = window.innerHeight * 0.8;
+        this.canvas.width = window.innerWidth * (fullscreen ? 1 : 0.9);
+        this.canvas.height = window.innerHeight * (fullscreen ? 1 : 0.7);
         Level.BG_WIDTH = Math.round(Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height));
     }
 

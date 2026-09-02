@@ -10,7 +10,7 @@ export class Game {
     static start() {
         Controls.init();
         const canvas = document.getElementById('canvas');
-        Game.world = new World(canvas);
+        Game.world = new World(canvas, false);
         Game.world.draw();
         window.world = Game.world; // TODO: remove - only for debugging
         window.timing = TimingHub.intervalIds; // TODO: remove - only for debugging
@@ -26,11 +26,11 @@ export class Game {
         AudioHub.resume();
     }
 
-    static restart() {
+    static restart(fullscreen = false) {
         TimingHub.clearGame();
         AudioHub.stopAll();
         const canvas = document.getElementById('canvas');
-        Game.world = new World(canvas);
+        Game.world = new World(canvas, fullscreen);
         Game.world.draw();
     }
 

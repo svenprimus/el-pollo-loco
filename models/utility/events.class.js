@@ -22,10 +22,10 @@ export class Events {
         Events.unfocusButton('btn-resume');
     };
 
-    static restartGame = () => {
-        Game.restart();
+    static restartGame(fullscreen = false) {
+        Game.restart(fullscreen);
         Events.unfocusButton('btn-restart');
-    };
+    }
 
     static toggleMute() {
         Game.toggleMute();
@@ -52,7 +52,9 @@ export class Events {
     static initUI() {
         document.getElementById('btn-pause').addEventListener('click', Events.pauseGame);
         document.getElementById('btn-resume').addEventListener('click', Events.resumeGame);
-        document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
+        document.getElementById('btn-restart').addEventListener('click', () => {
+            Events.restartGame();
+        });
         document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
         document.getElementById('volume').addEventListener('input', Events.setVolume);
         document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);

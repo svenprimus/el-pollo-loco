@@ -34,9 +34,11 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
 }
 
 .dev-buttons {
+    position: absolute;
     margin-block: 10px;
     width: 100%;
     display: flex;
