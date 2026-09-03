@@ -6,4 +6,5 @@
     --size-btn-ui-base-factor: 0.075;
     --size-btn-mobile: min(18svh, 18svw);
     --size-btn-ui: 7.5svh;
+    --size-dialog-close-btn: clamp(28px, calc((100svw - 300px) * 22 / 1140 + 38px), 60px);
 }

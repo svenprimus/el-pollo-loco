@@ -2,6 +2,8 @@ import { Game } from './game.class.js';
 import { AudioHub } from '../utility/audio-hub.class.js';
 import { TimingHub } from './timing-hub.class.js';
 import { toggleFullscreen, renderScreenButton } from '../../js/fullscreen.js';
+import { MyDialog } from './instructions-dialog.js';
+
 export class Events {
     static init() {
         Events.initUI();
@@ -77,28 +79,38 @@ export class Events {
     }
 
     static initUI() {
-        Events.initInteractive();
-        Events.initAutomatic();
+        Events.initUiButtonEvents();
+        Events.initDialogEvents();
+        Events.initChangeEvents();
     }
 
-    static initInteractive() {
+    static initUiButtonEvents() {
         document.getElementById('btn-resume').addEventListener('click', Events.toggleResumePauseGame);
-        document.getElementById('btn-restart').addEventListener('click', () => {
-            Events.restartGame();
-        });
+        document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
         document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
         document.getElementById('volume').addEventListener('input', Events.setVolume);
         document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
+        document
+            .getElementById('instructions-dialog-wrapper')
+            .addEventListener('click', MyDialog.stopDialogPropagation);
         AudioHub.init();
         Events.renderUpdateVolumeElements();
     }
 
-    static initAutomatic() {
+    static initChangeEvents() {
         screen.orientation.addEventListener('change', () => {
             Events.restartGameDelayed();
         });
         document.addEventListener('fullscreenchange', () => {
             Events.restartGameDelayed();
         });
+    }
+
+    static initDialogEvents() {
+        document.getElementById('btn-instructions').addEventListener('click', MyDialog.openDialogByMouseClick);
+        document.getElementById('btn-instructions').addEventListener('keyup', MyDialog.openDialogKeyup);
+        document.getElementById('instructions-dialog').addEventListener('click', MyDialog.closeDialog);
+        document.getElementById('btn-close-dialog').addEventListener('click', MyDialog.closeDialogByMouseClick);
+        document.getElementById('btn-close-dialog').addEventListener('keyup', MyDialog.closeDialogbyKeyup);
     }
 }

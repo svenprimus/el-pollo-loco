@@ -38,7 +38,9 @@ export class Controls {
                     break;
                 case 'Enter':
                 case 'KeyE':
-                    Controls.ATTACK = true;
+                    if (e.target.tagName !== 'BUTTON') {
+                        Controls.ATTACK = true;
+                    }
                     break;
             }
         });
@@ -66,7 +68,9 @@ export class Controls {
                     break;
                 case 'Enter':
                 case 'KeyE':
-                    Controls.ATTACK = false;
+                    if (e.target.tagName !== 'BUTTON') {
+                        Controls.ATTACK = false;
+                    }
                     break;
             }
         });

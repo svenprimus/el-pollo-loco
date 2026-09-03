@@ -14,6 +14,10 @@ import { Coin } from './collectables/coin.class.js';
 import { LostCoin } from './lost-coin.class.js';
 import { Enemy } from './enemies/enemy.class.js';
 
+/**
+ * Creats a hero.
+ * @class
+ */
 export class Hero extends MovableObject {
     world;
     statusBar;

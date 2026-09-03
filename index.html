@@ -7,6 +7,7 @@
         <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.svg" />
         <link rel="stylesheet" href="./styles/fonts.css" />
         <link rel="stylesheet" href="./styles/variables.css" />
+        <link rel="stylesheet" href="./styles/game-ui.css" />
         <link rel="stylesheet" href="./style.css" />
         <script type="module" src="./script.js" defer></script>
     </head>
@@ -35,7 +36,12 @@
                 </div>
                 <div class="spacemaker"></div>
                 <div class="resize-wrapper">
-                    <button id="btn-instructions" class="btn-ui">
+                    <button
+                        id="btn-instructions"
+                        class="btn-ui"
+                        aria-controls="instructions-dialog"
+                        aria-label="open instructions dialog"
+                    >
                         <img src="./assets/icons/show.svg" alt="show and hide instructions button" />
                     </button>
                     <button id="btn-fullscreen" class="btn-ui">
@@ -66,5 +72,51 @@
                 </div>
             </div>
         </div>
+
+        <dialog id="instructions-dialog" aria-label="Open Game Instructions">
+            <article id="instructions-dialog-wrapper" class="dialog-wrapper">
+                <button
+                    id="btn-close-dialog"
+                    class="btn-close-dialog"
+                    aria-controls="instructions-dialog"
+                    aria-label="closes instructions dialog"
+                >
+                    <img src="./assets/icons/hide.svg" alt="show and hide instructions button" />
+                </button>
+                <h1>Instructions</h1>
+                <div>
+                    <section class="section-instructions">
+                        <img
+                            class="dialog-img dialog-desktop"
+                            src="./assets/img/instructions-desktop-main.svg"
+                            alt="controls for desktop"
+                        />
+                        <h2 class="dialog-desktop">Controls</h2>
+
+                        <img
+                            class="dialog-img dialog-mobile"
+                            src="./assets/img/instructions-mobile-1.svg"
+                            alt="controls of movements"
+                        />
+                        <h2 class="dialog-mobile">Movement</h2>
+                    </section>
+                    <section class="section-instructions">
+                        <img
+                            class="dialog-img dialog-desktop"
+                            src="./assets/img/instructions-desktop-alt.svg"
+                            alt="alternative controls"
+                        />
+                        <h2 class="dialog-desktop">Alternative</h2>
+
+                        <img
+                            class="dialog-img dialog-mobile"
+                            src="./assets/img/instructions-mobile-2.svg"
+                            alt="controls of actions"
+                        />
+                        <h2 class="dialog-mobile">Actions</h2>
+                    </section>
+                </div>
+            </article>
+        </dialog>
     </body>
 </html>
