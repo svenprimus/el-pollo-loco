@@ -137,7 +137,7 @@ button {
     .movements {
         display: flex;
         align-items: flex-end;
-        gap: 5svw;
+        gap: var(--size-btn-mobile);
     }
 
     .actions {

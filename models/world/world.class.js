@@ -161,7 +161,10 @@ export class World {
         this.canvas.width = document.documentElement.clientWidth * (document.fullscreenElement ? 1 : 0.9);
         this.canvas.height = document.documentElement.clientHeight * (document.fullscreenElement ? 1 : 0.7);
         Level.BG_WIDTH = Math.round(Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height));
-        document.documentElement.style.setProperty('--size-btn-mobile', `${this.canvas.width * 0.1}px`);
+        document.documentElement.style.setProperty(
+            '--size-btn-mobile',
+            `${Math.min(this.canvas.width, this.canvas.height) * 0.1}px`
+        );
         document.documentElement.style.setProperty('--size-btn-ui', `${this.canvas.height * 0.05}px`);
     }
 
