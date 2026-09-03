@@ -161,11 +161,12 @@ export class World {
         this.canvas.width = document.documentElement.clientWidth * (document.fullscreenElement ? 1 : 0.9);
         this.canvas.height = document.documentElement.clientHeight * (document.fullscreenElement ? 1 : 0.7);
         Level.BG_WIDTH = Math.round(Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height));
-        document.documentElement.style.setProperty(
-            '--size-btn-mobile',
-            `${Math.min(this.canvas.width, this.canvas.height) * 0.1}px`
-        );
-        document.documentElement.style.setProperty('--size-btn-ui', `${this.canvas.height * 0.05}px`);
+        const doc = document.documentElement;
+        const mobileBase = getComputedStyle(doc).getPropertyValue('--size-btn-mobile-base-factor');
+        const uiBase = getComputedStyle(doc).getPropertyValue('--size-btn-ui-base-factor');
+
+        doc.style.setProperty('--size-btn-mobile', `${Math.min(this.canvas.width, this.canvas.height) * mobileBase}px`);
+        doc.style.setProperty('--size-btn-ui', `${this.canvas.height * uiBase}px`);
     }
 
     setCamX(x) {

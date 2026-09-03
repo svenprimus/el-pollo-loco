@@ -36,6 +36,7 @@ export class Events {
     static restartGame() {
         Game.restart();
         Game.pause();
+        document.getElementById('btn-resume-img').src = './assets/icons/start.svg';
         Events.unfocusButton('btn-restart');
     }
 

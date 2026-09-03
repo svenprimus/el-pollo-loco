@@ -17,24 +17,31 @@
             <canvas id="canvas" width="720" height="480"></canvas>
 
             <div class="button-wrapper-ui">
-                <button id="btn-resume" class="btn-ui">
-                    <img id="btn-resume-img" src="./assets/icons/start.svg" alt="pause and resume button" />
-                </button>
-                <button id="btn-restart" class="btn-ui">
-                    <img src="./assets/icons/restart.svg" alt="start button" />
-                </button>
-                <button id="btn-mute" class="btn-ui">
-                    <img id="btn-mute-img" src="./assets/icons/mute.svg" alt="toggle mute button" />
-                </button>
-                <div class="volume-wrapper">
-                    <input type="range" id="volume" class="volume" name="volume" min="0" max="100" step="5" />
+                <div class="audio-wrapper">
+                    <div class="volume-wrapper">
+                        <input type="range" id="volume" class="volume" name="volume" min="0" max="100" step="5" />
+                    </div>
+                    <button id="btn-mute" class="btn-ui">
+                        <img id="btn-mute-img" src="./assets/icons/mute.svg" alt="toggle mute button" />
+                    </button>
                 </div>
-                <button id="btn-instructions" class="btn-ui">
-                    <img src="./assets/icons/show.svg" alt="show and hide instructions button" />
-                </button>
-                <button id="btn-fullscreen" class="btn-ui">
-                    <img src="./assets/icons/fullscreen.svg" alt="pause button" />
-                </button>
+                <div class="play-wrapper">
+                    <button id="btn-resume" class="btn-ui">
+                        <img id="btn-resume-img" src="./assets/icons/start.svg" alt="pause and resume button" />
+                    </button>
+                    <button id="btn-restart" class="btn-ui">
+                        <img src="./assets/icons/restart.svg" alt="start button" />
+                    </button>
+                </div>
+
+                <div class="resize-wrapper">
+                    <button id="btn-instructions" class="btn-ui">
+                        <img src="./assets/icons/show.svg" alt="show and hide instructions button" />
+                    </button>
+                    <button id="btn-fullscreen" class="btn-ui">
+                        <img src="./assets/icons/fullscreen.svg" alt="pause button" />
+                    </button>
+                </div>
             </div>
 
             <div class="button-wrapper-mobile">

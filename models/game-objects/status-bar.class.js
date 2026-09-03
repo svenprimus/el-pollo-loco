@@ -10,6 +10,7 @@ export class StatusBar extends DrawableObject {
         this.x = isBoss ? wCanvas - y - this.w : y;
         this.isBoss = isBoss;
         this.reverseDirection = isBoss;
+        this.resizeOnSmallCanvasWidth(wCanvas);
         this.loadImagesToCache();
         this.setPercentage((100 * movableObject.hp) / movableObject.hpMax);
     }
@@ -29,5 +30,18 @@ export class StatusBar extends DrawableObject {
             ImageLib.STATUSBAR.hp.imgs.length - 1
         );
         this.playSingleImage(this.isBoss ? ImageLib.STATUSBAR.boss.imgs : ImageLib.STATUSBAR.hp.imgs, index);
+    }
+
+    resizeOnSmallCanvasWidth(wCanvas) {
+        const fromLeft = this.y;
+        const totalBarWidth = this.w * 2;
+        const totalSpaceWidth = fromLeft * 2;
+        const totalWidth = totalBarWidth + totalSpaceWidth;
+        if (totalWidth > wCanvas) {
+            if (totalBarWidth > wCanvas) {
+                this.w = wCanvas / 2;
+            }
+            this.x = this.isBoss ? wCanvas - this.w: 0;
+        }
     }
 }
