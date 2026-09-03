@@ -1,7 +1,7 @@
 import { Game } from './game.class.js';
 import { AudioHub } from '../utility/audio-hub.class.js';
 import { TimingHub } from './timing-hub.class.js';
-import { toggleFullscreen } from '../../js/fullscreen.js';
+import { toggleFullscreen, renderScreenButton } from '../../js/fullscreen.js';
 export class Events {
     static init() {
         Events.initUI();
@@ -37,6 +37,7 @@ export class Events {
         Game.restart();
         Game.pause();
         document.getElementById('btn-resume-img').src = './assets/icons/start.svg';
+        renderScreenButton();
         Events.unfocusButton('btn-restart');
     }
 
