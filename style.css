@@ -48,8 +48,7 @@ dialog {
 
 .dialog-wrapper {
     max-height: 90svh;
-    /* height: 90svh; */
-    max-width: 80svw;
+    max-width: 90svw;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -64,11 +63,19 @@ dialog {
 
     h1 {
         font-size: clamp(28px, calc((100svw - 300px) * 10 / 1140 + 28px), 38px);
-        margin-bottom: 20px;
     }
 
     h2 {
         font-size: clamp(22px, calc((100svw - 300px) * 10 / 1140 + 22px), 32px);
+    }
+
+    .dialog-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        width: 100%;
+        position: relative;
     }
 
     .btn-close-dialog {
@@ -78,9 +85,10 @@ dialog {
         min-height: var(--size-dialog-close-btn);
         border-radius: 50%;
         background-color: rgba(217, 217, 217, 0.5);
-        align-self: flex-end;
-        margin-right: 50px;
+        right: 30px;
         border: 2px solid rgba(0, 0, 0, 0.5);
+        position: absolute;
+
 
         img {
             width: 80%;
@@ -95,7 +103,7 @@ dialog {
         background-color: rgba(245, 245, 245, 0.5);
     }
 
-    div {
+    .instruction-wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -113,9 +121,10 @@ dialog {
         gap: 10px;
 
         .dialog-img {
-            width: clamp(200px, 35svh, 400px);
+            width: clamp(200px, 100%, 400px);
             height: clamp(200px, 35svh, 400px);
-            min-height: clamp(200px, 35svh, 400px);
+            min-height: 200px;
+            min-width: 200px;
             border: 5px solid black;
             border-radius: 10%;
             padding: 5px;

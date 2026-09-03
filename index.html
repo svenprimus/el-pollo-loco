@@ -75,16 +75,19 @@
 
         <dialog id="instructions-dialog" aria-label="Open Game Instructions">
             <article id="instructions-dialog-wrapper" class="dialog-wrapper">
-                <button
-                    id="btn-close-dialog"
-                    class="btn-close-dialog"
-                    aria-controls="instructions-dialog"
-                    aria-label="closes instructions dialog"
-                >
-                    <img src="./assets/icons/hide.svg" alt="show and hide instructions button" />
-                </button>
-                <h1>Instructions</h1>
-                <div>
+                <header class="dialog-header">
+                    <h1>Instructions</h1>
+                    <button
+                        id="btn-close-dialog"
+                        class="btn-close-dialog"
+                        aria-controls="instructions-dialog"
+                        aria-label="closes instructions dialog"
+                    >
+                        <img src="./assets/icons/hide.svg" alt="show and hide instructions button" />
+                    </button>
+                </header>
+
+                <div class="instruction-wrapper">
                     <section class="section-instructions">
                         <img
                             class="dialog-img dialog-desktop"
