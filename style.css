@@ -223,6 +223,6 @@ button {
 
 @media (hover: hover) {
     .btn-mobile {
-        /* display: none; */
+        display: none;
     }
 }

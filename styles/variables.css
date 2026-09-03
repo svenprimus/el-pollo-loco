@@ -2,10 +2,8 @@
     --color-btn-passive: rgba(245, 245, 245, 0.2);
     --color-btn-active: rgba(245, 245, 245, 0.4);
 
-    --size-btn-mobile-base-factor: 0.2;
+    --size-btn-mobile-base-factor: 0.18;
     --size-btn-ui-base-factor: 0.075;
-    --size-btn-mobile: min(10svh, 10svw);
-    --size-btn-ui: 5svh;
-
-    --test: calc(4* var(--size-btn-ui));
+    --size-btn-mobile: min(18svh, 18svw);
+    --size-btn-ui: 7.5svh;
 }
