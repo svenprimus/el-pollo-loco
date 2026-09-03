@@ -1,5 +1,6 @@
 import { Game } from './game.class.js';
 import { AudioHub } from '../utility/audio-hub.class.js';
+import { TimingHub } from './timing-hub.class.js';
 import { toggleFullscreen } from '../../js/fullscreen.js';
 export class Events {
     static init() {
@@ -14,31 +15,55 @@ export class Events {
 
     static pauseGame = () => {
         Game.pause();
-        Events.unfocusButton('btn-pause');
+        document.getElementById('btn-resume-img').src = './assets/icons/start.svg';
+        Events.unfocusButton('btn-resume');
     };
 
     static resumeGame = () => {
         Game.resume();
+        document.getElementById('btn-resume-img').src = './assets/icons/pause.svg';
         Events.unfocusButton('btn-resume');
     };
 
-    static restartGame = () => {
-        Game.restart();
-        Events.unfocusButton('btn-restart');
+    static toggleResumePauseGame = () => {
+        if (Game.isPaused) {
+            Events.resumeGame();
+        } else {
+            Events.pauseGame();
+        }
     };
+
+    static restartGame() {
+        Game.restart();
+        Game.pause();
+        Events.unfocusButton('btn-restart');
+    }
+
+    static restartGameDelayed() {
+        TimingHub.setTimeout(() => {
+            Events.restartGame();
+        }, 100);
+    }
 
     static toggleMute() {
         Game.toggleMute();
-        Events.updateVolumeSlider();
+        Events.renderUpdateVolumeElements();
         Events.unfocusButton('btn-mute');
     }
 
     static setVolume(event) {
         Game.setVolume(event.target.value);
+        Events.renderUpdateVolumeElements();
     }
 
-    static updateVolumeSlider() {
-        document.getElementById('volume').value = AudioHub.volBase * 100;
+    static renderUpdateVolumeElements() {
+        const vol = AudioHub.volBase * 100;
+        document.getElementById('volume').value = vol;
+        if (0 === vol) {
+            document.getElementById('btn-mute-img').src = './assets/icons/unmute.svg';
+        } else {
+            document.getElementById('btn-mute-img').src = './assets/icons/mute.svg';
+        }
     }
 
     /**
@@ -50,13 +75,28 @@ export class Events {
     }
 
     static initUI() {
-        document.getElementById('btn-pause').addEventListener('click', Events.pauseGame);
-        document.getElementById('btn-resume').addEventListener('click', Events.resumeGame);
-        document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
+        Events.initInteractive();
+        Events.initAutomatic();
+    }
+
+    static initInteractive() {
+        document.getElementById('btn-resume').addEventListener('click', Events.toggleResumePauseGame);
+        document.getElementById('btn-restart').addEventListener('click', () => {
+            Events.restartGame();
+        });
         document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
         document.getElementById('volume').addEventListener('input', Events.setVolume);
         document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
         AudioHub.init();
-        Events.updateVolumeSlider();
+        Events.renderUpdateVolumeElements();
+    }
+
+    static initAutomatic() {
+        screen.orientation.addEventListener('change', () => {
+            Events.restartGameDelayed();
+        });
+        document.addEventListener('fullscreenchange', () => {
+            Events.restartGameDelayed();
+        });
     }
 }

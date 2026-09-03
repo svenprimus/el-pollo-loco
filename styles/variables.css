@@ -1,0 +1,7 @@
+:root {
+    --color-btn-passive: rgba(245, 245, 245, 0.2);
+    --color-btn-active: rgba(245, 245, 245, 0.4);
+
+    --size-btn-mobile: min(10svh, 10svw);
+    --size-btn-ui: 5svh;
+}

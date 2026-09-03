@@ -13,7 +13,7 @@ export class World {
     level;
 
     constructor(canvas) {
-        this.setDimensions(canvas);
+        this.setDimensions();
         this.loadLevel(this);
         this.setStatusBarHero();
         this.draw();
@@ -80,17 +80,17 @@ export class World {
         this.addToMap(this.level.lostCoins);
 
         // TODO: remove markers
-        this.level.hero.drawMarker(this.ctx, Level.START + 1, 0);
-        this.level.hero.drawMarker(this.ctx, 0, 0, 'purple');
-        this.level.hero.drawMarker(this.ctx, Level.END, 0);
-        this.level.hero.drawMarker(this.ctx, 0, this.level.hero.ground, 'green', false);
-        this.level.hero.drawMarker(this.ctx, Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas), 0, 'black');
-        this.level.hero.drawMarker(
-            this.ctx,
-            Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas) + this.level.hero.camOffset,
-            0,
-            'green'
-        );
+        // this.level.hero.drawMarker(this.ctx, Level.START + 1, 0);
+        // this.level.hero.drawMarker(this.ctx, 0, 0, 'purple');
+        // this.level.hero.drawMarker(this.ctx, Level.END, 0);
+        // this.level.hero.drawMarker(this.ctx, 0, this.level.hero.ground, 'green', false);
+        // this.level.hero.drawMarker(this.ctx, Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas), 0, 'black');
+        // this.level.hero.drawMarker(
+        //     this.ctx,
+        //     Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas) + this.level.hero.camOffset,
+        //     0,
+        //     'green'
+        // );
 
         this.ctx.translate(-this.camX, 0);
         // fixed objects
@@ -127,10 +127,11 @@ export class World {
             this.flipImage(drawble);
         }
         drawble.draw(this.ctx);
-        drawble.drawFrame(this.ctx);
-        if (drawble instanceof MovableObject) {
-            drawble.drawCustomFrame(this.ctx, drawble.getRealDimension(drawble));
-        }
+        // TODO: remove collision markers
+        // drawble.drawFrame(this.ctx);
+        // if (drawble instanceof MovableObject) {
+        //     drawble.drawCustomFrame(this.ctx, drawble.getRealDimension(drawble));
+        // }
         if (drawble.reverseDirection) {
             this.flipImageBack(drawble);
         }
@@ -157,9 +158,14 @@ export class World {
     setDimensions() {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
-        this.canvas.width = window.innerWidth * 0.9;
-        this.canvas.height = window.innerHeight * 0.8;
+        this.canvas.width = document.documentElement.clientWidth * (document.fullscreenElement ? 1 : 0.9);
+        this.canvas.height = document.documentElement.clientHeight * (document.fullscreenElement ? 1 : 0.7);
         Level.BG_WIDTH = Math.round(Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height));
+        document.documentElement.style.setProperty(
+            '--size-btn-mobile',
+            `${Math.min(this.canvas.width, this.canvas.height) * 0.1}px`
+        );
+        document.documentElement.style.setProperty('--size-btn-ui', `${this.canvas.height * 0.05}px`);
     }
 
     setCamX(x) {
@@ -223,14 +229,14 @@ export class World {
     }
 
     setStatusBarHero() {
-        const pos = this.canvas.height * 0.05;
+        const pos = this.canvas.height * 0.075;
         this.level.hero.statusBar = new StatusBar(this.canvas.width, canvas.height, this.level.hero, pos, false);
         this.level.hero.statusCoins = new StatusCoins(this.canvas.height, this.level.hero);
         this.level.hero.statusBottles = new StatusBottles(this.canvas.height, this.level.hero);
     }
 
     setStatusBarBoss() {
-        const y = this.canvas.height * 0.05;
+        const y = this.canvas.height * 0.075;
         this.level.boss.statusBar = new StatusBar(this.canvas.width, this.canvas.height, this.level.boss, y, true);
     }
 }

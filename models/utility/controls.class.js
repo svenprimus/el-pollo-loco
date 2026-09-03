@@ -111,17 +111,14 @@ export class Controls {
         });
         document.getElementById('btn-jump').addEventListener('pointerup', (e) => {
             document.getElementById('btn-attack').releasePointerCapture(e.pointerId);
-
             Controls.UP = false;
         });
         document.getElementById('btn-attack').addEventListener('pointerup', (e) => {
             document.getElementById('btn-attack').releasePointerCapture(e.pointerId);
-
             Controls.ATTACK = false;
         });
         document.getElementById('btn-drink').addEventListener('pointerup', (e) => {
             document.getElementById('btn-attack').releasePointerCapture(e.pointerId);
-
             Controls.DOWN = false;
         });
     }

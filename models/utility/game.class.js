@@ -6,12 +6,14 @@ import { AudioHub } from '../utility/audio-hub.class.js';
 export class Game {
     static FPS = 25;
     static world;
+    static isPaused = false;
 
     static start() {
         Controls.init();
         const canvas = document.getElementById('canvas');
-        Game.world = new World(canvas);
+        Game.world = new World(canvas, false);
         Game.world.draw();
+        Game.isPaused = false;
         window.world = Game.world; // TODO: remove - only for debugging
         window.timing = TimingHub.intervalIds; // TODO: remove - only for debugging
     }
@@ -19,11 +21,13 @@ export class Game {
     static pause() {
         TimingHub.pause();
         AudioHub.stopAll();
+        Game.isPaused = true;
     }
 
     static resume() {
         TimingHub.resume();
         AudioHub.resume();
+        Game.isPaused = false;
     }
 
     static restart() {
@@ -32,6 +36,7 @@ export class Game {
         const canvas = document.getElementById('canvas');
         Game.world = new World(canvas);
         Game.world.draw();
+        Game.isPaused = false;
     }
 
     static toggleMute() {
