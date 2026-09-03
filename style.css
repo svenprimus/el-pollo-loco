@@ -72,9 +72,8 @@ button {
 .button-wrapper-ui {
     height: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: calc(var(--size-btn-ui) / 10);
-    /* gap: calc(20svw * var(--size-btn-ui-base-factor)); */
 
     .btn-ui {
         width: var(--size-btn-ui);
@@ -96,14 +95,13 @@ button {
     .play-wrapper,
     .resize-wrapper {
         display: flex;
+        justify-content: center;
         gap: calc(var(--size-btn-ui) * 0.2);
+        flex-grow: 1;
     }
 
-    .play-wrapper {
-        padding-left: var(--size-btn-ui);;
-    }
-    .resize-wrapper {
-        padding-right: var(--size-btn-ui);;
+    .spacemaker {
+        flex-grow: 5;
     }
 
     @media screen and (max-width: 300px) {
@@ -115,6 +113,7 @@ button {
 
     .audio-wrapper {
         position: absolute;
+        left: calc(var(--size-btn-ui) / 10);
         bottom: 40%;
         display: flex;
         flex-direction: column;
