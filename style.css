@@ -1,7 +1,9 @@
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    text-decoration: none;
 }
 
 body {
@@ -16,15 +18,6 @@ canvas {
     background-color: black;
 }
 
-button {
-    cursor: pointer;
-    font-family: 'Titan One';
-    touch-action: none;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
-}
-
 .headline {
     height: 15svh;
     width: auto;
@@ -37,17 +30,151 @@ button {
     position: relative;
 }
 
-.dev-buttons {
+/* #region UI */
+button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #00000000;
+    border: none;
+    text-decoration: none;
+    user-select: none;
+
+    cursor: pointer;
+    font-family: 'Titan One';
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    border: none;
+
+    img {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -webkit-user-drag: none;
+        user-select: none;
+        pointer-events: none;
+    }
+}
+
+.button-wrapper-ui,
+.button-wrapper-mobile {
     position: absolute;
-    margin-block: 10px;
     width: 100%;
     display: flex;
     justify-content: center;
-    gap: 20px;
 }
+
+.button-wrapper-ui {
+    .btn-ui {
+        width: var(--size-btn-ui);
+        height: var(--size-btn-ui);
+        border-radius: 50%;
+        background-color: var(--color-btn-passive);
+
+        img {
+            width: calc(var(--size-btn-ui) * 0.8);
+            height: calc(var(--size-btn-ui) * 0.8);
+            opacity: 0.5;
+        }
+    }
+
+    .volume-wrapper {
+        width: calc(var(--size-btn-ui) * 3);
+        display: flex;
+        align-items: center;
+
+        .volume {
+            -webkit-appearance: none;
+            width: 100%;
+            height: calc(var(--size-btn-ui));
+            border-radius: var(--size-btn-ui);
+            background: var(--color-btn-passive);
+            outline: none;
+            -webkit-transition: 0.2s;
+            transition: opacity 0.2s;
+        }
+
+        .volume::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: calc(var(--size-btn-ui) * 0.8);
+            height: calc(var(--size-btn-ui) * 0.8);
+            background: url('./assets/icons/slider-thumb.svg');
+            background-size: contain;
+            border: none;
+            opacity: 0.5;
+            cursor: pointer;
+        }
+
+        .volume::-moz-range-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: calc(var(--size-btn-ui) * 0.8);
+            height: calc(var(--size-btn-ui) * 0.8);
+            background: url('./assets/icons/slider-thumb.svg');
+            background-size: contain;
+            border: none;
+            opacity: 0.5;
+            cursor: pointer;
+        }
+    }
+}
+
+.button-wrapper-mobile {
+    bottom: 2.5svw;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 2.5svw;
+    padding-right: 2.5svw;
+
+    .movements {
+        display: flex;
+        align-items: flex-end;
+        gap: 5svw;
+    }
+
+    .actions {
+        position: relative;
+        width: calc(var(--size-btn-mobile) * 2.5);
+
+        .btn-attack {
+            position: absolute;
+            left: calc(var(--size-btn-mobile) / 2);
+            bottom: var(--size-btn-mobile);
+        }
+        .btn-jump {
+            position: absolute;
+            left: calc(var(--size-btn-mobile) * 1.5);
+            bottom: calc(var(--size-btn-mobile) * 1.5);
+        }
+    }
+
+    .btn-mobile {
+        width: var(--size-btn-mobile);
+        height: var(--size-btn-mobile);
+        border-radius: 50%;
+        background-color: var(--color-btn-passive);
+
+        img {
+            width: var(--size-btn-mobile);
+            height: var(--size-btn-mobile);
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+    }
+}
+
+.btn-mobile:active,
+.btn-ui:active {
+    background-color: var(--color-btn-active);
+}
+/* #endregion UI */
 
 @media (hover: hover) {
     .btn-mobile {
-        display: none;
+        /* display: none; */
     }
 }

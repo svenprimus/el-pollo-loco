@@ -12,8 +12,8 @@ export class World {
     camX = 0;
     level;
 
-    constructor(canvas, fullscreen) {
-        this.setDimensions(fullscreen);
+    constructor(canvas) {
+        this.setDimensions();
         this.loadLevel(this);
         this.setStatusBarHero();
         this.draw();
@@ -80,17 +80,17 @@ export class World {
         this.addToMap(this.level.lostCoins);
 
         // TODO: remove markers
-        this.level.hero.drawMarker(this.ctx, Level.START + 1, 0);
-        this.level.hero.drawMarker(this.ctx, 0, 0, 'purple');
-        this.level.hero.drawMarker(this.ctx, Level.END, 0);
-        this.level.hero.drawMarker(this.ctx, 0, this.level.hero.ground, 'green', false);
-        this.level.hero.drawMarker(this.ctx, Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas), 0, 'black');
-        this.level.hero.drawMarker(
-            this.ctx,
-            Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas) + this.level.hero.camOffset,
-            0,
-            'green'
-        );
+        // this.level.hero.drawMarker(this.ctx, Level.START + 1, 0);
+        // this.level.hero.drawMarker(this.ctx, 0, 0, 'purple');
+        // this.level.hero.drawMarker(this.ctx, Level.END, 0);
+        // this.level.hero.drawMarker(this.ctx, 0, this.level.hero.ground, 'green', false);
+        // this.level.hero.drawMarker(this.ctx, Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas), 0, 'black');
+        // this.level.hero.drawMarker(
+        //     this.ctx,
+        //     Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas) + this.level.hero.camOffset,
+        //     0,
+        //     'green'
+        // );
 
         this.ctx.translate(-this.camX, 0);
         // fixed objects
@@ -127,10 +127,11 @@ export class World {
             this.flipImage(drawble);
         }
         drawble.draw(this.ctx);
-        drawble.drawFrame(this.ctx);
-        if (drawble instanceof MovableObject) {
-            drawble.drawCustomFrame(this.ctx, drawble.getRealDimension(drawble));
-        }
+        // TODO: remove collision markers
+        // drawble.drawFrame(this.ctx);
+        // if (drawble instanceof MovableObject) {
+        //     drawble.drawCustomFrame(this.ctx, drawble.getRealDimension(drawble));
+        // }
         if (drawble.reverseDirection) {
             this.flipImageBack(drawble);
         }
@@ -154,12 +155,14 @@ export class World {
         this.ctx.restore();
     }
 
-    setDimensions(fullscreen = false) {
+    setDimensions() {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
-        this.canvas.width = window.innerWidth * (fullscreen ? 1 : 0.9);
-        this.canvas.height = window.innerHeight * (fullscreen ? 1 : 0.7);
+        this.canvas.width = document.documentElement.clientWidth * (document.fullscreenElement ? 1 : 0.9);
+        this.canvas.height = document.documentElement.clientHeight * (document.fullscreenElement ? 1 : 0.7);
         Level.BG_WIDTH = Math.round(Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height));
+        document.documentElement.style.setProperty('--size-btn-mobile', `${this.canvas.width * 0.1}px`);
+        document.documentElement.style.setProperty('--size-btn-ui', `${this.canvas.width * 0.05}px`);
     }
 
     setCamX(x) {

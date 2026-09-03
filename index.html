@@ -6,6 +6,7 @@
         <title>El Pollo Loco</title>
         <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.svg" />
         <link rel="stylesheet" href="./styles/fonts.css" />
+        <link rel="stylesheet" href="./styles/variables.css" />
         <link rel="stylesheet" href="./style.css" />
         <script type="module" src="./script.js" defer></script>
     </head>
@@ -14,22 +15,49 @@
 
         <div id="game-wrapper" class="game-wrapper">
             <canvas id="canvas" width="720" height="480"></canvas>
-            <div class="dev-buttons">
-                <button id="btn-pause">Pause</button>
-                <button id="btn-resume">Resume</button>
-                <button id="btn-restart">Restart</button>
-                <button id="btn-mute">Mute</button>
 
-                <div>
-                    <input type="range" id="volume" name="volume" min="0" max="100" />
+            <div class="button-wrapper-ui">
+                <button id="btn-pause" class="btn-ui">
+                    <img src="./assets/icons/pause.svg" alt="pause button" />
+                </button>
+                <button id="btn-resume" class="btn-ui">
+                    <img src="./assets/icons/start.svg" alt="resume button" />
+                </button>
+                <button id="btn-restart" class="btn-ui">
+                    <img src="./assets/icons/restart.svg" alt="start button" />
+                </button>
+                <button id="btn-mute" class="btn-ui">
+                    <img src="./assets/icons/mute.svg" alt="mute button" />
+                </button>
+                <div class="volume-wrapper">
+                    <input type="range" id="volume" class="volume" name="volume" min="0" max="100" />
                 </div>
-                <button id="btn-fullscreen">Fullscreen</button>
+                <button id="btn-fullscreen" class="btn-ui">
+                    <img src="./assets/icons/fullscreen.svg" alt="pause button" />
+                </button>
+            </div>
 
-                <button id="btn-left" class="btn-mobile">Left</button>
-                <button id="btn-right" class="btn-mobile">Right</button>
-                <button id="btn-jump" class="btn-mobile">Jump</button>
-                <button id="btn-attack" class="btn-mobile">Attack</button>
-                <button id="btn-drink" class="btn-mobile">Tequila</button>
+            <div class="button-wrapper-mobile">
+                <div class="movements">
+                    <button id="btn-left" class="btn-left btn-mobile">
+                        <img src="./assets/icons/left.svg" alt="arrow left" />
+                    </button>
+                    <button id="btn-right" class="btn-right btn-mobile">
+                        <img src="./assets/icons/right.svg" alt="arrow right" />
+                    </button>
+                </div>
+
+                <div class="actions">
+                    <button id="btn-jump" class="btn-jump btn-mobile">
+                        <img src="./assets/icons/jump.svg" alt="jumping man" />
+                    </button>
+                    <button id="btn-attack" class="btn-attack btn-mobile">
+                        <img src="./assets/icons/attack.svg" alt="flying bottle" />
+                    </button>
+                    <button id="btn-drink" class="btn-drink btn-mobile">
+                        <img src="./assets/icons/drink.svg" alt="drinking man" />
+                    </button>
+                </div>
             </div>
         </div>
     </body>

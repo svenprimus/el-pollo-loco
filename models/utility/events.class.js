@@ -1,5 +1,6 @@
 import { Game } from './game.class.js';
 import { AudioHub } from '../utility/audio-hub.class.js';
+import { TimingHub } from './timing-hub.class.js';
 import { toggleFullscreen } from '../../js/fullscreen.js';
 export class Events {
     static init() {
@@ -22,10 +23,16 @@ export class Events {
         Events.unfocusButton('btn-resume');
     };
 
-    static restartGame(fullscreen = false) {
-        Game.restart(fullscreen);
+    static restartGame() {
+        Game.restart();
         Game.pause();
         Events.unfocusButton('btn-restart');
+    }
+
+    static restartGameDelayed() {
+        TimingHub.setTimeout(() => {
+            Events.restartGame();
+        }, 100);
     }
 
     static toggleMute() {
@@ -51,6 +58,11 @@ export class Events {
     }
 
     static initUI() {
+        Events.initInteractive();
+        Events.initAutomatic();
+    }
+
+    static initInteractive() {
         document.getElementById('btn-pause').addEventListener('click', Events.pauseGame);
         document.getElementById('btn-resume').addEventListener('click', Events.resumeGame);
         document.getElementById('btn-restart').addEventListener('click', () => {
@@ -61,5 +73,14 @@ export class Events {
         document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
         AudioHub.init();
         Events.updateVolumeSlider();
+    }
+
+    static initAutomatic() {
+        screen.orientation.addEventListener('change', () => {
+            Events.restartGameDelayed();
+        });
+        document.addEventListener('fullscreenchange', () => {
+            Events.restartGameDelayed();
+        });
     }
 }

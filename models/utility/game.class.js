@@ -26,11 +26,11 @@ export class Game {
         AudioHub.resume();
     }
 
-    static restart(fullscreen = false) {
+    static restart() {
         TimingHub.clearGame();
         AudioHub.stopAll();
         const canvas = document.getElementById('canvas');
-        Game.world = new World(canvas, fullscreen);
+        Game.world = new World(canvas);
         Game.world.draw();
     }
 

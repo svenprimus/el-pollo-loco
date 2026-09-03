@@ -1,18 +1,17 @@
-import { Events } from '../models/utility/events.class.js';
-import { TimingHub } from '../models/utility/timing-hub.class.js';
+/**
+ * Toggle fullscreen of the game. Game is restarted then by fullscreenchange event.
+ */
 export function toggleFullscreen() {
     if (!document.fullscreenElement) {
         openFullscreen();
-        TimingHub.setTimeout(() => {
-            Events.restartGame(true);
-        }, 100);
     } else {
         closeFullscreen();
-        TimingHub.setTimeout(() => {
-            Events.restartGame(false);
-        }, 100);
     }
 }
+
+/**
+ * Open fullscreen
+ */
 function openFullscreen() {
     const elem = document.getElementById('game-wrapper');
     if (elem.requestFullscreen) {
@@ -26,7 +25,9 @@ function openFullscreen() {
     }
 }
 
-/* Close fullscreen */
+/**
+ * Close fullscreen.
+ */
 function closeFullscreen() {
     if (document.exitFullscreen) {
         document.exitFullscreen();
