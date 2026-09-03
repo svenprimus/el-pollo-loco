@@ -121,12 +121,13 @@ export class AudioHub {
     static toggleMute() {
         const tempLast = AudioHub.volLast;
         AudioHub.volLast = AudioHub.volBase;
-        AudioHub.volBase = AudioHub.volBase === 0 ? 0.5 : 0;
+        AudioHub.volBase = AudioHub.volBase === 0 ? tempLast : 0;
         AudioHub.saveVolumeToLocalStorage();
     }
 
     static setVolume(volumePercentage) {
         AudioHub.volBase = volumePercentage / 100;
+        AudioHub.volLast = AudioHub.volBase;
         AudioHub.saveVolumeToLocalStorage();
     }
 

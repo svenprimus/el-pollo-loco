@@ -37,16 +37,23 @@ export class Events {
 
     static toggleMute() {
         Game.toggleMute();
-        Events.updateVolumeSlider();
+        Events.renderUpdateVolumeElements();
         Events.unfocusButton('btn-mute');
     }
 
     static setVolume(event) {
         Game.setVolume(event.target.value);
+        Events.renderUpdateVolumeElements();
     }
 
-    static updateVolumeSlider() {
-        document.getElementById('volume').value = AudioHub.volBase * 100;
+    static renderUpdateVolumeElements() {
+        const vol = AudioHub.volBase * 100;
+        document.getElementById('volume').value = vol;
+        if (0 === vol) {
+            document.getElementById('btn-mute-img').src = "./assets/icons/unmute.svg";
+        } else {
+            document.getElementById('btn-mute-img').src = "./assets/icons/mute.svg"
+        }
     }
 
     /**
@@ -72,7 +79,7 @@ export class Events {
         document.getElementById('volume').addEventListener('input', Events.setVolume);
         document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
         AudioHub.init();
-        Events.updateVolumeSlider();
+        Events.renderUpdateVolumeElements();
     }
 
     static initAutomatic() {
