@@ -15,12 +15,22 @@ export class Events {
 
     static pauseGame = () => {
         Game.pause();
-        Events.unfocusButton('btn-pause');
+        document.getElementById('btn-resume-img').src = './assets/icons/start.svg';
+        Events.unfocusButton('btn-resume');
     };
 
     static resumeGame = () => {
         Game.resume();
+        document.getElementById('btn-resume-img').src = './assets/icons/pause.svg';
         Events.unfocusButton('btn-resume');
+    };
+
+    static toggleResumePauseGame = () => {
+        if (Game.isPaused) {
+            Events.resumeGame();
+        } else {
+            Events.pauseGame();
+        }
     };
 
     static restartGame() {
@@ -50,9 +60,9 @@ export class Events {
         const vol = AudioHub.volBase * 100;
         document.getElementById('volume').value = vol;
         if (0 === vol) {
-            document.getElementById('btn-mute-img').src = "./assets/icons/unmute.svg";
+            document.getElementById('btn-mute-img').src = './assets/icons/unmute.svg';
         } else {
-            document.getElementById('btn-mute-img').src = "./assets/icons/mute.svg"
+            document.getElementById('btn-mute-img').src = './assets/icons/mute.svg';
         }
     }
 
@@ -70,8 +80,7 @@ export class Events {
     }
 
     static initInteractive() {
-        document.getElementById('btn-pause').addEventListener('click', Events.pauseGame);
-        document.getElementById('btn-resume').addEventListener('click', Events.resumeGame);
+        document.getElementById('btn-resume').addEventListener('click', Events.toggleResumePauseGame);
         document.getElementById('btn-restart').addEventListener('click', () => {
             Events.restartGame();
         });

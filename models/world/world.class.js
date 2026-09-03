@@ -162,7 +162,7 @@ export class World {
         this.canvas.height = document.documentElement.clientHeight * (document.fullscreenElement ? 1 : 0.7);
         Level.BG_WIDTH = Math.round(Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height));
         document.documentElement.style.setProperty('--size-btn-mobile', `${this.canvas.width * 0.1}px`);
-        document.documentElement.style.setProperty('--size-btn-ui', `${this.canvas.width * 0.05}px`);
+        document.documentElement.style.setProperty('--size-btn-ui', `${this.canvas.height * 0.05}px`);
     }
 
     setCamX(x) {
@@ -226,14 +226,14 @@ export class World {
     }
 
     setStatusBarHero() {
-        const pos = this.canvas.height * 0.05;
+        const pos = this.canvas.height * 0.075;
         this.level.hero.statusBar = new StatusBar(this.canvas.width, canvas.height, this.level.hero, pos, false);
         this.level.hero.statusCoins = new StatusCoins(this.canvas.height, this.level.hero);
         this.level.hero.statusBottles = new StatusBottles(this.canvas.height, this.level.hero);
     }
 
     setStatusBarBoss() {
-        const y = this.canvas.height * 0.05;
+        const y = this.canvas.height * 0.075;
         this.level.boss.statusBar = new StatusBar(this.canvas.width, this.canvas.height, this.level.boss, y, true);
     }
 }

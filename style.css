@@ -68,6 +68,10 @@ button {
 }
 
 .button-wrapper-ui {
+    display: flex;
+    justify-content: flex-end;
+    padding: calc(var(--size-btn-ui) / 2);
+    gap:  calc(var(--size-btn-ui) / 2);
     .btn-ui {
         width: var(--size-btn-ui);
         height: var(--size-btn-ui);
