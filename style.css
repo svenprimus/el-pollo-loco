@@ -12,10 +12,15 @@ body {
     align-items: center;
     justify-content: center;
     height: 100svh;
+    background-image: url('./assets/img/startscreen-blank.png');
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 canvas {
     background-color: black;
+    border-radius: 50px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
 .headline {
@@ -56,6 +61,8 @@ dialog {
 
     padding: 20px;
     background-color: rgba(217, 217, 217, 0.8);
+    backdrop-filter: blur(5px);
+
     border-radius: 50px;
 
     font-family: 'Titan One';
@@ -88,7 +95,6 @@ dialog {
         right: 30px;
         border: 2px solid rgba(0, 0, 0, 0.5);
         position: absolute;
-
 
         img {
             width: 80%;

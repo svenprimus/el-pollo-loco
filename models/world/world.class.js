@@ -158,8 +158,8 @@ export class World {
     setDimensions() {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
-        this.canvas.width = document.documentElement.clientWidth * (document.fullscreenElement ? 1 : 0.9);
-        this.canvas.height = document.documentElement.clientHeight * (document.fullscreenElement ? 1 : 0.7);
+        this.canvas.width = Math.min(document.documentElement.clientWidth * (document.fullscreenElement ? 1 : 0.6), 1920);
+        this.canvas.height = Math.min(document.documentElement.clientHeight * (document.fullscreenElement ? 1 : 0.6), 1080);
         Level.BG_WIDTH = Math.round(Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height));
         const doc = document.documentElement;
         const mobileBase = getComputedStyle(doc).getPropertyValue('--size-btn-mobile-base-factor');
