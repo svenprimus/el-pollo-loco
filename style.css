@@ -53,6 +53,7 @@ body {
     height: auto;
     width: 10%;
     animation: slender 40s ease-in-out infinite;
+    z-index: 1;
 }
 
 .bar-chicken {
@@ -133,6 +134,7 @@ canvas {
     background-color: black;
     border-radius: 50px;
     box-shadow: 0 0 5px 0 var(--color-soft-black);
+    z-index: 2;
 }
 
 .d-hidden {
@@ -146,7 +148,7 @@ canvas {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(5px);
     border-radius: 50px;
-    z-index: 2;
+    z-index: 4;
 
     display: flex;
     flex-direction: column;
