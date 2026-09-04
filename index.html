@@ -12,63 +12,80 @@
         <script type="module" src="./script.js" defer></script>
     </head>
     <body>
-        <img class="headline" src="./assets/img/logo-horizontally.png" alt="el-pollo-loco horizontal logo" />
+        <div class="content-limit-1920p">
+            <div id="wrapper" class="wrapper">
+                <img class="bg-test1" src="./assets/img/screen-elements/bar.png" />
+                <img class="bg-test2" src="./assets/img/screen-elements/chicken-3.png" />
+                <img class="bg-test3" src="./assets/img/screen-elements/sombrero2.png" />
+                <img class="bg-test4" src="./assets/img/screen-elements/picado.png" />
 
-        <div id="game-wrapper" class="game-wrapper">
-            <canvas id="canvas" width="720" height="480"></canvas>
+                <img class="headline" src="./assets/img/logo-vertically.png" alt="el-pollo-loco horizontal logo" />
 
-            <div class="button-wrapper-ui">
-                <div class="audio-wrapper">
-                    <div class="volume-wrapper">
-                        <input type="range" id="volume" class="volume" name="volume" min="0" max="100" step="5" />
+                <div id="game-wrapper" class="game-wrapper">
+                    <canvas id="canvas" width="720" height="480"></canvas>
+
+                    <div class="button-wrapper-ui">
+                        <div class="audio-wrapper">
+                            <div class="volume-wrapper">
+                                <input
+                                    type="range"
+                                    id="volume"
+                                    class="volume"
+                                    name="volume"
+                                    min="0"
+                                    max="100"
+                                    step="5"
+                                />
+                            </div>
+                            <button id="btn-mute" class="btn-ui">
+                                <img id="btn-mute-img" src="./assets/icons/mute.svg" alt="toggle mute button" />
+                            </button>
+                        </div>
+                        <div class="play-wrapper">
+                            <button id="btn-resume" class="btn-ui">
+                                <img id="btn-resume-img" src="./assets/icons/start.svg" alt="pause and resume button" />
+                            </button>
+                            <button id="btn-restart" class="btn-ui">
+                                <img src="./assets/icons/restart.svg" alt="start button" />
+                            </button>
+                        </div>
+                        <div class="spacemaker"></div>
+                        <div class="resize-wrapper">
+                            <button
+                                id="btn-instructions"
+                                class="btn-ui"
+                                aria-controls="instructions-dialog"
+                                aria-label="open instructions dialog"
+                            >
+                                <img src="./assets/icons/show.svg" alt="show and hide instructions button" />
+                            </button>
+                            <button id="btn-fullscreen" class="btn-ui">
+                                <img id="btn-fullscreen-img" src="./assets/icons/fullscreen.svg" alt="pause button" />
+                            </button>
+                        </div>
                     </div>
-                    <button id="btn-mute" class="btn-ui">
-                        <img id="btn-mute-img" src="./assets/icons/mute.svg" alt="toggle mute button" />
-                    </button>
-                </div>
-                <div class="play-wrapper">
-                    <button id="btn-resume" class="btn-ui">
-                        <img id="btn-resume-img" src="./assets/icons/start.svg" alt="pause and resume button" />
-                    </button>
-                    <button id="btn-restart" class="btn-ui">
-                        <img src="./assets/icons/restart.svg" alt="start button" />
-                    </button>
-                </div>
-                <div class="spacemaker"></div>
-                <div class="resize-wrapper">
-                    <button
-                        id="btn-instructions"
-                        class="btn-ui"
-                        aria-controls="instructions-dialog"
-                        aria-label="open instructions dialog"
-                    >
-                        <img src="./assets/icons/show.svg" alt="show and hide instructions button" />
-                    </button>
-                    <button id="btn-fullscreen" class="btn-ui">
-                        <img id="btn-fullscreen-img" src="./assets/icons/fullscreen.svg" alt="pause button" />
-                    </button>
-                </div>
-            </div>
 
-            <div class="button-wrapper-mobile">
-                <div class="movements">
-                    <button id="btn-left" class="btn-left btn-mobile">
-                        <img src="./assets/icons/left.svg" alt="arrow left" />
-                    </button>
-                    <button id="btn-right" class="btn-right btn-mobile">
-                        <img src="./assets/icons/right.svg" alt="arrow right" />
-                    </button>
-                </div>
-                <div class="actions">
-                    <button id="btn-jump" class="btn-jump btn-mobile">
-                        <img src="./assets/icons/jump.svg" alt="jumping man" />
-                    </button>
-                    <button id="btn-attack" class="btn-attack btn-mobile">
-                        <img src="./assets/icons/attack.svg" alt="flying bottle" />
-                    </button>
-                    <button id="btn-drink" class="btn-drink btn-mobile">
-                        <img src="./assets/icons/drink.svg" alt="drinking man" />
-                    </button>
+                    <div class="button-wrapper-mobile">
+                        <div class="movements">
+                            <button id="btn-left" class="btn-left btn-mobile">
+                                <img src="./assets/icons/left.svg" alt="arrow left" />
+                            </button>
+                            <button id="btn-right" class="btn-right btn-mobile">
+                                <img src="./assets/icons/right.svg" alt="arrow right" />
+                            </button>
+                        </div>
+                        <div class="actions">
+                            <button id="btn-jump" class="btn-jump btn-mobile">
+                                <img src="./assets/icons/jump.svg" alt="jumping man" />
+                            </button>
+                            <button id="btn-attack" class="btn-attack btn-mobile">
+                                <img src="./assets/icons/attack.svg" alt="flying bottle" />
+                            </button>
+                            <button id="btn-drink" class="btn-drink btn-mobile">
+                                <img src="./assets/icons/drink.svg" alt="drinking man" />
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
