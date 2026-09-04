@@ -157,17 +157,24 @@ export class World {
 
     setDimensions() {
         this.ctx = canvas.getContext('2d');
-        this.canvas = canvas;
-        // this.canvas.width = Math.min(document.documentElement.clientWidth * (document.fullscreenElement ? 1 : 0.6), 1920);
-        // this.canvas.height = Math.min(document.documentElement.clientHeight * (document.fullscreenElement ? 1 : 0.6), 1080);
-        const ref = document.getElementById('wrapper');
-        this.canvas.width = ref.offsetWidth * (document.fullscreenElement ? 1 : 0.6);
-        this.canvas.height = ref.offsetHeight * (document.fullscreenElement ? 1 : 0.6);
+        this.setCanvasSize();
+        this.setButtonSize();
         Level.BG_WIDTH = Math.round(Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height));
+    }
+
+    setCanvasSize() {
+        this.canvas = canvas;
+        const cWidth = document.body.clientWidth;
+        const cHeight = document.body.clientHeight;
+        this.canvas.width = document.fullscreenElement ? cWidth : Math.min(cWidth * 0.6, 1920);
+        this.canvas.height = document.fullscreenElement ? cHeight : Math.min(cHeight * 0.6, 1080);
+        document.getElementById('canvas').style.borderRadius = document.fullscreenElement ? 0 : '50px';
+    }
+
+    setButtonSize() {
         const doc = document.documentElement;
         const mobileBase = getComputedStyle(doc).getPropertyValue('--size-btn-mobile-base-factor');
         const uiBase = getComputedStyle(doc).getPropertyValue('--size-btn-ui-base-factor');
-
         doc.style.setProperty('--size-btn-mobile', `${Math.min(this.canvas.width, this.canvas.height) * mobileBase}px`);
         doc.style.setProperty('--size-btn-ui', `${this.canvas.height * uiBase}px`);
     }
