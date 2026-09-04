@@ -162,6 +162,9 @@ export class World {
         Level.BG_WIDTH = Math.round(Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height));
     }
 
+    /**
+     * Resizes the canvas based on fullscreen status. It can be used e.g. on changing device orientation.
+     */
     setCanvasSize() {
         this.canvas = canvas;
         const cWidth = document.body.clientWidth;

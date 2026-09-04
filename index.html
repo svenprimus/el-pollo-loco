@@ -12,7 +12,7 @@
         <script type="module" src="./script.js" defer></script>
     </head>
     <body>
-        <div class="content-limit-1920p">
+        <main class="content-limit-1920p">
             <div id="wrapper" class="wrapper">
                 <img
                     class="dark-chicken deko-element"
@@ -64,11 +64,11 @@
 
                 <img class="headline" src="./assets/img/logo-horizontally.webp" alt="el-pollo-loco horizontal logo" />
 
-                <div id="game-wrapper" class="game-wrapper">
+                <article id="game-wrapper" class="game-wrapper">
                     <canvas id="canvas" width="720" height="480"></canvas>
-
-                    <div class="button-wrapper-ui">
-                        <div class="audio-wrapper">
+                    <div id="overlay" class="overlay"></div>
+                    <section class="button-wrapper-ui">
+                        <section class="audio-wrapper">
                             <div class="volume-wrapper">
                                 <input
                                     type="range"
@@ -83,17 +83,17 @@
                             <button id="btn-mute" class="btn-ui">
                                 <img id="btn-mute-img" src="./assets/icons/mute.svg" alt="toggle mute button" />
                             </button>
-                        </div>
-                        <div class="play-wrapper">
+                        </section>
+                        <section class="play-wrapper">
                             <button id="btn-resume" class="btn-ui">
                                 <img id="btn-resume-img" src="./assets/icons/start.svg" alt="pause and resume button" />
                             </button>
                             <button id="btn-restart" class="btn-ui">
                                 <img src="./assets/icons/restart.svg" alt="start button" />
                             </button>
-                        </div>
+                        </section>
                         <div class="spacemaker"></div>
-                        <div class="resize-wrapper">
+                        <section class="resize-wrapper">
                             <button
                                 id="btn-instructions"
                                 class="btn-ui"
@@ -105,19 +105,19 @@
                             <button id="btn-fullscreen" class="btn-ui">
                                 <img id="btn-fullscreen-img" src="./assets/icons/fullscreen.svg" alt="pause button" />
                             </button>
-                        </div>
-                    </div>
+                        </section>
+                    </section>
 
-                    <div class="button-wrapper-mobile">
-                        <div class="movements">
+                    <section class="button-wrapper-mobile">
+                        <section class="movements">
                             <button id="btn-left" class="btn-left btn-mobile">
                                 <img src="./assets/icons/left.svg" alt="arrow left" />
                             </button>
                             <button id="btn-right" class="btn-right btn-mobile">
                                 <img src="./assets/icons/right.svg" alt="arrow right" />
                             </button>
-                        </div>
-                        <div class="actions">
+                        </section>
+                        <section class="actions">
                             <button id="btn-jump" class="btn-jump btn-mobile">
                                 <img src="./assets/icons/jump.svg" alt="jumping man" />
                             </button>
@@ -127,11 +127,11 @@
                             <button id="btn-drink" class="btn-drink btn-mobile">
                                 <img src="./assets/icons/drink.svg" alt="drinking man" />
                             </button>
-                        </div>
-                    </div>
-                </div>
+                        </section>
+                    </section>
+                </article>
             </div>
-        </div>
+        </main>
 
         <dialog id="instructions-dialog" aria-label="Open Game Instructions">
             <article id="instructions-dialog-wrapper" class="dialog-wrapper">
