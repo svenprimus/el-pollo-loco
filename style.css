@@ -5,16 +5,128 @@
     scroll-behavior: smooth;
     text-decoration: none;
 }
-
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100svh;
-    background-image: url('./assets/img/startscreen-blank.png');
+    min-height: 100svh;
+    background-image: url('./assets/img/screen-elements/fauna.webp');
     background-size: cover;
     background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.wrapper {
+    min-height: 100svh;
+
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.content-limit-1920p {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+@media screen and (min-width: 1921px) {
+    .content-limit-1920p {
+        padding-inline: calc(50% - 1920px / 2);
+    }
+}
+
+.deko-element {
+    position: absolute;
+    pointer-events: none;
+}
+
+.dark-chicken {
+    left: 20%;
+    bottom: calc(46% - 6.6% * 100vw / 100vh);
+    height: auto;
+    width: 10%;
+    animation: slender 40s ease-in-out infinite;
+}
+
+.bar-chicken {
+    width: 40%;
+    object-fit: contain;
+    left: 0;
+    bottom: 0;
+    z-index: 10;
+}
+
+.town-chicken {
+    right: -20%;
+    bottom: 0;
+    object-fit: contain;
+    width: 60%;
+    z-index: 11;
+}
+
+.sombrero {
+    width: 25%;
+    height: auto;
+    object-fit: contain;
+    right: 30%;
+    bottom: 0%;
+    z-index: 12;
+    transform-origin: bottom center;
+    animation: shake 5s ease-in-out infinite;
+}
+
+.feather {
+    z-index: 111;
+    width: 15%;
+    height: auto;
+    bottom: 0;
+    right: 30%;
+}
+
+.delay-1 {
+    animation: spit 5s ease-in-out infinite;
+    animation-delay: 0;
+}
+
+.delay-2 {
+    animation: spit-2 5s ease-in-out infinite;
+    animation-delay: 100ms;
+}
+
+.delay-3 {
+    animation: spit 5s ease-in-out infinite;
+    animation-delay: 2200ms;
+}
+
+.delay-4 {
+    animation: spit-2 5s ease-in-out infinite;
+    animation-delay: 2300ms;
+}
+
+.delay-5 {
+    animation: spit 5s ease-in-out infinite;
+    animation-delay: 2400ms;
+}
+
+.papel-picado {
+    position: absolute;
+    z-index: 13;
+    height: 100%;
+    min-width: 100%;
+    object-fit: fill;
+
+    top: -25px;
+
+    pointer-events: none;
+    transform-origin: top center;
+    animation: wind 10s ease-in-out infinite alternate;
 }
 
 canvas {
@@ -28,6 +140,10 @@ canvas {
     width: auto;
     max-width: 90svw;
     object-fit: contain;
+    z-index: 15;
+
+    mask: linear-gradient(-60deg, white 30%, rgba(255, 255, 255, 0.333), white 70%) right/350% 100%;
+    animation: levitate 5s ease infinite alternate;
 }
 
 .game-wrapper {
@@ -184,3 +300,140 @@ body:has(dialog[open]) {
 }
 
 /* #endregion instructions-dialog */
+
+/* #region keyframes */
+@keyframes slender {
+    0% {
+        left: 20%;
+        transform: rotateY(0);
+    }
+    5% {
+        left: 20%;
+        transform: rotateY(0);
+    }
+    45% {
+        left: -20%;
+        transform: rotateY(0);
+    }
+    50% {
+        left: -20%;
+        transform: rotateY(180deg);
+    }
+    95% {
+        left: 20%;
+        transform: rotateY(180deg);
+    }
+    100% {
+        left: 20%;
+        transform: rotateY(0);
+    }
+}
+
+@keyframes wind {
+    0% {
+        transform: skewY(-1deg);
+    }
+    30% {
+        transform: rotateX(20deg) skewY(2deg);
+    }
+    60% {
+        transform: skewY(-0.5deg);
+    }
+    100% {
+        transform: rotateX(20deg) skewY(2.5deg);
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: rotateZ(0);
+    }
+    5% {
+        transform: rotateZ(0);
+    }
+    7% {
+        transform: rotateZ(-3deg);
+    }
+    9% {
+        transform: rotateZ(0);
+    }
+
+    50% {
+        transform: rotateZ(0);
+    }
+    52% {
+        transform: rotateZ(-7deg);
+    }
+    54% {
+        transform: rotateZ(0);
+    }
+    56% {
+        transform: rotateZ(-4deg);
+    }
+    58% {
+        transform: rotateZ(0);
+    }
+    100% {
+        transform: rotateZ(0);
+    }
+}
+
+@keyframes levitate {
+    0% {
+        transform: scale(1) translateY(0);
+    }
+    100% {
+        transform: scale(1.2) translateY(-5px);
+    }
+}
+
+@keyframes spit {
+    0% {
+        right: 30%;
+        opacity: 0;
+    }
+    5% {
+        opacity: 0;
+    }
+    18% {
+        opacity: 1;
+    }
+    20% {
+        right: 5%;
+        bottom: 10%;
+        transform: rotate(-720deg);
+        opacity: 0;
+    }
+    100% {
+        right: 5%;
+        bottom: 10%;
+        transform: rotate(-720deg);
+        opacity: 0;
+    }
+}
+
+@keyframes spit-2 {
+    0% {
+        right: 30%;
+        opacity: 0;
+    }
+    5% {
+        opacity: 0;
+    }
+    18% {
+        opacity: 1;
+    }
+    20% {
+        right: 10%;
+        bottom: 5%;
+        transform: rotate(-520deg);
+        opacity: 0;
+    }
+    100% {
+        right: 10%;
+        bottom: 5%;
+        transform: rotate(-520deg);
+        opacity: 0;
+    }
+}
+/* #endregion keyframes */
