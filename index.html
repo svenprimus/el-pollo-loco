@@ -7,6 +7,7 @@
         <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.svg" />
         <link rel="stylesheet" href="./styles/fonts.css" />
         <link rel="stylesheet" href="./styles/variables.css" />
+        <link rel="stylesheet" href="./styles/keyframes.css" />
         <link rel="stylesheet" href="./styles/game-ui.css" />
         <link rel="stylesheet" href="./style.css" />
         <script type="module" src="./script.js" defer></script>
@@ -14,6 +15,111 @@
     <body>
         <main class="content-limit-1920p">
             <div id="wrapper" class="wrapper">
+                <img class="headline" src="./assets/img/logo-horizontally.webp" alt="el-pollo-loco horizontal logo" />
+                <article id="game-wrapper" class="game-wrapper">
+                    <canvas id="canvas" width="720" height="480"></canvas>
+                    <div id="overlay" class="overlay">
+                        <aside class="start-menu-settings">
+                            <button id="btn-overlay-fullscreen" class="btn-ui">
+                                <img
+                                    id="btn-overlay-fullscreen-img"
+                                    src="./assets/icons/fullscreen.svg"
+                                    alt="pause button"
+                                />
+                            </button>
+                            <section class="audio-wrapper">
+                                <button id="btn-overlay-mute" class="btn-ui">
+                                    <img
+                                        id="btn-overlay-mute-img"
+                                        src="./assets/icons/mute.svg"
+                                        alt="toggle mute button"
+                                    />
+                                </button>
+                                <div class="volume-wrapper">
+                                    <input
+                                        type="range"
+                                        id="overlay-volume"
+                                        class="volume"
+                                        name="volume"
+                                        min="0"
+                                        max="100"
+                                        step="5"
+                                    />
+                                </div>
+                            </section>
+                        </aside>
+                        <nav class="start-menu-nav">
+                            <button id="btn-overlay-start" class="btn-menu">Start</button>
+                            <button id="btn-overlay-instructions" class="btn-menu">Controls</button>
+                            <button id="btn-overlay-imprint" class="btn-menu">Imprint</button>
+                        </nav>
+                    </div>
+                    <section id="button-wrapper-ui" class="button-wrapper-ui">
+                        <section class="audio-wrapper">
+                            <div class="volume-wrapper">
+                                <input
+                                    type="range"
+                                    id="volume"
+                                    class="volume"
+                                    name="volume"
+                                    min="0"
+                                    max="100"
+                                    step="5"
+                                />
+                            </div>
+                            <button id="btn-mute" class="btn-ui">
+                                <img id="btn-mute-img" src="./assets/icons/mute.svg" alt="toggle mute button" />
+                            </button>
+                        </section>
+                        <section class="play-wrapper">
+                            <button id="btn-resume" class="btn-ui">
+                                <img id="btn-resume-img" src="./assets/icons/start.svg" alt="pause and resume button" />
+                            </button>
+                            <button id="btn-restart" class="btn-ui">
+                                <img src="./assets/icons/restart.svg" alt="start button" />
+                            </button>
+                        </section>
+                        <div class="spacemaker"></div>
+                        <section class="resize-wrapper">
+                            <button
+                                id="btn-instructions"
+                                class="btn-ui"
+                                aria-controls="instructions-dialog"
+                                aria-label="open instructions dialog"
+                            >
+                                <img src="./assets/icons/show.svg" alt="show and hide instructions button" />
+                            </button>
+                            <button id="btn-return" class="btn-ui">
+                                <img id="btn-return-img" src="./assets/icons/return.svg" alt="pause button" />
+                            </button>
+                            <button id="btn-fullscreen" class="btn-ui">
+                                <img id="btn-fullscreen-img" src="./assets/icons/fullscreen.svg" alt="pause button" />
+                            </button>
+                        </section>
+                    </section>
+
+                    <section id="button-wrapper-mobile" class="button-wrapper-mobile">
+                        <section class="movements">
+                            <button id="btn-left" class="btn-left btn-mobile">
+                                <img src="./assets/icons/left.svg" alt="arrow left" />
+                            </button>
+                            <button id="btn-right" class="btn-right btn-mobile">
+                                <img src="./assets/icons/right.svg" alt="arrow right" />
+                            </button>
+                        </section>
+                        <section class="actions">
+                            <button id="btn-jump" class="btn-jump btn-mobile">
+                                <img src="./assets/icons/jump.svg" alt="jumping man" />
+                            </button>
+                            <button id="btn-attack" class="btn-attack btn-mobile">
+                                <img src="./assets/icons/attack.svg" alt="flying bottle" />
+                            </button>
+                            <button id="btn-drink" class="btn-drink btn-mobile">
+                                <img src="./assets/icons/drink.svg" alt="drinking man" />
+                            </button>
+                        </section>
+                    </section>
+                </article>
                 <img
                     class="dark-chicken deko-element"
                     src="./assets/img/screen-elements/dark-chicken.gif"
@@ -61,75 +167,6 @@
                     src="./assets/img/screen-elements/feathers/feather-5.svg"
                     alt="purple feather"
                 />
-
-                <img class="headline" src="./assets/img/logo-horizontally.webp" alt="el-pollo-loco horizontal logo" />
-
-                <article id="game-wrapper" class="game-wrapper">
-                    <canvas id="canvas" width="720" height="480"></canvas>
-                    <div id="overlay" class="overlay"></div>
-                    <section class="button-wrapper-ui">
-                        <section class="audio-wrapper">
-                            <div class="volume-wrapper">
-                                <input
-                                    type="range"
-                                    id="volume"
-                                    class="volume"
-                                    name="volume"
-                                    min="0"
-                                    max="100"
-                                    step="5"
-                                />
-                            </div>
-                            <button id="btn-mute" class="btn-ui">
-                                <img id="btn-mute-img" src="./assets/icons/mute.svg" alt="toggle mute button" />
-                            </button>
-                        </section>
-                        <section class="play-wrapper">
-                            <button id="btn-resume" class="btn-ui">
-                                <img id="btn-resume-img" src="./assets/icons/start.svg" alt="pause and resume button" />
-                            </button>
-                            <button id="btn-restart" class="btn-ui">
-                                <img src="./assets/icons/restart.svg" alt="start button" />
-                            </button>
-                        </section>
-                        <div class="spacemaker"></div>
-                        <section class="resize-wrapper">
-                            <button
-                                id="btn-instructions"
-                                class="btn-ui"
-                                aria-controls="instructions-dialog"
-                                aria-label="open instructions dialog"
-                            >
-                                <img src="./assets/icons/show.svg" alt="show and hide instructions button" />
-                            </button>
-                            <button id="btn-fullscreen" class="btn-ui">
-                                <img id="btn-fullscreen-img" src="./assets/icons/fullscreen.svg" alt="pause button" />
-                            </button>
-                        </section>
-                    </section>
-
-                    <section class="button-wrapper-mobile">
-                        <section class="movements">
-                            <button id="btn-left" class="btn-left btn-mobile">
-                                <img src="./assets/icons/left.svg" alt="arrow left" />
-                            </button>
-                            <button id="btn-right" class="btn-right btn-mobile">
-                                <img src="./assets/icons/right.svg" alt="arrow right" />
-                            </button>
-                        </section>
-                        <section class="actions">
-                            <button id="btn-jump" class="btn-jump btn-mobile">
-                                <img src="./assets/icons/jump.svg" alt="jumping man" />
-                            </button>
-                            <button id="btn-attack" class="btn-attack btn-mobile">
-                                <img src="./assets/icons/attack.svg" alt="flying bottle" />
-                            </button>
-                            <button id="btn-drink" class="btn-drink btn-mobile">
-                                <img src="./assets/icons/drink.svg" alt="drinking man" />
-                            </button>
-                        </section>
-                    </section>
-                </article>
             </div>
         </main>
 

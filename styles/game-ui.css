@@ -41,24 +41,6 @@ button {
     justify-content: space-around;
     padding: calc(var(--size-btn-ui) / 10);
 
-    .btn-ui {
-        width: var(--size-btn-ui);
-        height: var(--size-btn-ui);
-        min-width: var(--size-btn-ui);
-        min-height: var(--size-btn-ui);
-        border-radius: 50%;
-        background-color: var(--color-btn-passive);
-        pointer-events: auto;
-
-        img {
-            width: calc(var(--size-btn-ui) * 0.8);
-            height: calc(var(--size-btn-ui) * 0.8);
-            min-width: calc(var(--size-btn-ui) * 0.8);
-            min-height: calc(var(--size-btn-ui) * 0.8);
-            opacity: 0.5;
-        }
-    }
-
     .play-wrapper,
     .resize-wrapper {
         display: flex;
@@ -86,52 +68,69 @@ button {
         flex-direction: column;
         gap: calc(var(--size-btn-ui) * 0.2);
     }
+}
 
-    .volume-wrapper {
-        width: calc(var(--size-btn-ui));
-        display: flex;
-        align-items: center;
-        pointer-events: auto;
+.btn-ui {
+    width: var(--size-btn-ui);
+    height: var(--size-btn-ui);
+    min-width: var(--size-btn-ui);
+    min-height: var(--size-btn-ui);
+    border-radius: 50%;
+    background-color: var(--color-btn-passive);
+    pointer-events: auto;
 
-        .volume {
-            -webkit-appearance: none;
-            min-width: 100%;
-            height: calc(var(--size-btn-ui));
-            min-height: calc(var(--size-btn-ui));
-            border-radius: var(--size-btn-ui);
-            background: var(--color-btn-passive);
-            outline: none;
-            -webkit-transition: 0.2s;
-            transition: opacity 0.2s;
-            height: calc(var(--size-btn-ui) * 3);
+    img {
+        width: calc(var(--size-btn-ui) * 0.8);
+        height: calc(var(--size-btn-ui) * 0.8);
+        min-width: calc(var(--size-btn-ui) * 0.8);
+        min-height: calc(var(--size-btn-ui) * 0.8);
+        opacity: 0.5;
+    }
+}
 
-            writing-mode: vertical-lr;
-            direction: rtl;
-        }
+.volume-wrapper {
+    width: calc(var(--size-btn-ui));
+    display: flex;
+    align-items: center;
+    pointer-events: auto;
 
-        .volume::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: calc(var(--size-btn-ui) * 0.8);
-            height: calc(var(--size-btn-ui) * 0.8);
-            background: url('../assets/icons/slider-thumb.svg');
-            background-size: contain;
-            border: none;
-            opacity: 0.5;
-            cursor: pointer;
-        }
+    .volume {
+        -webkit-appearance: none;
+        min-width: 100%;
+        min-height: calc(var(--size-btn-ui));
+        border-radius: var(--size-btn-ui);
+        background: var(--color-btn-passive);
+        outline: none;
+        -webkit-transition: 0.2s;
+        transition: opacity 0.2s;
+        height: calc(var(--size-btn-ui) * 3);
 
-        .volume::-moz-range-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: calc(var(--size-btn-ui) * 0.8);
-            height: calc(var(--size-btn-ui) * 0.8);
-            background: url('../assets/icons/slider-thumb.svg');
-            background-size: contain;
-            border: none;
-            opacity: 0.5;
-            cursor: pointer;
-        }
+        writing-mode: vertical-lr;
+        direction: rtl;
+    }
+
+    .volume::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: calc(var(--size-btn-ui) * 0.8);
+        height: calc(var(--size-btn-ui) * 0.8);
+        background: url('../assets/icons/slider-thumb.svg');
+        background-size: contain;
+        border: none;
+        opacity: 0.5;
+        cursor: pointer;
+    }
+
+    .volume::-moz-range-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: calc(var(--size-btn-ui) * 0.8);
+        height: calc(var(--size-btn-ui) * 0.8);
+        background: url('../assets/icons/slider-thumb.svg');
+        background-size: contain;
+        border: none;
+        opacity: 0.5;
+        cursor: pointer;
     }
 }
 
@@ -184,8 +183,8 @@ button {
     }
 }
 
-.btn-mobile:active,
-.btn-ui:active {
+.btn-mobile:not(:disabled):active,
+.btn-ui:not(:disabled):active {
     background-color: var(--color-btn-active);
 }
 

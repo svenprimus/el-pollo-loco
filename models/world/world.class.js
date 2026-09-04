@@ -171,7 +171,9 @@ export class World {
         const cHeight = document.body.clientHeight;
         this.canvas.width = document.fullscreenElement ? cWidth : Math.min(cWidth * 0.6, 1920);
         this.canvas.height = document.fullscreenElement ? cHeight : Math.min(cHeight * 0.6, 1080);
+
         document.getElementById('canvas').style.borderRadius = document.fullscreenElement ? 0 : '50px';
+        document.getElementById('overlay').style.borderRadius = document.fullscreenElement ? 0 : '50px';
     }
 
     setButtonSize() {

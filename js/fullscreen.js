@@ -13,8 +13,10 @@ export function toggleFullscreen() {
 export function renderScreenButton() {
     if (!document.fullscreenElement) {
         document.getElementById('btn-fullscreen-img').src = './assets/icons/fullscreen.svg';
+        document.getElementById('btn-overlay-fullscreen-img').src = './assets/icons/fullscreen.svg';
     } else {
         document.getElementById('btn-fullscreen-img').src = './assets/icons/fullscreen-exit.svg';
+        document.getElementById('btn-overlay-fullscreen-img').src = './assets/icons/fullscreen-exit.svg';
     }
 }
 /**

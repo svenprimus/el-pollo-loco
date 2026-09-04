@@ -83,7 +83,7 @@ body {
 }
 
 .feather {
-    z-index: 111;
+    z-index: 11;
     width: 15%;
     height: auto;
     bottom: 0;
@@ -132,8 +132,11 @@ body {
 canvas {
     background-color: black;
     border-radius: 50px;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-    z-index: 1;
+    box-shadow: 0 0 5px 0 var(--color-soft-black);
+}
+
+.d-hidden {
+    visibility: hidden;
 }
 
 .overlay {
@@ -143,8 +146,76 @@ canvas {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(5px);
     border-radius: 50px;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
     z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+
+    .start-menu-nav {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: calc(var(--size-btn-ui) * 0.2);
+        z-index: 15;
+    }
+
+    .start-menu-settings {
+        display: flex;
+        gap: calc(var(--size-btn-ui) * 0.2);
+        padding: 25px;
+        z-index: 15;
+
+        .btn-ui {
+            border: var(--border-btn-menu);
+            background: var(--color-btn-menu-passive);
+        }
+
+        .audio-wrapper {
+            display: flex;
+            gap: calc(var(--size-btn-ui) * 0.2);
+        }
+
+        .volume-wrapper {
+            width: calc(var(--size-btn-ui) * 3);
+            height: calc(var(--size-btn-ui));
+
+            .volume {
+                border: var(--border-btn-menu);
+                background: var(--color-btn-menu-passive);
+                writing-mode: horizontal-tb;
+                direction: ltr;
+
+                height: calc(var(--size-btn-ui));
+                min-width: calc(var(--size-btn-ui) * 3);
+                width: calc(var(--size-btn-ui) * 3);
+            }
+        }
+    }
+}
+
+.btn-menu {
+    background-color: var(--color-btn-menu-passive);
+    width: calc(var(--size-btn-ui) * 3);
+    height: var(--size-btn-ui);
+    border-radius: 50px;
+    color: var(--color-soft-black);
+    border: var(--border-btn-menu);
+    font-size: calc(var(--size-btn-ui) * 0.4);
+}
+
+.btn-menu:not(:disabled):hover {
+    background-color: var(--color-btn-menu-hover);
+}
+
+.btn-menu:not(:disabled):active {
+    background-color: var(--color-btn-menu-active);
+}
+
+button:disabled,
+input:disabled {
+    opacity: 0.2;
 }
 
 .headline {
@@ -194,7 +265,7 @@ dialog {
     border-radius: 50px;
 
     font-family: 'Titan One';
-    color: rgba(0, 0, 0, 0.5);
+    color: var(--color-soft-black);
 
     h1 {
         font-size: clamp(28px, calc((100svw - 300px) * 10 / 1140 + 28px), 38px);
@@ -221,7 +292,7 @@ dialog {
         border-radius: 50%;
         background-color: rgba(217, 217, 217, 0.5);
         right: 30px;
-        border: 2px solid rgba(0, 0, 0, 0.5);
+        border: 2px solid var(--color-soft-black);
         position: absolute;
 
         img {
@@ -310,142 +381,4 @@ body:has(dialog[open]) {
         max-width: 100%;
     }
 }
-
 /* #endregion instructions-dialog */
-
-/* #region keyframes */
-@keyframes slender {
-    0% {
-        left: 20%;
-        transform: rotateY(0);
-    }
-    5% {
-        left: 20%;
-        transform: rotateY(0);
-    }
-    45% {
-        left: -20%;
-        transform: rotateY(0);
-    }
-    50% {
-        left: -20%;
-        transform: rotateY(180deg);
-    }
-    95% {
-        left: 20%;
-        transform: rotateY(180deg);
-    }
-    100% {
-        left: 20%;
-        transform: rotateY(0);
-    }
-}
-
-@keyframes wind {
-    0% {
-        transform: skewY(-1deg);
-    }
-    30% {
-        transform: rotateX(20deg) skewY(2deg);
-    }
-    60% {
-        transform: skewY(-0.5deg);
-    }
-    100% {
-        transform: rotateX(20deg) skewY(2.5deg);
-    }
-}
-
-@keyframes shake {
-    0% {
-        transform: rotateZ(0);
-    }
-    5% {
-        transform: rotateZ(0);
-    }
-    7% {
-        transform: rotateZ(-3deg);
-    }
-    9% {
-        transform: rotateZ(0);
-    }
-
-    50% {
-        transform: rotateZ(0);
-    }
-    52% {
-        transform: rotateZ(-7deg);
-    }
-    54% {
-        transform: rotateZ(0);
-    }
-    56% {
-        transform: rotateZ(-4deg);
-    }
-    58% {
-        transform: rotateZ(0);
-    }
-    100% {
-        transform: rotateZ(0);
-    }
-}
-
-@keyframes levitate {
-    0% {
-        transform: scale(1) translateY(0);
-    }
-    100% {
-        transform: scale(1.2) translateY(-5px);
-    }
-}
-
-@keyframes spit {
-    0% {
-        right: 30%;
-        opacity: 0;
-    }
-    5% {
-        opacity: 0;
-    }
-    18% {
-        opacity: 1;
-    }
-    20% {
-        right: 5%;
-        bottom: 10%;
-        transform: rotate(-720deg);
-        opacity: 0;
-    }
-    100% {
-        right: 5%;
-        bottom: 10%;
-        transform: rotate(-720deg);
-        opacity: 0;
-    }
-}
-
-@keyframes spit-2 {
-    0% {
-        right: 30%;
-        opacity: 0;
-    }
-    5% {
-        opacity: 0;
-    }
-    18% {
-        opacity: 1;
-    }
-    20% {
-        right: 10%;
-        bottom: 5%;
-        transform: rotate(-520deg);
-        opacity: 0;
-    }
-    100% {
-        right: 10%;
-        bottom: 5%;
-        transform: rotate(-520deg);
-        opacity: 0;
-    }
-}
-/* #endregion keyframes */
