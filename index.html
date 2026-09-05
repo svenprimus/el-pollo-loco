@@ -50,8 +50,8 @@
                         </aside>
                         <nav class="start-menu-nav">
                             <button id="btn-overlay-start" class="btn-menu">Start</button>
-                            <button id="btn-overlay-instructions" class="btn-menu">Controls</button>
-                            <button id="btn-overlay-imprint" class="btn-menu">Imprint</button>
+                            <button id="btn-overlay-instr" class="btn-menu">Controls</button>
+                            <button id="btn-overlay-imprt" class="btn-menu">Imprint</button>
                         </nav>
                     </div>
                     <section id="button-wrapper-ui" class="button-wrapper-ui">
@@ -171,7 +171,7 @@
         </main>
 
         <dialog id="instructions-dialog" aria-label="Open Game Instructions">
-            <article id="instructions-dialog-wrapper" class="dialog-wrapper">
+            <article id="instr-dialog-wrapper" class="dialog-wrapper">
                 <header class="dialog-header">
                     <h1>Instructions</h1>
                     <button
@@ -216,6 +216,22 @@
                         <h2 class="dialog-mobile">Actions</h2>
                     </section>
                 </div>
+            </article>
+        </dialog>
+
+        <dialog id="imprint-dialog" aria-label="Open Imprint">
+            <article id="imprt-dialog-wrapper" class="dialog-wrapper">
+                <header class="dialog-header">
+                    <h1>Imprint</h1>
+                    <button
+                        id="btn-close-imprint"
+                        class="btn-close-dialog"
+                        aria-controls="imprint-dialog"
+                        aria-label="closes imprint dialog"
+                    >
+                        <img src="./assets/icons/hide.svg" alt="show and hide instructions button" />
+                    </button>
+                </header>
             </article>
         </dialog>
     </body>

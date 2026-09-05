@@ -2,7 +2,7 @@ import { Game } from './game.class.js';
 import { AudioHub } from '../utility/audio-hub.class.js';
 import { TimingHub } from './timing-hub.class.js';
 import { toggleFullscreen, renderScreenButton } from '../../js/fullscreen.js';
-import { MyDialog } from './instructions-dialog.js';
+import { InstrDialog, ImprintDialog } from './dialog.js';
 
 export class Events {
     static init() {
@@ -66,7 +66,8 @@ export class Events {
         document.getElementById('canvas').style.zIndex = '1';
         document.getElementById('button-wrapper-ui').style.zIndex = '1';
         document.getElementById('button-wrapper-mobile').style.zIndex = '1';
-        Events.setControls(false);
+        Events.focusButton('btn-overlay-start');
+        Events.setControls(true);
     }
 
     static toggleMute() {
@@ -100,10 +101,15 @@ export class Events {
         document.getElementById(button).blur();
     }
 
+    static focusButton(button) {
+        document.getElementById(button).focus();
+    }
+
     static initUI() {
         Events.initUiButtonEvents();
         Events.initOverlayEvents();
-        Events.initDialogEvents();
+        Events.initInstrDialogEvents();
+        Events.initImprtDialogEvents();
         Events.initChangeEvents();
         Events.setControls(true);
     }
@@ -115,9 +121,8 @@ export class Events {
         document.getElementById('volume').addEventListener('input', Events.setVolume);
         document.getElementById('btn-return').addEventListener('click', Events.returnToMenu);
         document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
-        document
-            .getElementById('instructions-dialog-wrapper')
-            .addEventListener('click', MyDialog.stopDialogPropagation);
+        document.getElementById('instr-dialog-wrapper').addEventListener('click', InstrDialog.stopDialogPropagation);
+        document.getElementById('imprt-dialog-wrapper').addEventListener('click', ImprintDialog.stopDialogPropagation);
         AudioHub.init();
         Events.renderUpdateVolumeElements();
     }
@@ -131,14 +136,22 @@ export class Events {
         });
     }
 
-    static initDialogEvents() {
-        document.getElementById('btn-instructions').addEventListener('click', MyDialog.openDialogByMouseClick);
-        document.getElementById('btn-instructions').addEventListener('keyup', MyDialog.openDialogKeyup);
-        document.getElementById('btn-overlay-instructions').addEventListener('click', MyDialog.openDialogByMouseClick);
-        document.getElementById('btn-overlay-instructions').addEventListener('keyup', MyDialog.openDialogKeyup);
-        document.getElementById('instructions-dialog').addEventListener('click', MyDialog.closeDialog);
-        document.getElementById('btn-close-dialog').addEventListener('click', MyDialog.closeDialogByMouseClick);
-        document.getElementById('btn-close-dialog').addEventListener('keyup', MyDialog.closeDialogbyKeyup);
+    static initInstrDialogEvents() {
+        document.getElementById('btn-instructions').addEventListener('click', InstrDialog.openDialogByMouseClick);
+        document.getElementById('btn-instructions').addEventListener('keyup', InstrDialog.openDialogKeyup);
+        document.getElementById('btn-overlay-instr').addEventListener('click', InstrDialog.openDialogByMouseClick);
+        document.getElementById('btn-overlay-instr').addEventListener('keyup', InstrDialog.openDialogKeyup);
+        document.getElementById('instructions-dialog').addEventListener('click', InstrDialog.closeDialog);
+        document.getElementById('btn-close-dialog').addEventListener('click', InstrDialog.closeDialogByMouseClick);
+        document.getElementById('btn-close-dialog').addEventListener('keyup', InstrDialog.closeDialogbyKeyup);
+    }
+
+    static initImprtDialogEvents() {
+        document.getElementById('btn-overlay-imprt').addEventListener('click', ImprintDialog.openDialogByMouseClick);
+        document.getElementById('btn-overlay-imprt').addEventListener('keyup', ImprintDialog.openDialogKeyup);
+        document.getElementById('imprint-dialog').addEventListener('click', ImprintDialog.closeDialog);
+        document.getElementById('btn-close-imprint').addEventListener('click', ImprintDialog.closeDialogByMouseClick);
+        document.getElementById('btn-close-imprint').addEventListener('keyup', ImprintDialog.closeDialogbyKeyup);
     }
 
     static setControls(disable) {
