@@ -410,6 +410,10 @@ body:has(dialog[open]) {
     display: inline;
 }
 
+.dialog-desktop {
+    display: none;
+}
+
 @media (hover: hover) {
     .btn-mobile {
         display: none;
