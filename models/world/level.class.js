@@ -93,7 +93,7 @@ export class Level {
             if (this.boss.hasSpawned && false === this.boss.isDead() && false === this.hero.isDead()) {
                 AudioHub.stop(AudioLib.GAME.ambient);
                 AudioHub.play(AudioLib.GAME.ambientBoss);
-            } else if (AudioHub.hasEnded(AudioLib.GAME.win) || AudioHub.hasEnded(AudioLib.GAME.lose)) {
+            } else if (AudioHub.hasEnded(AudioLib.GAME.win) && AudioHub.hasEnded(AudioLib.GAME.lose)) {
                 AudioHub.play(AudioLib.GAME.ambient);
                 AudioHub.stop(AudioLib.GAME.ambientBoss);
             }

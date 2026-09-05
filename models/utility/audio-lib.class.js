@@ -125,8 +125,8 @@ export class AudioLib {
             mult: 0.6,
         },
         lose: {
-            path: '',
-            mult: 1,
+            path: './assets/audio/game/harmonica.mp3',
+            mult: 0.5,
         },
         ambient: {
             path: './assets/audio/game/ambient.mp3',

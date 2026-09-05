@@ -55,7 +55,7 @@ export class AudioHub {
     static hasEnded(soundJson) {
         const sound = AudioHub.sounds[soundJson.path];
         if (sound) {
-            return sound.hasPlayed && sound.file.ended;
+            return (sound.hasPlayed && sound.file.ended || 0 === sound.file.currentTime) ;
         }
         return true;
     }
