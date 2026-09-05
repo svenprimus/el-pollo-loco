@@ -1,4 +1,5 @@
 import { Game } from './game.class.js';
+import { AudioLib } from './audio-lib.class.js';
 import { AudioHub } from '../utility/audio-hub.class.js';
 import { TimingHub } from './timing-hub.class.js';
 import { toggleFullscreen, renderScreenButton } from '../../js/fullscreen.js';
@@ -81,9 +82,15 @@ export class Events {
         Events.renderUpdateVolumeElements();
     }
 
+    static playVolumeProbe() {
+        AudioHub.loadSound(AudioLib.COLLECTABLE.bottle.collect);
+        AudioHub.playFromStart(AudioLib.COLLECTABLE.bottle.collect);
+    }
+
     static renderUpdateVolumeElements() {
         const vol = AudioHub.volBase * 100;
         document.getElementById('volume').value = vol;
+        document.getElementById('overlay-volume').value = vol;
         if (0 === vol) {
             document.getElementById('btn-mute-img').src = './assets/icons/unmute.svg';
             document.getElementById('btn-overlay-mute-img').src = './assets/icons/unmute.svg';
@@ -119,6 +126,7 @@ export class Events {
         document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
         document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
         document.getElementById('volume').addEventListener('input', Events.setVolume);
+        document.getElementById('volume').addEventListener('change', Events.playVolumeProbe);
         document.getElementById('btn-return').addEventListener('click', Events.returnToMenu);
         document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
         document.getElementById('instr-dialog-wrapper').addEventListener('click', InstrDialog.stopDialogPropagation);
@@ -172,6 +180,7 @@ export class Events {
         document.getElementById('btn-overlay-start').addEventListener('click', Events.startGameFromMenu);
         document.getElementById('btn-overlay-mute').addEventListener('click', Events.toggleMute);
         document.getElementById('overlay-volume').addEventListener('input', Events.setVolume);
+        document.getElementById('overlay-volume').addEventListener('change', Events.playVolumeProbe);
         document.getElementById('btn-overlay-fullscreen').addEventListener('click', toggleFullscreen);
     }
 }

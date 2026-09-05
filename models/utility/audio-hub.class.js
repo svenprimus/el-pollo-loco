@@ -102,15 +102,15 @@ export class AudioHub {
     }
 
     static loadSound(soundJson) {
-        AudioHub.sounds[soundJson.path] = new MyAudio(soundJson.path, AudioHub.volBase, soundJson.mult);
+        const path = soundJson.path;
+        if (path && !Object.hasOwn(AudioHub.sounds, path)) {
+            AudioHub.sounds[soundJson.path] = new MyAudio(soundJson.path, AudioHub.volBase, soundJson.mult);
+        }
     }
 
     static loadSounds(soundJsons) {
         for (const key in soundJsons) {
-            const path = soundJsons[key].path;
-            if (path && !Object.hasOwn(AudioHub.sounds, path)) {
-                AudioHub.sounds[path] = new MyAudio(path, AudioHub.volBase, soundJsons[key].mult);
-            }
+            AudioHub.loadSound(soundJsons[key]);
         }
     }
 
