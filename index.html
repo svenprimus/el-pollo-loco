@@ -48,11 +48,26 @@
                                 </div>
                             </section>
                         </aside>
-                        <nav class="start-menu-nav">
-                            <button id="btn-overlay-start" class="btn-menu">Start</button>
-                            <button id="btn-overlay-instr" class="btn-menu">Controls</button>
-                            <button id="btn-overlay-imprt" class="btn-menu">Imprint</button>
-                        </nav>
+                        <section class="start-menu-content">
+                            <figure id="mobile-landscape-hint" class="mobile-landscape-hint d-mobile">
+                                <img
+                                    class="turn-arrow"
+                                    src="./assets/icons/turn-arrow.svg"
+                                    alt="icon of turning device"
+                                />
+                                <img
+                                    class="turn-phone"
+                                    src="./assets/icons/turn-phone.svg"
+                                    alt="icon of turning device"
+                                />
+                                <figcaption>Better flip your device, amigo!</figcaption>
+                            </figure>
+                            <nav class="start-menu-nav">
+                                <button id="btn-overlay-start" class="btn-menu">Start</button>
+                                <button id="btn-overlay-instr" class="btn-menu">Controls</button>
+                                <button id="btn-overlay-imprt" class="btn-menu">Imprint</button>
+                            </nav>
+                        </section>
                     </div>
                     <section id="button-wrapper-ui" class="button-wrapper-ui">
                         <section class="audio-wrapper">
@@ -187,33 +202,33 @@
                 <div class="instruction-wrapper">
                     <section class="section-instructions">
                         <img
-                            class="dialog-img dialog-desktop"
+                            class="dialog-img d-desktop"
                             src="./assets/img/instructions-desktop-main.svg"
                             alt="controls for desktop"
                         />
-                        <h2 class="dialog-desktop">Controls</h2>
+                        <h2 class="d-desktop">Controls</h2>
 
                         <img
-                            class="dialog-img dialog-mobile"
+                            class="dialog-img d-mobile"
                             src="./assets/img/instructions-mobile-1.svg"
                             alt="controls of movements"
                         />
-                        <h2 class="dialog-mobile">Movement</h2>
+                        <h2 class="d-mobile">Movement</h2>
                     </section>
                     <section class="section-instructions">
                         <img
-                            class="dialog-img dialog-desktop"
+                            class="dialog-img d-desktop"
                             src="./assets/img/instructions-desktop-alt.svg"
                             alt="alternative controls"
                         />
-                        <h2 class="dialog-desktop">Alternative</h2>
+                        <h2 class="d-desktop">Alternative</h2>
 
                         <img
-                            class="dialog-img dialog-mobile"
+                            class="dialog-img d-mobile"
                             src="./assets/img/instructions-mobile-2.svg"
                             alt="controls of actions"
                         />
-                        <h2 class="dialog-mobile">Actions</h2>
+                        <h2 class="d-mobile">Actions</h2>
                     </section>
                 </div>
             </article>
@@ -268,8 +283,10 @@
                         </p>
                     </section>
                     <section class="imprint-creator">
-                        <img src="./assets/img/profile-picture.jpg" alt="profile picture of the creator" />
-                        <figcaption>Frontend Developer</figcaption>
+                        <figure>
+                            <img src="./assets/img/profile-picture.jpg" alt="profile picture of the creator" />
+                            <figcaption>Frontend Developer</figcaption>
+                        </figure>
                         <p class="imprint-direction">
                             Sven Primus<br />
                             Auf der Horst 9 <br />

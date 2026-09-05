@@ -137,8 +137,8 @@ canvas {
     z-index: 2;
 }
 
-.d-hidden {
-    visibility: hidden;
+.d-none {
+    display: none !important;
 }
 
 .overlay {
@@ -153,12 +153,51 @@ canvas {
     display: flex;
     flex-direction: column;
 
-    .start-menu-nav {
+    .start-menu-content {
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .mobile-landscape-hint {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding-inline: 25px;
+        opacity: 0.5;
+
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: calc(var(--size-btn-ui) * 0.4);
+
+        img {
+            width: var(--size-btn-ui);
+            height: var(--size-btn-ui);
+        }
+
+        position: relative;
+        .turn-phone {
+            top: 0;
+            position: absolute;
+            animation: rotate90 2s linear infinite;
+        }
+
+        .turn-arrow {
+            animation: flash 2s linear infinite;
+        }
+    }
+
+    .start-menu-nav {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin-top: var(--size-btn-ui);
         gap: calc(var(--size-btn-ui) * 0.2);
         z-index: 15;
     }
@@ -406,11 +445,7 @@ body:has(dialog[open]) {
     overflow: hidden;
 }
 
-.dialog-mobile {
-    display: inline;
-}
-
-.dialog-desktop {
+.d-desktop {
     display: none;
 }
 
@@ -419,11 +454,11 @@ body:has(dialog[open]) {
         display: none;
     }
 
-    .dialog-mobile {
-        display: none;
+    .d-mobile {
+        display: none !important;
     }
 
-    .dialog-desktop {
+    .d-desktop {
         display: inline;
     }
 }

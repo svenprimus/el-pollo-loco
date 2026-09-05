@@ -14,6 +14,7 @@ export class Events {
     static loadGame = () => {
         Game.start();
         Game.pause();
+        Events.renderMobileLandscapeHint();
     };
 
     static pauseGame = () => {
@@ -53,7 +54,7 @@ export class Events {
     }
 
     static startGameFromMenu() {
-        document.getElementById('overlay').classList.add('d-hidden');
+        document.getElementById('overlay').classList.add('d-none');
         document.getElementById('canvas').style.zIndex = '20';
         document.getElementById('button-wrapper-ui').style.zIndex = '20';
         document.getElementById('button-wrapper-mobile').style.zIndex = '20';
@@ -63,7 +64,7 @@ export class Events {
 
     static returnToMenu() {
         Events.restartGame();
-        document.getElementById('overlay').classList.remove('d-hidden');
+        document.getElementById('overlay').classList.remove('d-none');
         document.getElementById('canvas').style.zIndex = '1';
         document.getElementById('button-wrapper-ui').style.zIndex = '1';
         document.getElementById('button-wrapper-mobile').style.zIndex = '1';
@@ -100,6 +101,27 @@ export class Events {
         }
     }
 
+    static renderMobileLandscapeHint() {
+        const warnRef = document.getElementById('mobile-landscape-hint');
+        switch (screen.orientation.type) {
+            case 'landscape-primary':
+            case 'landscape-secondary':
+                warnRef.classList.add('d-none');
+                break;
+            default:
+                warnRef.classList.remove('d-none');
+                break;
+        }
+    }
+
+    /**
+     * Restart game and render landscape hint for mobile, if in portrait mode.
+     */
+    static processOrientationChange() {
+        Events.restartGameDelayed();
+        Events.renderMobileLandscapeHint();
+    }
+
     /**
      * un-focus button, so that e.g. space (jump) will not restart again
      * @param {string} button - id
@@ -117,7 +139,7 @@ export class Events {
         Events.initOverlayEvents();
         Events.initInstrDialogEvents();
         Events.initImprtDialogEvents();
-        Events.initChangeEvents();
+        Events.initGlobalListeners();
         Events.setControls(true);
     }
 
@@ -135,9 +157,9 @@ export class Events {
         Events.renderUpdateVolumeElements();
     }
 
-    static initChangeEvents() {
+    static initGlobalListeners() {
         screen.orientation.addEventListener('change', () => {
-            Events.restartGameDelayed();
+            Events.processOrientationChange();
         });
         document.addEventListener('fullscreenchange', () => {
             Events.restartGameDelayed();
