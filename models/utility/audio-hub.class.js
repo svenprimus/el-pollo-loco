@@ -3,6 +3,7 @@ class MyAudio {
     file;
     isLoaded;
     volMult = 1;
+    hasPlayed = false;
 
     constructor(file, volBase, mult) {
         this.file = new Audio(file);
@@ -13,6 +14,7 @@ class MyAudio {
     play(volBase) {
         this.file.volume = Math.min(Math.max(AudioHub.volBase * this.volMult, 0), 1);
         const playPromise = this.file.play();
+        this.hasPlayed = true;
 
         if (playPromise !== undefined) {
             playPromise.catch((e) => {
@@ -43,6 +45,19 @@ export class AudioHub {
                 sound.play();
             }
         }
+    }
+
+    /**
+     * Checks if sound has been played at least once and ended.
+     * @param {object} soundJson {path: path, mult: volume factor}
+     * @returns True if played at least once and ended.
+     */
+    static hasEnded(soundJson) {
+        const sound = AudioHub.sounds[soundJson.path];
+        if (sound) {
+            return sound.hasPlayed && sound.file.ended;
+        }
+        return true;
     }
 
     static playFromStart(soundJson) {
@@ -122,13 +137,23 @@ export class AudioHub {
         const tempLast = AudioHub.volLast;
         AudioHub.volLast = AudioHub.volBase;
         AudioHub.volBase = AudioHub.volBase === 0 ? tempLast : 0;
+
+        AudioHub.updateAllVolumes();
         AudioHub.saveVolumeToLocalStorage();
     }
 
     static setVolume(volumePercentage) {
         AudioHub.volBase = volumePercentage / 100;
         AudioHub.volLast = AudioHub.volBase;
+        AudioHub.updateAllVolumes();
         AudioHub.saveVolumeToLocalStorage();
+    }
+
+    static updateAllVolumes() {
+        for (const key in AudioHub.sounds) {
+            const sound = AudioHub.sounds[key];
+            sound.file.volume = Math.min(Math.max(AudioHub.volBase * sound.volMult, 0), 1);
+        }
     }
 
     static saveVolumeToLocalStorage() {

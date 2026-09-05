@@ -90,10 +90,10 @@ export class Level {
 
     startAmbientSoundLoop() {
         TimingHub.setInterval(() => {
-            if (this.boss.hasSpawned && false === this.boss.isDead()) {
+            if (this.boss.hasSpawned && false === this.boss.isDead() && false === this.hero.isDead()) {
                 AudioHub.stop(AudioLib.GAME.ambient);
                 AudioHub.play(AudioLib.GAME.ambientBoss);
-            } else {
+            } else if (AudioHub.hasEnded(AudioLib.GAME.win) || AudioHub.hasEnded(AudioLib.GAME.lose)) {
                 AudioHub.play(AudioLib.GAME.ambient);
                 AudioHub.stop(AudioLib.GAME.ambientBoss);
             }
@@ -115,9 +115,13 @@ export class Level {
         }, 100);
     }
 
+    /**
+     * Returns game stats of scored points.
+     * @returns {object} - scored: amount of scored points, total: total possible points, percentage: score in %
+     */
     getScore() {
         const scored = this.hero.statusCoins.count;
         const total = Coin.totalCoinCount;
-        return scored + '/' + total + ' (' + Math.round((100 * scored) / total) + '%)';
+        return { scored: scored, total: total, percentage: Math.round((100 * scored) / total) };
     }
 }

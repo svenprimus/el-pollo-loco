@@ -34,6 +34,7 @@ export class Hero extends MovableObject {
     isAttackingAtr = false;
     isDrinkingAtr = false;
     isRunningAtr = false;
+    isWinner = false;
 
     camOffset = 0;
     camEaseLeft = 3;
@@ -331,6 +332,10 @@ export class Hero extends MovableObject {
         this.isDrinkingAtr = true;
     }
 
+    win() {
+        this.isWinner = true;
+    }
+
     stopDrinking() {
         AudioHub.stopReset(AudioLib.HERO.drink);
         this.isDrinkingAtr = false;
@@ -344,7 +349,7 @@ export class Hero extends MovableObject {
     }
 
     isDrinking() {
-        return this.isDrinkingAtr;
+        return this.isDrinkingAtr || this.isWinner;
     }
 
     isRunning() {

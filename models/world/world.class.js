@@ -5,7 +5,9 @@ import { Level } from './level.class.js';
 import { createLevel_1 } from '../../levels/level-1.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 import { AudioHub } from '../utility/audio-hub.class.js';
-import { MovableObject } from './movable-object.class.js';
+import { MovableObject } from './movable-object.class.js'; // TODO remove in the end
+import { AudioLib } from '../utility/audio-lib.class.js';
+
 export class World {
     canvas;
     ctx;
@@ -18,7 +20,7 @@ export class World {
         this.setStatusBarHero();
         this.draw();
         this.checkCollisions();
-        this.checkLevelState(); // TODO endscreen
+        this.checkLevelState();
     }
 
     checkCollisions() {
@@ -56,13 +58,35 @@ export class World {
     checkLevelState() {
         const id = TimingHub.setInterval(() => {
             if (this.level.boss.isDead() && false === this.level.hero.isDead()) {
-                console.log('WON! Score: ', this.level.getScore());
+                this.showWinnerScreen();
                 TimingHub.stopInterval(id);
             } else if (this.level.hero.isDead()) {
-                console.log('LOST! Score: ', this.level.getScore());
+                this.showLoserScreen();
+
                 TimingHub.stopInterval(id);
             }
         }, 500);
+    }
+
+    showWinnerScreen() {
+        const score = this.level.getScore();
+        this.level.hero.win();
+        TimingHub.setTimeout(() => {
+            AudioHub.stopAll();
+            AudioHub.play(AudioLib.GAME.win);
+        }, 1000);
+
+        console.log('WON! Score: ', score.scored, ' / ', score.total, ' (', score.percentage, '%)!');
+    }
+
+    showLoserScreen() {
+        const score = this.level.getScore();
+        TimingHub.setTimeout(() => {
+            AudioHub.stopAll();
+            AudioHub.play(AudioLib.GAME.lose);
+        }, 1000);
+
+        console.log('LOST! Score: ', score.scored, ' / ', score.total, ' (', score.percentage, '%)!');
     }
 
     draw() {
@@ -242,6 +266,8 @@ export class World {
         this.level.hero.world = this;
         this.setCamX(this.level.hero.camOffset);
         this.applyLevelSmallerThanCanvasFix();
+        AudioHub.loadSound(AudioLib.GAME.win);
+        AudioHub.loadSound(AudioLib.GAME.lose);
     }
 
     setStatusBarHero() {
