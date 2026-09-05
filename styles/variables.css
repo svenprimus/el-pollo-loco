@@ -8,7 +8,7 @@
     --color-soft-black: rgba(0, 0, 0, 0.5);
 
     --border-btn-menu: none;
-
+    --border-radius-default: 50px;
     --size-btn-mobile-base-factor: 0.18;
     --size-btn-ui-base-factor: 0.075;
     --size-btn-mobile: min(18svh, 18svw);

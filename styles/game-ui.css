@@ -46,6 +46,8 @@ button {
     .resize-wrapper {
         display: flex;
         justify-content: center;
+        flex-wrap: wrap;
+        height: var(--size-btn-ui);
         gap: calc(var(--size-btn-ui) * 0.2);
         flex-grow: 1;
     }

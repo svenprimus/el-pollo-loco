@@ -132,7 +132,7 @@ body {
 
 canvas {
     background-color: black;
-    border-radius: 50px;
+    border-radius: var(--border-radius-default);
     box-shadow: 0 0 5px 0 var(--color-soft-black);
     z-index: 2;
 }
@@ -147,7 +147,7 @@ canvas {
     height: 100%;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(5px);
-    border-radius: 50px;
+    border-radius: var(--border-radius-default);
     z-index: 4;
 
     display: flex;
@@ -168,6 +168,7 @@ canvas {
         gap: calc(var(--size-btn-ui) * 0.2);
         padding: 25px;
         z-index: 15;
+        flex-wrap: wrap;
 
         .btn-ui {
             border: var(--border-btn-menu);
@@ -176,6 +177,7 @@ canvas {
 
         .audio-wrapper {
             display: flex;
+            flex-wrap: wrap;
             gap: calc(var(--size-btn-ui) * 0.2);
         }
 
@@ -201,7 +203,7 @@ canvas {
     background-color: var(--color-btn-menu-passive);
     width: calc(var(--size-btn-ui) * 3);
     height: var(--size-btn-ui);
-    border-radius: 50px;
+    border-radius: var(--border-radius-default);
     color: var(--color-soft-black);
     border: var(--border-btn-menu);
     font-size: calc(var(--size-btn-ui) * 0.4);
@@ -257,14 +259,16 @@ dialog {
     max-width: 90svw;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 
     padding: 20px;
+    gap: 20px;
     background-color: rgba(217, 217, 217, 0.8);
     backdrop-filter: blur(5px);
+    overflow: auto;
 
-    border-radius: 50px;
+    border-radius: var(--border-radius-default);
 
     font-family: 'Titan One';
     color: var(--color-soft-black);
@@ -281,7 +285,6 @@ dialog {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 20px;
         width: 100%;
         position: relative;
     }
@@ -349,6 +352,55 @@ dialog {
     opacity: 0.75;
     transition: all 1s ease-in-out;
 }
+.imprint-content {
+    display: flex;
+    gap: 20px;
+}
+
+.imprint-disclaimer {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-left: 5px;
+    overflow: auto;
+
+    a {
+        text-decoration: underline;
+    }
+}
+
+.imprint-creator {
+    img {
+        width: clamp(75px, calc((100svw - 400px) * 135 / 200 + 75px), 200px);
+        border-radius: 50%;
+    }
+
+    figcaption {
+        padding-top: 10px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-style: italic;
+        font-size: 14px;
+    }
+}
+.imprint-direction {
+    padding-top: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: lightslategray;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: lightgray;
+}
 
 body:has(dialog[open]) {
     overflow: hidden;
@@ -356,10 +408,6 @@ body:has(dialog[open]) {
 
 .dialog-mobile {
     display: inline;
-}
-
-.dialog-desktop {
-    display: none;
 }
 
 @media (hover: hover) {
@@ -381,6 +429,14 @@ body:has(dialog[open]) {
         max-height: 100svh;
         height: 100svh;
         max-width: 100%;
+        margin: 0;
+    }
+
+    dialog {
+        width: 100dvw;
+        height: 100dvh;
+        max-height: 100dvh;
+        max-width: 100dvw;
     }
 }
 /* #endregion instructions-dialog */
