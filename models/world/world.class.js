@@ -157,15 +157,31 @@ export class World {
 
     setDimensions() {
         this.ctx = canvas.getContext('2d');
-        this.canvas = canvas;
-        this.canvas.width = document.documentElement.clientWidth * (document.fullscreenElement ? 1 : 0.9);
-        this.canvas.height = document.documentElement.clientHeight * (document.fullscreenElement ? 1 : 0.7);
+        this.setCanvasSize();
+        this.setButtonSize();
         Level.BG_WIDTH = Math.round(Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height));
-        document.documentElement.style.setProperty(
-            '--size-btn-mobile',
-            `${Math.min(this.canvas.width, this.canvas.height) * 0.1}px`
-        );
-        document.documentElement.style.setProperty('--size-btn-ui', `${this.canvas.height * 0.05}px`);
+    }
+
+    /**
+     * Resizes the canvas based on fullscreen status. It can be used e.g. on changing device orientation.
+     */
+    setCanvasSize() {
+        this.canvas = canvas;
+        const cWidth = document.body.clientWidth;
+        const cHeight = document.body.clientHeight;
+        this.canvas.width = document.fullscreenElement ? cWidth : Math.min(cWidth * 0.6, 1920);
+        this.canvas.height = document.fullscreenElement ? cHeight : Math.min(cHeight * 0.6, 1080);
+
+        document.getElementById('canvas').style.borderRadius = document.fullscreenElement ? 0 : '50px';
+        document.getElementById('overlay').style.borderRadius = document.fullscreenElement ? 0 : '50px';
+    }
+
+    setButtonSize() {
+        const doc = document.documentElement;
+        const mobileBase = getComputedStyle(doc).getPropertyValue('--size-btn-mobile-base-factor');
+        const uiBase = getComputedStyle(doc).getPropertyValue('--size-btn-ui-base-factor');
+        doc.style.setProperty('--size-btn-mobile', `${Math.min(this.canvas.width, this.canvas.height) * mobileBase}px`);
+        doc.style.setProperty('--size-btn-ui', `${this.canvas.height * uiBase}px`);
     }
 
     setCamX(x) {

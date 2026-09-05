@@ -2,6 +2,16 @@
     --color-btn-passive: rgba(245, 245, 245, 0.2);
     --color-btn-active: rgba(245, 245, 245, 0.4);
 
-    --size-btn-mobile: min(10svh, 10svw);
-    --size-btn-ui: 5svh;
+    --color-btn-menu-passive: rgba(245, 245, 245, 0.6);
+    --color-btn-menu-hover: rgba(245, 245, 245, 0.8);
+    --color-btn-menu-active: rgba(245, 245, 245, 0.4);
+    --color-soft-black: rgba(0, 0, 0, 0.5);
+
+    --border-btn-menu: none;
+    --border-radius-default: 50px;
+    --size-btn-mobile-base-factor: 0.18;
+    --size-btn-ui-base-factor: 0.075;
+    --size-btn-mobile: min(18svh, 18svw);
+    --size-btn-ui: 7.5svh;
+    --size-dialog-close-btn: clamp(28px, calc((100svw - 300px) * 22 / 1140 + 38px), 60px);
 }

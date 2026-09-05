@@ -13,11 +13,11 @@ export class AudioLib {
             mult: 0.3,
         },
         jump: {
-            path: '../assets/audio/character/characterJump.mp3',
+            path: './assets/audio/character/characterJump.mp3',
             mult: 2.5,
         },
         bounce: {
-            path: '../assets/audio/character/characterBounce.mp3',
+            path: './assets/audio/character/characterBounce.mp3',
             mult: 2.5,
         },
         hurt: {

@@ -10,8 +10,7 @@ export class Game {
 
     static start() {
         Controls.init();
-        const canvas = document.getElementById('canvas');
-        Game.world = new World(canvas, false);
+        Game.world = new World(document.getElementById('canvas'));
         Game.world.draw();
         Game.isPaused = false;
         window.world = Game.world; // TODO: remove - only for debugging
@@ -33,8 +32,7 @@ export class Game {
     static restart() {
         TimingHub.clearGame();
         AudioHub.stopAll();
-        const canvas = document.getElementById('canvas');
-        Game.world = new World(canvas);
+        Game.world = new World(document.getElementById('canvas'));
         Game.world.draw();
         Game.isPaused = false;
     }
