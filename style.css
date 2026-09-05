@@ -403,10 +403,6 @@ dialog {
     gap: 16px;
     padding-left: 5px;
     overflow: auto;
-
-    a {
-        text-decoration: underline;
-    }
 }
 
 .imprint-creator {
@@ -421,8 +417,24 @@ dialog {
         font-style: italic;
         font-size: 14px;
     }
+
+    a {
+        padding-top: 10px;
+        display: flex;
+        gap: 10px;
+
+        img {
+            width: var(--size-btn-ui);
+            height: var(--size-btn-ui);
+        }
+
+        p {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+        }
+    }
 }
-.imprint-direction {
+.imprint-side {
     padding-top: 10px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 14px;

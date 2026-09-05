@@ -65,9 +65,9 @@ export class Events {
     static returnToMenu() {
         Events.restartGame();
         document.getElementById('overlay').classList.remove('d-none');
-        document.getElementById('canvas').style.zIndex = '1';
-        document.getElementById('button-wrapper-ui').style.zIndex = '1';
-        document.getElementById('button-wrapper-mobile').style.zIndex = '1';
+        document.getElementById('canvas').style.zIndex = '2';
+        document.getElementById('button-wrapper-ui').style.zIndex = '2';
+        document.getElementById('button-wrapper-mobile').style.zIndex = '2';
         Events.focusButton('btn-overlay-start');
         Events.setControls(true);
     }
