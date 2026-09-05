@@ -219,7 +219,6 @@ export class ImageLib {
                 './assets/sprites/6_salsa_bottle/rotation/4_bottle_rotation.webp',
             ],
         },
-
         impact: {
             wNatural: 524,
             hNatural: 400,
@@ -278,7 +277,6 @@ export class ImageLib {
         icons: {
             wNatural: 226,
             hNatural: 226,
-            hp: './assets/sprites/7_statusbars/3_icons/icon_health.webp',
             bottle: [
                 './assets/sprites/7_statusbars/3_icons/salsa_bottle/I-1.webp',
                 './assets/sprites/7_statusbars/3_icons/salsa_bottle/I-2.webp',
@@ -307,20 +305,15 @@ export class ImageLib {
     };
 
     static SCREENS = {
-        start: {
-            wNatural: 1920,
-            hNatural: 1080,
-            img: './assets/sprites/9_intro_outro_screens/start/startscreen_1.webp',
-        },
-        gameOver: {
-            wNatural: 1143,
-            hNatural: 674,
-            img: './assets/sprites/You won, you lost/Game Over.webp',
-        },
-        won: {
-            wNatural: 987,
-            hNatural: 879,
-            img: './assets/sprites/You won, you lost/You won A.webp',
-        },
+        // gameOver: {
+        //     wNatural: 1143,
+        //     hNatural: 674,
+        //     img: './assets/sprites/You won, you lost/Game Over.webp',
+        // },
+        // won: {
+        //     wNatural: 987,
+        //     hNatural: 879,
+        //     img: './assets/sprites/You won, you lost/You won A.webp',
+        // },
     };
 }
