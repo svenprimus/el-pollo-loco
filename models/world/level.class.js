@@ -20,6 +20,8 @@ export class Level {
     startLimiter;
     thrownAmmo = [];
     lostCoins = [];
+    isFinished = false;
+    isEndSequenceQueued = false;
 
     constructor(
         wCanvas,
@@ -55,7 +57,7 @@ export class Level {
         Level.END = Level.BG_WIDTH * bgPatternPerLayer * bgPerPattern - bgPerPattern * Level.BG_WIDTH - 2;
         this.placeObjects();
         this.startCleaningTasks();
-        this.startAmbientSoundLoop();
+        this.startLevelStateLoop();
         AudioHub.loadSound(AudioLib.GAME.ambient);
         AudioHub.loadSound(AudioLib.GAME.ambientBoss);
     }
@@ -88,14 +90,17 @@ export class Level {
         this.cleanObjects(this.lostCoins);
     }
 
-    startAmbientSoundLoop() {
+    startLevelStateLoop() {
         TimingHub.setInterval(() => {
-            if (this.boss.hasSpawned && false === this.boss.isDead() && false === this.hero.isDead()) {
-                AudioHub.stop(AudioLib.GAME.ambient);
-                AudioHub.play(AudioLib.GAME.ambientBoss);
-            } else if (AudioHub.hasEnded(AudioLib.GAME.win) && AudioHub.hasEnded(AudioLib.GAME.lose)) {
-                AudioHub.play(AudioLib.GAME.ambient);
-                AudioHub.stop(AudioLib.GAME.ambientBoss);
+            this.checkLevelState();
+            if (false === this.isEndSequenceQueued) {
+                if (this.boss.hasSpawned && false === this.boss.isDead() && false === this.hero.isDead()) {
+                    AudioHub.stop(AudioLib.GAME.ambient);
+                    AudioHub.play(AudioLib.GAME.ambientBoss);
+                } else if (AudioHub.hasEnded(AudioLib.GAME.win) && AudioHub.hasEnded(AudioLib.GAME.lose)) {
+                    AudioHub.play(AudioLib.GAME.ambient);
+                    AudioHub.stop(AudioLib.GAME.ambientBoss);
+                }
             }
         }, 500);
     }
@@ -123,5 +128,42 @@ export class Level {
         const scored = this.hero.statusCoins.count;
         const total = Coin.totalCoinCount;
         return { scored: scored, total: total, percentage: Math.round((100 * scored) / total) };
+    }
+
+    checkLevelState() {
+        if (false === this.isFinished) {
+            if (this.boss.isDead() && false === this.hero.isDead()) {
+                this.isFinished = true;
+                this.showWinnerScreen();
+            } else if (this.hero.isDead()) {
+                this.isFinished = true;
+                this.showLoserScreen();
+            }
+        }
+    }
+
+    showWinnerScreen() {
+        const score = this.getScore();
+        this.hero.win();
+        this.isEndSequenceQueued = true;
+        TimingHub.setTimeout(() => {
+            AudioHub.stopAll();
+            AudioHub.playFromStart(AudioLib.GAME.win);
+            this.isEndSequenceQueued = false;
+        }, 1000);
+
+        console.log('WON! Score: ', score.scored, ' / ', score.total, ' (', score.percentage, '%)!');
+    }
+
+    showLoserScreen() {
+        const score = this.getScore();
+        this.isEndSequenceQueued = true;
+        TimingHub.setTimeout(() => {
+            AudioHub.stopAll();
+            AudioHub.playFromStart(AudioLib.GAME.lose);
+            this.isEndSequenceQueued = false;
+        }, 1000);
+
+        console.log('LOST! Score: ', score.scored, ' / ', score.total, ' (', score.percentage, '%)!');
     }
 }

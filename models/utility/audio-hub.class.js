@@ -24,6 +24,11 @@ class MyAudio {
             });
         }
     }
+
+    reset() {
+        this.hasPlayed = false;
+        this.file.currentTime = 0;
+    }
 }
 
 export class AudioHub {
@@ -55,7 +60,7 @@ export class AudioHub {
     static hasEnded(soundJson) {
         const sound = AudioHub.sounds[soundJson.path];
         if (sound) {
-            return (sound.hasPlayed && sound.file.ended || 0 === sound.file.currentTime) ;
+            return sound.hasPlayed === sound.file.ended || 0 === sound.file.currentTime;
         }
         return true;
     }
@@ -120,6 +125,8 @@ export class AudioHub {
         const path = soundJson.path;
         if (path && !Object.hasOwn(AudioHub.sounds, path)) {
             AudioHub.sounds[soundJson.path] = new MyAudio(soundJson.path, AudioHub.volBase, soundJson.mult);
+        } else if (path && Object.hasOwn(AudioHub.sounds, path)) {
+            AudioHub.sounds[soundJson.path].reset();
         }
     }
 

@@ -20,7 +20,6 @@ export class World {
         this.setStatusBarHero();
         this.draw();
         this.checkCollisions();
-        this.checkLevelState();
     }
 
     checkCollisions() {
@@ -53,40 +52,6 @@ export class World {
         this.level.collectables.forEach((collectable) => {
             this.level.hero.resolveCollision(collectable);
         });
-    }
-
-    checkLevelState() {
-        const id = TimingHub.setInterval(() => {
-            if (this.level.boss.isDead() && false === this.level.hero.isDead()) {
-                this.showWinnerScreen();
-                TimingHub.stopInterval(id);
-            } else if (this.level.hero.isDead()) {
-                this.showLoserScreen();
-
-                TimingHub.stopInterval(id);
-            }
-        }, 500);
-    }
-
-    showWinnerScreen() {
-        const score = this.level.getScore();
-        this.level.hero.win();
-        TimingHub.setTimeout(() => {
-            AudioHub.stopAll();
-            AudioHub.play(AudioLib.GAME.win);
-        }, 1000);
-
-        console.log('WON! Score: ', score.scored, ' / ', score.total, ' (', score.percentage, '%)!');
-    }
-
-    showLoserScreen() {
-        const score = this.level.getScore();
-        TimingHub.setTimeout(() => {
-            AudioHub.stopAll();
-            AudioHub.play(AudioLib.GAME.lose);
-        }, 1000);
-
-        console.log('LOST! Score: ', score.scored, ' / ', score.total, ' (', score.percentage, '%)!');
     }
 
     draw() {
