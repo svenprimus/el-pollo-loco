@@ -45,8 +45,8 @@ export class Chicken extends Enemy {
     }
 
     place() {
-        const sections = Math.floor(Level.END / Level.BG_WIDTH);
-        const section = Chicken.spread++ % sections;
+        const sections = Math.ceil(Level.END / Level.BG_WIDTH);
+        const section = Chicken.spread++ % (sections+1);
         if (0 === section) {
             this.x = Level.BG_WIDTH / 2 + Math.random() * Level.BG_WIDTH;
         } else {
