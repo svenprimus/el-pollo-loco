@@ -39,6 +39,7 @@ export class Events {
     };
 
     static restartGame() {
+        Events.hideEndScreen();
         Game.restart();
         Game.pause();
         document.getElementById('btn-resume-img').src = './assets/icons/start.svg';
@@ -65,6 +66,7 @@ export class Events {
     static returnToMenu() {
         Events.restartGame();
         document.getElementById('overlay').classList.remove('d-none');
+        Events.hideEndScreen();
         document.getElementById('canvas').style.zIndex = '2';
         document.getElementById('button-wrapper-ui').style.zIndex = '2';
         document.getElementById('button-wrapper-mobile').style.zIndex = '2';
@@ -204,5 +206,9 @@ export class Events {
         document.getElementById('overlay-volume').addEventListener('input', Events.setVolume);
         document.getElementById('overlay-volume').addEventListener('change', Events.playVolumeProbe);
         document.getElementById('btn-overlay-fullscreen').addEventListener('click', toggleFullscreen);
+    }
+
+    static hideEndScreen() {
+        document.getElementById('overlay-endscreen').innerHTML = '';
     }
 }

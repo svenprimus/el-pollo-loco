@@ -80,8 +80,8 @@ export class World {
         //     0,
         //     'green'
         // );
-
         this.ctx.translate(-this.camX, 0);
+
         // fixed objects
         this.addToMap(this.level.hero.statusCoins);
         this.addToMap(this.level.hero.statusBottles);
@@ -231,8 +231,8 @@ export class World {
         this.level.hero.world = this;
         this.setCamX(this.level.hero.camOffset);
         this.applyLevelSmallerThanCanvasFix();
-        AudioHub.loadSound(AudioLib.GAME.win);
-        AudioHub.loadSound(AudioLib.GAME.lose);
+        AudioHub.loadOrResetSound(AudioLib.GAME.win);
+        AudioHub.loadOrResetSound(AudioLib.GAME.lose);
     }
 
     setStatusBarHero() {

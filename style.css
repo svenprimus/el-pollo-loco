@@ -141,12 +141,15 @@ canvas {
     display: none !important;
 }
 
+.blur {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+}
+
 .overlay {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
     border-radius: var(--border-radius-default);
     z-index: 4;
 
@@ -236,6 +239,87 @@ canvas {
             }
         }
     }
+}
+
+.overlay-endscreen {
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    width: 100%;
+    height: 100%;
+    z-index: 21;
+
+    .end-message {
+        opacity: 0;
+        width: 0%;
+        height: 0%;
+        max-height: 30%;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .end-img {
+        height: 20%;
+        max-width: 100%;
+        object-fit: contain;
+        opacity: 0;
+    }
+
+    .score {
+        display: flex;
+        justify-content: center;
+        max-height: 20%;
+        max-width: 100%;
+
+        img {
+            height: 80%;
+            max-width: 33%;
+            object-fit: contain;
+            opacity: 0;
+        }
+
+        img:nth-child(2) {
+            padding-bottom: 30px;
+        }
+
+        img:nth-child(1),
+        img:nth-child(3) {
+            padding-top: 30px;
+        }
+    }
+
+    p {
+        font-family: 'Titan One';
+        font-size: calc(var(--size-btn-ui) * 0.4);
+        color: var(--color-soft-black);
+        margin-bottom: 20px;
+        background-color: var(--color-btn-menu-active);
+        padding: 5px 10px;
+        border-radius: 10px;
+        opacity: 0;
+    }
+}
+
+.optin-0 {
+    animation: optin 1s ease-in-out 2s forwards;
+}
+
+.optin-1 {
+    animation: optin 1s ease-in-out 2.5s forwards;
+}
+
+.optin-2 {
+    animation: optin 1s ease-in-out 3s forwards;
+}
+
+.optin-3 {
+    animation: optin 1s ease-in 3.5s forwards;
+}
+
+.endscreen-animation {
+    animation:
+        grow 2s ease-in-out forwards,
+        levitate 3s ease infinite alternate;
 }
 
 .btn-menu {

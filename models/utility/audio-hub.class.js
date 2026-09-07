@@ -125,6 +125,13 @@ export class AudioHub {
         const path = soundJson.path;
         if (path && !Object.hasOwn(AudioHub.sounds, path)) {
             AudioHub.sounds[soundJson.path] = new MyAudio(soundJson.path, AudioHub.volBase, soundJson.mult);
+        }
+    }
+
+    static loadOrResetSound(soundJson) {
+        const path = soundJson.path;
+        if (path && !Object.hasOwn(AudioHub.sounds, path)) {
+            AudioHub.sounds[soundJson.path] = new MyAudio(soundJson.path, AudioHub.volBase, soundJson.mult);
         } else if (path && Object.hasOwn(AudioHub.sounds, path)) {
             AudioHub.sounds[soundJson.path].reset();
         }
