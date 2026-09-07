@@ -1,3 +1,7 @@
+/**
+ * Library containing paths and volume multiplier of sounds.
+ * @class
+ */
 export class AudioLib {
     static HERO = {
         idle: {

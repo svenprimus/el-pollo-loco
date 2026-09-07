@@ -1,4 +1,9 @@
 import { TimingHub } from './timing-hub.class.js';
+
+/**
+ * Controls manages all events to control the game.
+ * @class
+ */
 export class Controls {
     static UP = false;
     static DOWN = false;
@@ -8,6 +13,10 @@ export class Controls {
     static ongoingTouches = new Map();
     static minDelta = 50;
 
+    /**
+     * Initialize all events.
+     * Keyboard, Mobile Button (pointer) and Mobile Touch (gestures)
+     */
     static init() {
         Controls.addEventsKeydown();
         Controls.addEventsKeyup();
@@ -16,6 +25,9 @@ export class Controls {
         Controls.addEventsMobileGestures();
     }
 
+    /**
+     * Add keyboard events for pressing down a key.
+     */
     static addEventsKeydown() {
         window.addEventListener('keydown', (e) => {
             switch (e.code) {
@@ -46,6 +58,9 @@ export class Controls {
         });
     }
 
+    /**
+     * Add reset of keyboard event, when releasing key.
+     */
     static addEventsKeyup() {
         window.addEventListener('keyup', (e) => {
             switch (e.code) {
@@ -76,6 +91,9 @@ export class Controls {
         });
     }
 
+    /**
+     * Add events for mobile control when holding down mobile buttons.
+     */
     static addEventsMobilePointerDown() {
         document.getElementById('btn-left').addEventListener('pointerdown', (e) => {
             document.getElementById('btn-left').setPointerCapture(e.pointerId);
@@ -104,6 +122,9 @@ export class Controls {
         });
     }
 
+    /**
+     * Add reset of mobile button events, when releasing button.
+     */
     static addEventsMobilePointerUp() {
         document.getElementById('btn-left').addEventListener('pointerup', (e) => {
             document.getElementById('btn-attack').releasePointerCapture(e.pointerId);
@@ -127,6 +148,10 @@ export class Controls {
         });
     }
 
+    /**
+     * Add touch and click events.
+     * Swipe gestures and click-jump.
+     */
     static addEventsMobileGestures() {
         document.getElementById('canvas').addEventListener('touchstart', Controls.handleTouchStart);
         document.getElementById('canvas').addEventListener('touchmove', Controls.handleTouchMove);
@@ -140,12 +165,21 @@ export class Controls {
         });
     }
 
+    /**
+     * Handle the start of a touch event.
+     * @param {Event} event - touchstart
+     */
     static handleTouchStart(event) {
         for (const changedTouch of event.changedTouches) {
             Controls.ongoingTouches.set(changedTouch.identifier, { x: changedTouch.pageX, moved: false });
         }
     }
 
+    /**
+     * Handle the movement of an ongoing touch.
+     * Left / right or tap.
+     * @param {Event} event  - touchmove
+     */
     static handleTouchMove(event) {
         event.preventDefault();
 
@@ -169,6 +203,11 @@ export class Controls {
         }
     }
 
+    /**
+     * Handle the end of an ongoing touch.
+     * Release left/right/up controls.
+     * @param {Event} event - touchend
+     */
     static handleTouchEnd(event) {
         for (const changedTouch of event.changedTouches) {
             const touch = Controls.ongoingTouches.get(changedTouch.identifier);

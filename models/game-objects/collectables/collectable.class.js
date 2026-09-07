@@ -3,6 +3,10 @@ import { MovableObject } from '../../world/movable-object.class.js';
 import { World } from '../../world/world.class.js';
 import { Level } from '../../world/level.class.js';
 
+/**
+ * Collectable object.
+ * @class
+ */
 export class Collectable extends MovableObject {
     static spread = 0;
     hp = 1;

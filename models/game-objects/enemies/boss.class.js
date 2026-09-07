@@ -147,7 +147,6 @@ export class Boss extends Enemy {
         }
     }
 
-    // TODO may move to MovableObject
     isRunning() {
         return this.isRunningAtr;
     }

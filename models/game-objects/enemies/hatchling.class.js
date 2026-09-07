@@ -11,6 +11,7 @@ export class Hatchling extends Enemy {
     hpMax = 20;
     atk = 8;
 
+    /** @type {Animation[]} */
     animations = [
         {
             condition: () => this.isDeadBySalsa(),

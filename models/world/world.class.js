@@ -5,23 +5,32 @@ import { Level } from './level.class.js';
 import { createLevel_1 } from '../../levels/level-1.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 import { AudioHub } from '../utility/audio-hub.class.js';
-import { MovableObject } from './movable-object.class.js'; // TODO remove in the end
 import { AudioLib } from '../utility/audio-lib.class.js';
 
+/**
+ * Creats a World. Class to load leven, draw it, and update interactions.
+ * @class
+ */
 export class World {
     canvas;
     ctx;
     camX = 0;
     level;
 
-    constructor(canvas) {
+    /**
+     * Constructs new World.
+     */
+    constructor() {
         this.setDimensions();
-        this.loadLevel(this);
+        this.loadLevel();
         this.setStatusBarHero();
         this.draw();
         this.checkCollisions();
     }
 
+    /**
+     * Start interval to check collisions every 25ms.
+     */
     checkCollisions() {
         TimingHub.setInterval(() => {
             this.checkCollisionWithMobs();
@@ -30,6 +39,9 @@ export class World {
         }, 25);
     }
 
+    /**
+     * Check and resolve collision for each enemy with hero and projectile.
+     */
     checkCollisionWithMobs() {
         this.level.enemies.forEach((enemy) => {
             this.level.hero.resolveCollision(enemy);
@@ -39,6 +51,9 @@ export class World {
         });
     }
 
+    /**
+     * Check and resolve collision from hero and projectile with boss.
+     */
     checkCollisionWithBoss() {
         if (false === this.level.boss.isSpawning) {
             this.level.hero.resolveCollision(this.level.boss);
@@ -48,15 +63,29 @@ export class World {
         }
     }
 
+    /**
+     * Check and resolve collision from hero with collectable.
+     */
     checkCollisionWithCollectables() {
         this.level.collectables.forEach((collectable) => {
             this.level.hero.resolveCollision(collectable);
         });
     }
 
+    /**
+     * Draw all drawbleObjects into canvas as fast as possible.
+     */
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        // moving objects
+        this.drawMovingObjects();
+        this.drawFixedObjects();
+        requestAnimationFrame(() => this.draw());
+    }
+
+    /**
+     * Draw all objects move relative to the canvas.
+     */
+    drawMovingObjects() {
         this.ctx.translate(this.camX, 0);
         this.addToMap(this.level.backgrounds);
         this.addToMap(this.level.clouds);
@@ -67,28 +96,17 @@ export class World {
         this.addToMap(this.level.boss);
         this.addToMap(this.level.thrownAmmo);
         this.addToMap(this.level.lostCoins);
-
-        // TODO: remove markers
-        // this.level.hero.drawMarker(this.ctx, Level.START + 1, 0);
-        // this.level.hero.drawMarker(this.ctx, 0, 0, 'purple');
-        // this.level.hero.drawMarker(this.ctx, Level.END, 0);
-        // this.level.hero.drawMarker(this.ctx, 0, this.level.hero.ground, 'green', false);
-        // this.level.hero.drawMarker(this.ctx, Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas), 0, 'black');
-        // this.level.hero.drawMarker(
-        //     this.ctx,
-        //     Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas) + this.level.hero.camOffset,
-        //     0,
-        //     'green'
-        // );
         this.ctx.translate(-this.camX, 0);
+    }
 
-        // fixed objects
+    /**
+     * Draw all objects that stay fixed relative to canvas.
+     */
+    drawFixedObjects() {
         this.addToMap(this.level.hero.statusCoins);
         this.addToMap(this.level.hero.statusBottles);
         this.addToMap(this.level.hero.statusBar);
         this.addToMap(this.level.boss.statusBar);
-
-        requestAnimationFrame(() => this.draw());
     }
 
     /**
@@ -116,11 +134,6 @@ export class World {
             this.flipImage(drawble);
         }
         drawble.draw(this.ctx);
-        // TODO: remove collision markers
-        // drawble.drawFrame(this.ctx);
-        // if (drawble instanceof MovableObject) {
-        //     drawble.drawCustomFrame(this.ctx, drawble.getRealDimension(drawble));
-        // }
         if (drawble.reverseDirection) {
             this.flipImageBack(drawble);
         }
@@ -138,12 +151,16 @@ export class World {
 
     /**
      * Restore image direction horizontally.
+     * @param {DrawableObject} drawble
      */
     flipImageBack(drawble) {
         drawble.x *= -1;
         this.ctx.restore();
     }
 
+    /**
+     * Set canvas, button sizes and background width.
+     */
     setDimensions() {
         this.ctx = canvas.getContext('2d');
         this.setCanvasSize();
@@ -152,7 +169,7 @@ export class World {
     }
 
     /**
-     * Resizes the canvas based on fullscreen status. It can be used e.g. on changing device orientation.
+     * Resizes the canvas and overlays based on fullscreen status. It can be used e.g. on changing device orientation.
      */
     setCanvasSize() {
         this.canvas = canvas;
@@ -165,6 +182,9 @@ export class World {
         document.getElementById('overlay').style.borderRadius = document.fullscreenElement ? 0 : '50px';
     }
 
+    /**
+     * Set the button size variables according to canvas size.
+     */
     setButtonSize() {
         const doc = document.documentElement;
         const mobileBase = getComputedStyle(doc).getPropertyValue('--size-btn-mobile-base-factor');
@@ -173,12 +193,19 @@ export class World {
         doc.style.setProperty('--size-btn-ui', `${this.canvas.height * uiBase}px`);
     }
 
+    /**
+     * Set camera to new natural position and shift the backgrounds for immersion.
+     * @param {number} x - View position
+     */
     setCamX(x) {
         this.camX = Math.round(x);
         AudioHub.setCamX(this.camX);
         this.immerseBackgrounds();
     }
 
+    /**
+     * Shift the individual background-layer positions relative to level progress, unless in boss-fight.
+     */
     immerseBackgrounds() {
         this.level.backgrounds.forEach((bg) => {
             if (bg.layer === 1) {
@@ -195,6 +222,9 @@ export class World {
         }
     }
 
+    /**
+     * Resolve and set camera position when hero is moving right.
+     */
     followCamRight() {
         this.level.hero.camEaseRight = Math.max(this.level.hero.camEaseRight - 0.2, 1);
         const onRunnAdjust = this.camX - this.level.hero.camEaseRight * this.level.hero.getSpeedInPixel() - 10;
@@ -207,6 +237,9 @@ export class World {
         this.applyLevelSmallerThanCanvasFix();
     }
 
+    /**
+     * Resolve and set camera position when hero is moving left.
+     */
     followCamLeft() {
         this.level.hero.camEaseLeft = Math.max(this.level.hero.camEaseLeft - 0.2, 1);
         const onRunnAdjust = this.camX + this.level.hero.camEaseLeft * this.level.hero.getSpeedInPixel() + 10;
@@ -219,6 +252,10 @@ export class World {
         this.applyLevelSmallerThanCanvasFix();
     }
 
+    /**
+     * Cut the canvas width if the screen is wider than the level.
+     * Note: level backgrounds are calculated based on height, so we must not cut height.
+     */
     applyLevelSmallerThanCanvasFix() {
         if (Level.wCanvas > Level.END) {
             this.setCamX(-1 * Level.START - 1);
@@ -226,8 +263,11 @@ export class World {
         }
     }
 
-    loadLevel(world) {
-        this.level = createLevel_1(this.canvas.width, this.canvas.height, world);
+    /**
+     * Load level and assets, set cam.
+     */
+    loadLevel() {
+        this.level = createLevel_1(this.canvas.width, this.canvas.height, this);
         this.level.hero.world = this;
         this.setCamX(this.level.hero.camOffset);
         this.applyLevelSmallerThanCanvasFix();
@@ -235,6 +275,9 @@ export class World {
         AudioHub.loadOrResetSound(AudioLib.GAME.lose);
     }
 
+    /**
+     * Update the hero status bars (health, coins, bottles).
+     */
     setStatusBarHero() {
         const pos = this.canvas.height * 0.075;
         this.level.hero.statusBar = new StatusBar(this.canvas.width, canvas.height, this.level.hero, pos, false);
@@ -242,6 +285,9 @@ export class World {
         this.level.hero.statusBottles = new StatusBottles(this.canvas.height, this.level.hero);
     }
 
+    /**
+     * Update the boss status bar.
+     */
     setStatusBarBoss() {
         const y = this.canvas.height * 0.075;
         this.level.boss.statusBar = new StatusBar(this.canvas.width, this.canvas.height, this.level.boss, y, true);

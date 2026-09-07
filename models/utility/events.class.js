@@ -5,24 +5,54 @@ import { TimingHub } from './timing-hub.class.js';
 import { toggleFullscreen, renderScreenButton } from '../../js/fullscreen.js';
 import { InstrDialog, ImprintDialog } from './dialog.js';
 
+/**
+ * Manages all events from UI, buttons, touches, orientation.
+ * Connection to script.js.
+ * @class
+ */
 export class Events {
+    /**
+     * Initialize events.
+     * Connected to loading window.
+     */
     static init() {
         Events.initUI();
         window.addEventListener('load', Events.loadGame);
     }
 
+    /**
+     * Start a paused game in background.
+     */
     static loadGame = () => {
         Game.start();
         Game.pause();
         Events.renderMobileLandscapeHint();
     };
 
+    /**
+     * Initialize all event listeners and enable controls.
+     */
+    static initUI() {
+        Events.initGameEvents();
+        Events.initMenuEvents();
+        Events.initInstrDialogEvents();
+        Events.initImprtDialogEvents();
+        Events.initGlobalListeners();
+        Events.setControls(true);
+    }
+
+    /**
+     * Pause game and update related button.
+     */
     static pauseGame = () => {
         Game.pause();
         document.getElementById('btn-resume-img').src = './assets/icons/start.svg';
         Events.unfocusButton('btn-resume');
     };
 
+    /**
+     * Resume game and update related button.
+     */
     static resumeGame = () => {
         Game.resume();
         document.getElementById('btn-resume-img').src = './assets/icons/pause.svg';
@@ -30,6 +60,9 @@ export class Events {
         Events.setControls(false);
     };
 
+    /**
+     * Toggle pause.
+     */
     static toggleResumePauseGame = () => {
         if (Game.isPaused) {
             Events.resumeGame();
@@ -38,6 +71,9 @@ export class Events {
         }
     };
 
+    /**
+     * Resets the state of the game to start.
+     */
     static restartGame() {
         Events.hideEndScreen();
         Game.restart();
@@ -47,6 +83,9 @@ export class Events {
         Events.unfocusButton('btn-restart');
     }
 
+    /**
+     * Restart a game after a small delay.
+     */
     static restartGameDelayed() {
         TimingHub.setTimeout(() => {
             Events.restartGame();
@@ -54,6 +93,9 @@ export class Events {
         }, 100);
     }
 
+    /**
+     * Start the game from game menu. Brings the actual game (canvas) to front and disables the game menu overlay.
+     */
     static startGameFromMenu() {
         document.getElementById('overlay').classList.add('d-none');
         document.getElementById('canvas').style.zIndex = '20';
@@ -63,6 +105,9 @@ export class Events {
         Events.resumeGame();
     }
 
+    /**
+     * Return from game to game menu. Brings the actual game (canvas) to back and enables game menu overlay.
+     */
     static returnToMenu() {
         Events.restartGame();
         document.getElementById('overlay').classList.remove('d-none');
@@ -74,22 +119,35 @@ export class Events {
         Events.setControls(true);
     }
 
+    /**
+     * Toggle mute and update related button.
+     */
     static toggleMute() {
         Game.toggleMute();
         Events.renderUpdateVolumeElements();
         Events.unfocusButton('btn-mute');
     }
 
+    /**
+     * Update volume and render related elements.
+     * @param {Event} event
+     */
     static setVolume(event) {
         Game.setVolume(event.target.value);
         Events.renderUpdateVolumeElements();
     }
 
+    /**
+     * Play a short volume probe. Useful for volume slider.
+     */
     static playVolumeProbe() {
         AudioHub.loadSound(AudioLib.COLLECTABLE.bottle.collect);
         AudioHub.playFromStart(AudioLib.COLLECTABLE.bottle.collect);
     }
 
+    /**
+     * Render volume elements width updated volume.
+     */
     static renderUpdateVolumeElements() {
         const vol = AudioHub.volBase * 100;
         document.getElementById('volume').value = vol;
@@ -103,15 +161,18 @@ export class Events {
         }
     }
 
+    /**
+     * Render a hint for mobile devices, if in portrait mode. It is recommended to play in landscape mode.
+     */
     static renderMobileLandscapeHint() {
-        const warnRef = document.getElementById('mobile-landscape-hint');
+        const hintRef = document.getElementById('mobile-landscape-hint');
         switch (screen.orientation.type) {
             case 'landscape-primary':
             case 'landscape-secondary':
-                warnRef.classList.add('d-none');
+                hintRef.classList.add('d-none');
                 break;
             default:
-                warnRef.classList.remove('d-none');
+                hintRef.classList.remove('d-none');
                 break;
         }
     }
@@ -126,26 +187,25 @@ export class Events {
 
     /**
      * un-focus button, so that e.g. space (jump) will not restart again
-     * @param {string} button - id
+     * @param {string} button - id of html element
      */
     static unfocusButton(button) {
         document.getElementById(button).blur();
     }
 
+    /**
+     * Focus a button.
+     * @param {string} button - id of html element
+     */
     static focusButton(button) {
         document.getElementById(button).focus();
     }
 
-    static initUI() {
-        Events.initUiButtonEvents();
-        Events.initOverlayEvents();
-        Events.initInstrDialogEvents();
-        Events.initImprtDialogEvents();
-        Events.initGlobalListeners();
-        Events.setControls(true);
-    }
-
-    static initUiButtonEvents() {
+    /**
+     * Initialize events that are used within the actual game.
+     * e.g. start, resume, volume, fullscreen
+     */
+    static initGameEvents() {
         document.getElementById('btn-resume').addEventListener('click', Events.toggleResumePauseGame);
         document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
         document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
@@ -153,21 +213,27 @@ export class Events {
         document.getElementById('volume').addEventListener('change', Events.playVolumeProbe);
         document.getElementById('btn-return').addEventListener('click', Events.returnToMenu);
         document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
+        AudioHub.init();
+    }
+
+    /**
+     * Initialize events that are used within starting menu.
+     * e.g. start, volume, fullscreen, dialog
+     */
+    static initMenuEvents() {
+        document.getElementById('btn-overlay-start').addEventListener('click', Events.startGameFromMenu);
+        document.getElementById('btn-overlay-mute').addEventListener('click', Events.toggleMute);
+        document.getElementById('overlay-volume').addEventListener('input', Events.setVolume);
+        document.getElementById('overlay-volume').addEventListener('change', Events.playVolumeProbe);
+        document.getElementById('btn-overlay-fullscreen').addEventListener('click', toggleFullscreen);
         document.getElementById('instr-dialog-wrapper').addEventListener('click', InstrDialog.stopDialogPropagation);
         document.getElementById('imprt-dialog-wrapper').addEventListener('click', ImprintDialog.stopDialogPropagation);
-        AudioHub.init();
         Events.renderUpdateVolumeElements();
     }
 
-    static initGlobalListeners() {
-        screen.orientation.addEventListener('change', () => {
-            Events.processOrientationChange();
-        });
-        document.addEventListener('fullscreenchange', () => {
-            Events.restartGameDelayed();
-        });
-    }
-
+    /**
+     * Initialize events for the Instruction-Dialog.
+     */
     static initInstrDialogEvents() {
         document.getElementById('btn-instructions').addEventListener('click', InstrDialog.openDialogByMouseClick);
         document.getElementById('btn-instructions').addEventListener('keyup', InstrDialog.openDialogKeyup);
@@ -178,6 +244,9 @@ export class Events {
         document.getElementById('btn-close-dialog').addEventListener('keyup', InstrDialog.closeDialogbyKeyup);
     }
 
+    /**
+     * Initialize events for the Imprint-Dialog.
+     */
     static initImprtDialogEvents() {
         document.getElementById('btn-overlay-imprt').addEventListener('click', ImprintDialog.openDialogByMouseClick);
         document.getElementById('btn-overlay-imprt').addEventListener('keyup', ImprintDialog.openDialogKeyup);
@@ -186,6 +255,23 @@ export class Events {
         document.getElementById('btn-close-imprint').addEventListener('keyup', ImprintDialog.closeDialogbyKeyup);
     }
 
+    /**
+     * Initialize global events.
+     * e.g. orientation change, fullscreen change
+     */
+    static initGlobalListeners() {
+        screen.orientation.addEventListener('change', () => {
+            Events.processOrientationChange();
+        });
+        document.addEventListener('fullscreenchange', () => {
+            Events.restartGameDelayed();
+        });
+    }
+
+    /**
+     * Disable or enable controls.
+     * @param {boolean} disable - true: disable controls, false: enable controls
+     */
     static setControls(disable) {
         document.getElementById('btn-resume').disabled = disable;
         document.getElementById('btn-restart').disabled = disable;
@@ -200,14 +286,9 @@ export class Events {
         document.getElementById('btn-drink').disabled = disable;
     }
 
-    static initOverlayEvents() {
-        document.getElementById('btn-overlay-start').addEventListener('click', Events.startGameFromMenu);
-        document.getElementById('btn-overlay-mute').addEventListener('click', Events.toggleMute);
-        document.getElementById('overlay-volume').addEventListener('input', Events.setVolume);
-        document.getElementById('overlay-volume').addEventListener('change', Events.playVolumeProbe);
-        document.getElementById('btn-overlay-fullscreen').addEventListener('click', toggleFullscreen);
-    }
-
+    /**
+     * Clear End Screen HTML (e.g. new game).
+     */
     static hideEndScreen() {
         document.getElementById('overlay-endscreen').innerHTML = '';
     }
