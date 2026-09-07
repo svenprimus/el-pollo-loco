@@ -291,6 +291,8 @@ canvas {
     p {
         font-family: 'Titan One';
         font-size: calc(var(--size-btn-ui) * 0.4);
+        text-align: center;
+        line-height: 150%;
         color: var(--color-soft-black);
         margin-bottom: 20px;
         background-color: var(--color-btn-menu-active);

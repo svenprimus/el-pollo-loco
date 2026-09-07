@@ -124,10 +124,25 @@ export class Level {
      * Returns game stats of scored points.
      * @returns {object} - scored: amount of scored points, total: total possible points, percentage: score in %
      */
-    getScore() {
+    getSetScore() {
         const scored = this.hero.statusCoins.count;
         const total = Coin.totalCoinCount;
-        return { scored: scored, total: total, percentage: Math.round((100 * scored) / total) };
+        const percentage = Math.round((100 * scored) / total);
+        let highscore = Level.getHighscoreFromLocalStorage();
+        if (percentage > highscore) {
+            Level.setHighscoreToLocalStorage(percentage);
+            highscore = percentage;
+        }
+        return { scored: scored, total: total, percentage: percentage, highscore: highscore };
+    }
+
+    static getHighscoreFromLocalStorage() {
+        const highscore = localStorage.getItem('level-1.highscore');
+        return highscore != null ? highscore : 0;
+    }
+
+    static setHighscoreToLocalStorage(percentage) {
+        localStorage.setItem('level-1.highscore', percentage);
     }
 
     processLevelState() {
@@ -164,11 +179,11 @@ export class Level {
     }
 
     renderWinnerScreen() {
-        Level.renderEndscreen('./assets/img/congrats.webp', './assets/img/tequila.webp', this.getScore());
+        Level.renderEndscreen('./assets/img/congrats.webp', './assets/img/tequila.webp', this.getSetScore());
     }
 
     renderLoserScreen() {
-        Level.renderEndscreen('./assets/img/muerto.webp', './assets/img/skull.webp', this.getScore());
+        Level.renderEndscreen('./assets/img/muerto.webp', './assets/img/skull.webp', this.getSetScore());
     }
 
     static renderEndscreen(msgImg, endImg, score) {
@@ -179,8 +194,10 @@ export class Level {
         for (let i = 0; i < stars; i++) {
             document.getElementById(`star-${i}`).src = './assets/icons/star.svg';
         }
-        document.getElementById('highscore').innerText =
-            `Score: ${score.scored} / ${score.total} (${score.percentage} %)`;
+        document.getElementById('current-score').innerHTML =
+            `Score: ${score.scored} / ${score.total} (${score.percentage} %)
+            <br/>
+            ${score.percentage > score.highscore ? 'NEW' : ''} Best: ${score.highscore} %`;
     }
 
     static getEndscreen(msgImg, endImg) {
@@ -191,7 +208,7 @@ export class Level {
                 <img id="star-1" class="optin-1" src="./assets/icons/star-empty.svg" alt="star image">
                 <img id="star-2" class="optin-2" src="./assets/icons/star-empty.svg" alt="star image">
             </div>
-            <p id="highscore" class="optin-3"></p>
+            <p id="current-score" class="optin-3"></p>
             <img class="end-img optin-3" src="${endImg}" alt="Tequile poured into a shot glass" /> 
         `;
     }
