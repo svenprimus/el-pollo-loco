@@ -5,6 +5,10 @@ import { AudioHub } from '../../utility/audio-hub.class.js';
 import { Level } from '../../world/level.class.js';
 import { TimingHub } from '../../utility/timing-hub.class.js';
 
+/**
+ * The Boss.
+ * @class
+ */
 export class Boss extends Enemy {
     statusBar;
     hp = 500;
@@ -41,6 +45,10 @@ export class Boss extends Enemy {
         },
     ];
 
+    /**
+     * Create the Boss.
+     * @param {number} hCanvas - height of canvas
+     */
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.ENEMY.boss_1.walk[0]);
         this.loadImagesToCache();
@@ -51,6 +59,9 @@ export class Boss extends Enemy {
         this.applyGravity();
     }
 
+    /**
+     * Place the Boss directly after the end of the level.
+     */
     place() {
         this.x = Level.END;
         this.ground = this.ground + this.getHFromPer(1);
@@ -58,16 +69,19 @@ export class Boss extends Enemy {
         this.setOffset(ImageLib.ENEMY.boss_1.offset, ImageLib.ENEMY.boss_1.wNatural, ImageLib.ENEMY.boss_1.hNatural);
     }
 
+    /**
+     * Resolve interval for status and animation
+     */
     resolve() {
-        TimingHub.setInterval(
-            () => {
-                this.statusHandler();
-                this.resolveAnimation(this.animations);
-            },
-            25
-        );
+        TimingHub.setInterval(() => {
+            this.statusHandler();
+            this.resolveAnimation(this.animations);
+        }, 25);
     }
 
+    /**
+     * Resolve Attack or Dead animation.
+     */
     statusHandler() {
         if (this.hasSpawned) {
             if (this.isDead()) {
@@ -81,6 +95,9 @@ export class Boss extends Enemy {
         }
     }
 
+    /**
+     * Pursue (within Boss-fight area), attack and return every 3s.
+     */
     steadyAttack() {
         if (new Date().getTime() - this.lastAlert > 3000) {
             if (false === this.reverseDirection && this.x > Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas)) {
@@ -96,6 +113,9 @@ export class Boss extends Enemy {
         }
     }
 
+    /**
+     * Move left.
+     */
     pursue() {
         AudioHub.play(AudioLib.ENEMY.boss_1.walk);
         this.speedX = 5;
@@ -104,6 +124,9 @@ export class Boss extends Enemy {
         this.isAttackFinished = false;
     }
 
+    /**
+     * Attack and move right.
+     */
     attackAndReturn() {
         if (false === this.isAttackingAtr && false === this.isAttackFinished) {
             this.attack();
@@ -115,6 +138,9 @@ export class Boss extends Enemy {
         }
     }
 
+    /**
+     * Start spawn movement if hero reached spawn point.
+     */
     spawn() {
         if (false === this.isSpawning && false === this.hasSpawned) {
             this.isRunningAtr = true;
@@ -123,6 +149,10 @@ export class Boss extends Enemy {
             this.startSpawnMovement();
         }
     }
+
+    /**
+     * Move slowly from outside of Level into Boss fighting area.
+     */
     startSpawnMovement() {
         const id = this.moveLeftSteady(() => {
             if (this.x < Level.END - this.w) {
@@ -136,6 +166,9 @@ export class Boss extends Enemy {
         });
     }
 
+    /**
+     * Play a 1s attack animation.
+     */
     attack() {
         if (false === this.isAttackingAtr) {
             AudioHub.play(AudioLib.ENEMY.boss_1.attack);
@@ -147,10 +180,18 @@ export class Boss extends Enemy {
         }
     }
 
+    /**
+     * Is running?
+     * @returns {boolean} true if running
+     */
     isRunning() {
         return this.isRunningAtr;
     }
 
+    /**
+     * Is attacking?
+     * @returns {boolean} true if attacking
+     */
     isAttacking() {
         return this.isAttackingAtr;
     }
@@ -160,11 +201,15 @@ export class Boss extends Enemy {
      * Resets idle time.
      * @param {array} images
      * @param {number} frequency
+     * @param {number} indexEnd - optional index to end animation
      */
     setAnimation(images, frequency, indexEnd = null) {
         this.restartAnimateIfChanged(images, 0, frequency, null, indexEnd);
     }
 
+    /**
+     * Load related animation sprites into cache.
+     */
     loadImagesToCache() {
         this.loadImages(ImageLib.ENEMY.boss_1.walk);
         this.loadImages(ImageLib.ENEMY.boss_1.alert);

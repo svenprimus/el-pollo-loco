@@ -5,6 +5,10 @@ import { AudioLib } from '../../utility/audio-lib.class.js';
 import { AudioHub } from '../../utility/audio-hub.class.js';
 import { Level } from '../../world/level.class.js';
 
+/**
+ * A small enemy that can rage.
+ * @class
+ */
 export class Hatchling extends Enemy {
     static spread = -1;
     hp = 20;
@@ -27,6 +31,10 @@ export class Hatchling extends Enemy {
         },
     ];
 
+    /**
+     * Create a new Hatchling.
+     * @param {number} hCanvas - height of canvas
+     */
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.ENEMY.mob_2.walk[2]);
         Hatchling.spread = -1; // used in place() after all hatchlings have been created
@@ -39,6 +47,9 @@ export class Hatchling extends Enemy {
         this.applyGravity();
     }
 
+    /**
+     * Place the Hatchling in every second section (starting from second) to build groups.
+     */
     place() {
         const sections = Math.ceil(Level.END / Level.BG_WIDTH);
         Hatchling.spread = Hatchling.spread + 2 >= sections ? 1 : (Hatchling.spread + 2) % sections;
@@ -49,16 +60,25 @@ export class Hatchling extends Enemy {
         this.setOffset(ImageLib.ENEMY.mob_2.offset, ImageLib.ENEMY.mob_2.wNatural, ImageLib.ENEMY.mob_2.hNatural);
     }
 
+    /**
+     * Resolve steady movement and statusHandler.
+     */
     resolve() {
         this.idHandler = this.moveLeftSteady(() => this.statusHandler());
     }
 
+    /**
+     * Load related animation sprites into cache.
+     */
     loadImagesToCache() {
         this.loadImages(ImageLib.ENEMY.mob_2.walk);
         this.loadImages(ImageLib.ENEMY.mob_2.dead);
         this.loadImages(ImageLib.ENEMY.mob_2.drum);
     }
 
+    /**
+     * Resolve status and a random fury attack.
+     */
     statusHandler() {
         if (this.isDead() || this.x + this.w < Level.START) {
             TimingHub.stopInterval(this.idAnimate);
@@ -71,6 +91,9 @@ export class Hatchling extends Enemy {
         this.resolveAnimation(this.animations);
     }
 
+    /**
+     * Sprint a short time and play audio.
+     */
     randomFury() {
         if (Math.random() > 0.99) {
             this.speedX = 4 + this.speedFlee;

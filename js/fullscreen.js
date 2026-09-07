@@ -10,6 +10,9 @@ export function toggleFullscreen() {
     renderScreenButton();
 }
 
+/**
+ * Render Fullscreen/Fullscreen-Exit button graphic.
+ */
 export function renderScreenButton() {
     if (!document.fullscreenElement) {
         document.getElementById('btn-fullscreen-img').src = './assets/icons/fullscreen.svg';

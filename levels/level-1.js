@@ -10,6 +10,12 @@ import { Background } from '../models/game-objects/background.class.js';
 import { StartLimiter } from '../models/game-objects/start-limiter.class.js';
 import { ImageLib } from '../models/utility/image-lib.class.js';
 
+/**
+ * Creates a new Level.
+ * @param {number} wCanvas - width of canvas 
+ * @param {number} hCanvas - height of canvas 
+ * @returns {Level} - Level Object
+ */
 export function createLevel_1(wCanvas, hCanvas) {
     // prettier-ignore
     return new Level(
