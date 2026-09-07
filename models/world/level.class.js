@@ -20,6 +20,8 @@ export class Level {
     startLimiter;
     thrownAmmo = [];
     lostCoins = [];
+    isFinished = false;
+    isEndSequenceQueued = false;
 
     constructor(
         wCanvas,
@@ -55,7 +57,7 @@ export class Level {
         Level.END = Level.BG_WIDTH * bgPatternPerLayer * bgPerPattern - bgPerPattern * Level.BG_WIDTH - 2;
         this.placeObjects();
         this.startCleaningTasks();
-        this.startAmbientSoundLoop();
+        this.startLevelStateLoop();
         AudioHub.loadSound(AudioLib.GAME.ambient);
         AudioHub.loadSound(AudioLib.GAME.ambientBoss);
     }
@@ -88,14 +90,17 @@ export class Level {
         this.cleanObjects(this.lostCoins);
     }
 
-    startAmbientSoundLoop() {
+    startLevelStateLoop() {
         TimingHub.setInterval(() => {
-            if (this.boss.hasSpawned && false === this.boss.isDead()) {
-                AudioHub.stop(AudioLib.GAME.ambient);
-                AudioHub.play(AudioLib.GAME.ambientBoss);
-            } else {
-                AudioHub.play(AudioLib.GAME.ambient);
-                AudioHub.stop(AudioLib.GAME.ambientBoss);
+            this.processLevelState();
+            if (false === this.isEndSequenceQueued) {
+                if (this.boss.hasSpawned && false === this.boss.isDead() && false === this.hero.isDead()) {
+                    AudioHub.stop(AudioLib.GAME.ambient);
+                    AudioHub.play(AudioLib.GAME.ambientBoss);
+                } else if (AudioHub.hasEnded(AudioLib.GAME.win) && AudioHub.hasEnded(AudioLib.GAME.lose)) {
+                    AudioHub.play(AudioLib.GAME.ambient);
+                    AudioHub.stop(AudioLib.GAME.ambientBoss);
+                }
             }
         }, 500);
     }
@@ -115,9 +120,79 @@ export class Level {
         }, 100);
     }
 
+    /**
+     * Returns game stats of scored points.
+     * @returns {object} - scored: amount of scored points, total: total possible points, percentage: score in %
+     */
     getScore() {
         const scored = this.hero.statusCoins.count;
         const total = Coin.totalCoinCount;
-        return scored + '/' + total + ' (' + Math.round((100 * scored) / total) + '%)';
+        return { scored: scored, total: total, percentage: Math.round((100 * scored) / total) };
+    }
+
+    processLevelState() {
+        if (false === this.isFinished) {
+            if (this.boss.isDead() && false === this.hero.isDead()) {
+                this.isFinished = true;
+                this.showWinnerScreen();
+            } else if (this.hero.isDead()) {
+                this.isFinished = true;
+                this.showLoserScreen();
+            }
+        }
+    }
+
+    showWinnerScreen() {
+        this.hero.win();
+        this.isEndSequenceQueued = true;
+        TimingHub.setTimeout(() => {
+            AudioHub.stopAll();
+            AudioHub.playFromStart(AudioLib.GAME.win);
+            this.renderWinnerScreen();
+            this.isEndSequenceQueued = false;
+        }, 1000);
+    }
+
+    showLoserScreen() {
+        this.isEndSequenceQueued = true;
+        TimingHub.setTimeout(() => {
+            AudioHub.stopAll();
+            AudioHub.playFromStart(AudioLib.GAME.lose);
+            this.renderLoserScreen();
+            this.isEndSequenceQueued = false;
+        }, 1000);
+    }
+
+    renderWinnerScreen() {
+        Level.renderEndscreen('./assets/img/congrats.webp', './assets/img/tequila.webp', this.getScore());
+    }
+
+    renderLoserScreen() {
+        Level.renderEndscreen('./assets/img/muerto.webp', './assets/img/skull.webp', this.getScore());
+    }
+
+    static renderEndscreen(msgImg, endImg, score) {
+        const screenRef = document.getElementById('overlay-endscreen');
+        screenRef.innerHTML = Level.getEndscreen(msgImg, endImg);
+
+        const stars = Math.floor(score.percentage / (100 / 3));
+        for (let i = 0; i < stars; i++) {
+            document.getElementById(`star-${i}`).src = './assets/icons/star.svg';
+        }
+        document.getElementById('highscore').innerText =
+            `Score: ${score.scored} / ${score.total} (${score.percentage} %)`;
+    }
+
+    static getEndscreen(msgImg, endImg) {
+        return /*html*/ `
+            <img class="end-message endscreen-animation" src="${msgImg}" alt="endscreen message" />
+            <div class="score">
+                <img id="star-0" class="optin-0" src="./assets/icons/star-empty.svg" alt="star image">
+                <img id="star-1" class="optin-1" src="./assets/icons/star-empty.svg" alt="star image">
+                <img id="star-2" class="optin-2" src="./assets/icons/star-empty.svg" alt="star image">
+            </div>
+            <p id="highscore" class="optin-3"></p>
+            <img class="end-img optin-3" src="${endImg}" alt="Tequile poured into a shot glass" /> 
+        `;
     }
 }

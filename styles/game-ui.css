@@ -41,6 +41,7 @@ button {
     display: flex;
     justify-content: space-around;
     padding: calc(var(--size-btn-ui) / 10);
+    padding-top: calc(var(--size-btn-ui) / 5);
 
     .play-wrapper,
     .resize-wrapper {

@@ -120,25 +120,13 @@ export class AudioLib {
     };
 
     static GAME = {
-        start: {
-            path: './assets/audio/game/gameStart.mp3',
-            mult: 1,
-        },
-        pause: {
-            path: '',
-            mult: 1,
-        },
-        resume: {
-            path: '',
-            mult: 1,
-        },
         win: {
-            path: '',
-            mult: 1,
+            path: './assets/audio/game/fiesta.mp3',
+            mult: 0.6,
         },
         lose: {
-            path: '',
-            mult: 1,
+            path: './assets/audio/game/harmonica.mp3',
+            mult: 0.5,
         },
         ambient: {
             path: './assets/audio/game/ambient.mp3',

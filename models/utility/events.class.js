@@ -1,4 +1,5 @@
 import { Game } from './game.class.js';
+import { AudioLib } from './audio-lib.class.js';
 import { AudioHub } from '../utility/audio-hub.class.js';
 import { TimingHub } from './timing-hub.class.js';
 import { toggleFullscreen, renderScreenButton } from '../../js/fullscreen.js';
@@ -13,6 +14,7 @@ export class Events {
     static loadGame = () => {
         Game.start();
         Game.pause();
+        Events.renderMobileLandscapeHint();
     };
 
     static pauseGame = () => {
@@ -37,6 +39,7 @@ export class Events {
     };
 
     static restartGame() {
+        Events.hideEndScreen();
         Game.restart();
         Game.pause();
         document.getElementById('btn-resume-img').src = './assets/icons/start.svg';
@@ -52,7 +55,7 @@ export class Events {
     }
 
     static startGameFromMenu() {
-        document.getElementById('overlay').classList.add('d-hidden');
+        document.getElementById('overlay').classList.add('d-none');
         document.getElementById('canvas').style.zIndex = '20';
         document.getElementById('button-wrapper-ui').style.zIndex = '20';
         document.getElementById('button-wrapper-mobile').style.zIndex = '20';
@@ -62,10 +65,11 @@ export class Events {
 
     static returnToMenu() {
         Events.restartGame();
-        document.getElementById('overlay').classList.remove('d-hidden');
-        document.getElementById('canvas').style.zIndex = '1';
-        document.getElementById('button-wrapper-ui').style.zIndex = '1';
-        document.getElementById('button-wrapper-mobile').style.zIndex = '1';
+        document.getElementById('overlay').classList.remove('d-none');
+        Events.hideEndScreen();
+        document.getElementById('canvas').style.zIndex = '2';
+        document.getElementById('button-wrapper-ui').style.zIndex = '2';
+        document.getElementById('button-wrapper-mobile').style.zIndex = '2';
         Events.focusButton('btn-overlay-start');
         Events.setControls(true);
     }
@@ -81,9 +85,15 @@ export class Events {
         Events.renderUpdateVolumeElements();
     }
 
+    static playVolumeProbe() {
+        AudioHub.loadSound(AudioLib.COLLECTABLE.bottle.collect);
+        AudioHub.playFromStart(AudioLib.COLLECTABLE.bottle.collect);
+    }
+
     static renderUpdateVolumeElements() {
         const vol = AudioHub.volBase * 100;
         document.getElementById('volume').value = vol;
+        document.getElementById('overlay-volume').value = vol;
         if (0 === vol) {
             document.getElementById('btn-mute-img').src = './assets/icons/unmute.svg';
             document.getElementById('btn-overlay-mute-img').src = './assets/icons/unmute.svg';
@@ -91,6 +101,27 @@ export class Events {
             document.getElementById('btn-mute-img').src = './assets/icons/mute.svg';
             document.getElementById('btn-overlay-mute-img').src = './assets/icons/mute.svg';
         }
+    }
+
+    static renderMobileLandscapeHint() {
+        const warnRef = document.getElementById('mobile-landscape-hint');
+        switch (screen.orientation.type) {
+            case 'landscape-primary':
+            case 'landscape-secondary':
+                warnRef.classList.add('d-none');
+                break;
+            default:
+                warnRef.classList.remove('d-none');
+                break;
+        }
+    }
+
+    /**
+     * Restart game and render landscape hint for mobile, if in portrait mode.
+     */
+    static processOrientationChange() {
+        Events.restartGameDelayed();
+        Events.renderMobileLandscapeHint();
     }
 
     /**
@@ -110,7 +141,7 @@ export class Events {
         Events.initOverlayEvents();
         Events.initInstrDialogEvents();
         Events.initImprtDialogEvents();
-        Events.initChangeEvents();
+        Events.initGlobalListeners();
         Events.setControls(true);
     }
 
@@ -119,6 +150,7 @@ export class Events {
         document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
         document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
         document.getElementById('volume').addEventListener('input', Events.setVolume);
+        document.getElementById('volume').addEventListener('change', Events.playVolumeProbe);
         document.getElementById('btn-return').addEventListener('click', Events.returnToMenu);
         document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
         document.getElementById('instr-dialog-wrapper').addEventListener('click', InstrDialog.stopDialogPropagation);
@@ -127,9 +159,9 @@ export class Events {
         Events.renderUpdateVolumeElements();
     }
 
-    static initChangeEvents() {
+    static initGlobalListeners() {
         screen.orientation.addEventListener('change', () => {
-            Events.restartGameDelayed();
+            Events.processOrientationChange();
         });
         document.addEventListener('fullscreenchange', () => {
             Events.restartGameDelayed();
@@ -172,6 +204,11 @@ export class Events {
         document.getElementById('btn-overlay-start').addEventListener('click', Events.startGameFromMenu);
         document.getElementById('btn-overlay-mute').addEventListener('click', Events.toggleMute);
         document.getElementById('overlay-volume').addEventListener('input', Events.setVolume);
+        document.getElementById('overlay-volume').addEventListener('change', Events.playVolumeProbe);
         document.getElementById('btn-overlay-fullscreen').addEventListener('click', toggleFullscreen);
+    }
+
+    static hideEndScreen() {
+        document.getElementById('overlay-endscreen').innerHTML = '';
     }
 }
