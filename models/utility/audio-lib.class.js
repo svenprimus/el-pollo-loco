@@ -1,4 +1,10 @@
 /**
+ * @typedef {Object} SoundFile
+ * @property {string} path
+ * @property {number} mult
+ */
+
+/**
  * Library containing paths and volume multiplier of sounds.
  * @class
  */

@@ -72,7 +72,7 @@ export class DrawableObject {
     /**
      * Draw a frame with custom bounds into the canvas.
      * @param {context} ctx - 2d context of canvas
-     * @param {{x: number, y: number, w: number, h: number}} bounds
+     * @param {Dimension} bounds
      */
     drawCustomFrame(ctx, bounds) {
         if (this.hpMax > 0) {

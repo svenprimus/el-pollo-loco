@@ -425,7 +425,7 @@ export class Hero extends MovableObject {
     // #region conditions
     /**
      * Is attacking?
-     * @returns {boolean} - true if attacking
+     * @returns {boolean} isAttackingAtr - true if attacking
      */
     isAttacking() {
         return this.isAttackingAtr;

@@ -48,7 +48,7 @@ export class Collectable extends MovableObject {
 
     /**
      * Is finished?
-     * @returns {boolean} - true if object has done its job
+     * @returns {boolean} collected - true if object has done its job
      */
     hasFinished() {
         return this.collected;
@@ -56,7 +56,7 @@ export class Collectable extends MovableObject {
 
     /**
      * Get section to be placed in, based on current spread.
-     * @returns
+     * @returns {number} - section
      */
     getSection() {
         const sections = Math.floor(Level.END / Level.BG_WIDTH);
@@ -74,7 +74,7 @@ export class Collectable extends MovableObject {
 
     /**
      * Returns the ground level.
-     * @returns
+     * @returns {number} - ground level
      */
     getDefaultY() {
         return this.ground - this.h;

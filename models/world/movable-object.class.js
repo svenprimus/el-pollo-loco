@@ -27,13 +27,7 @@ export class MovableObject extends DrawableObject {
     lastAnimateFreq = 0;
     lastHit = 0;
 
-    /**
-     * @typedef {Object} Offset
-     * @property {number} top - pixel offset from top
-     * @property {number} right -  pixel offset from right
-     * @property {number} bottom - pixel offset from bottom
-     * @property {number} left - pixel offset from left
-     */
+    /** @type {Offset} */
     offset = {
         top: 0,
         right: 0,
@@ -420,7 +414,7 @@ export class MovableObject extends DrawableObject {
     /**
      * Get the real dimension of given object.
      * @param {MovableObject} mo
-     * @returns {x: number, y: number, w: number, h: number} - dimension object
+     * @returns {Dimension} - dimension object
      */
     getRealDimension(mo) {
         return {

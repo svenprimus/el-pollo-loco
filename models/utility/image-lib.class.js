@@ -7,6 +7,14 @@
  */
 
 /**
+ * @typedef {Object} Dimension
+ * @property {number} x -pixel offset from top
+ * @property {number} y -  pixel offset from right
+ * @property {number} w - pixel offset from bottom
+ * @property {number} h - pixel offset from left
+ */
+
+/**
  * Library containing paths, natural size, and offset of grouped sequences.
  * @class
  */

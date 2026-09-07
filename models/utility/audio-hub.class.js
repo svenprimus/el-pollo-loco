@@ -80,7 +80,7 @@ export class AudioHub {
 
     /**
      * Checks if sound has been played at least once and ended.
-     * @param {{path: path, mult: volume factor}} soundJson from AudioLib
+     * @param {SoundFile} soundJson from AudioLib
      * @returns {boolean} True if played at least once and ended.
      */
     static hasEnded(soundJson) {
@@ -93,7 +93,7 @@ export class AudioHub {
 
     /**
      * Play cached audio file from start.
-     * @param {{path: path, mult: volume factor}} soundJson from AudioLib
+     * @param {SoundFile} soundJson from AudioLib
      */
     static playFromStart(soundJson) {
         const sound = AudioHub.sounds[soundJson.path];
@@ -109,7 +109,7 @@ export class AudioHub {
 
     /**
      * Play cached audio file if in range of a background width.
-     * @param {{path: path, mult: volume factor}} soundJson from AudioLib
+     * @param {SoundFile} soundJson from AudioLib
      * @param {number} x - coordinate of source object
      * @param {number} w - width of source object
      */
@@ -122,7 +122,7 @@ export class AudioHub {
 
     /**
      * Play cached audio file from start if in range of a background width.
-     * @param {{path: path, mult: volume factor}} soundJson from AudioLib
+     * @param {SoundFile} soundJson from AudioLib
      * @param {number} x - coordinate of source object
      * @param {number} w - width of source object
      */
@@ -144,7 +144,7 @@ export class AudioHub {
 
     /**
      * Stop a specific cached Audio file.
-     * @param {{path: path, mult: volume factor}} soundJson from AudioLib
+     * @param {SoundFile} soundJson from AudioLib
      */
     static stop(soundJson) {
         const sound = AudioHub.sounds[soundJson.path];
@@ -155,7 +155,7 @@ export class AudioHub {
 
     /**
      * Stop a specific cached Audio file and reset its currentTime to 0.
-     * @param {{path: path, mult: volume factor}} soundJson from AudioLib
+     * @param {SoundFile} soundJson from AudioLib
      */
     static stopReset(soundJson) {
         const sound = AudioHub.sounds[soundJson.path];
@@ -167,7 +167,7 @@ export class AudioHub {
 
     /**
      * Load given sound into cache.
-     * @param {{path: path, mult: volume factor}} soundJson from AudioLib
+     * @param {SoundFile} soundJson from AudioLib
      */
     static loadSound(soundJson) {
         const path = soundJson.path;
@@ -178,7 +178,7 @@ export class AudioHub {
 
     /**
      * Load given sound into cache, or reset its properties if already present.
-     * @param {{path: path, mult: volume factor}} soundJson from AudioLib
+     * @param {SoundFile} soundJson from AudioLib
      */
     static loadOrResetSound(soundJson) {
         const path = soundJson.path;
@@ -191,7 +191,7 @@ export class AudioHub {
 
     /**
      * Load an array of sounds into cache.
-     * @param {{path: path, mult: volume factor}[]} soundJson from AudioLib
+     * @param {SoundFile[]} soundJson from AudioLib
      */
     static loadSounds(soundJsons) {
         for (const key in soundJsons) {
