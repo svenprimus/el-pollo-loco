@@ -131,7 +131,6 @@ export class Level {
         let highscore = Level.getHighscoreFromLocalStorage();
         if (percentage > highscore) {
             Level.setHighscoreToLocalStorage(percentage);
-            highscore = percentage;
         }
         return { scored: scored, total: total, percentage: percentage, highscore: highscore };
     }
@@ -187,17 +186,18 @@ export class Level {
     }
 
     static renderEndscreen(msgImg, endImg, score) {
-        const screenRef = document.getElementById('overlay-endscreen');
-        screenRef.innerHTML = Level.getEndscreen(msgImg, endImg);
-
+        document.getElementById('overlay-endscreen').innerHTML = Level.getEndscreen(msgImg, endImg);
         const stars = Math.floor(score.percentage / (100 / 3));
+        
         for (let i = 0; i < stars; i++) {
             document.getElementById(`star-${i}`).src = './assets/icons/star.svg';
         }
         document.getElementById('current-score').innerHTML =
             `Score: ${score.scored} / ${score.total} (${score.percentage} %)
             <br/>
-            ${score.percentage > score.highscore ? 'NEW' : ''} Best: ${score.highscore} %`;
+            ${score.percentage > score.highscore ? 'NEW' : ''} Best: ${
+                score.percentage > score.highscore ? score.percentage : score.highscore
+            } %`;
     }
 
     static getEndscreen(msgImg, endImg) {
