@@ -4,6 +4,10 @@
 <p align="left">
     <strong>Is your salsa prepared, cabrón?</strong>
 </p>
+<a href="https://svenprimus.developerakademie.net/el-pollo-loco/index.html" target="_blank">VAMOS!</a>
+
+#
+
 <i align="left">
     Old Don Pepe had a rancho,<br/>
     Ei-Ai-Ei-Ay-Ó!<br/>
