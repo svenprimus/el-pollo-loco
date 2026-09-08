@@ -173,8 +173,8 @@ export class World {
      */
     setCanvasSize() {
         this.canvas = canvas;
-        const cWidth = window.innerWidth;
-        const cHeight = window.innerHeight;
+        const cWidth = Math.min(window.innerWidth, document.documentElement.clientWidth);
+        const cHeight = Math.min(window.innerHeight, document.documentElement.clientHeight);
         this.canvas.width = document.fullscreenElement ? cWidth : Math.min(cWidth * 0.6, 1920);
         this.canvas.height = document.fullscreenElement ? cHeight : Math.min(cHeight * 0.6, 1080);
         document.getElementById('canvas').style.borderRadius = document.fullscreenElement ? 0 : '50px';

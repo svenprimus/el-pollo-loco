@@ -71,7 +71,7 @@ export class AudioHub {
     static play(soundJson) {
         const sound = AudioHub.sounds[soundJson.path];
         if (sound) {
-            if (sound.file.readyState === 4 || sound.isLoaded) {
+            if (sound.file.readyState > 0 || sound.isLoaded) {
                 sound.isLoaded = true;
                 sound.play();
             }
@@ -98,7 +98,7 @@ export class AudioHub {
     static playFromStart(soundJson) {
         const sound = AudioHub.sounds[soundJson.path];
         if (sound) {
-            if (sound.file.readyState === 4 || sound.isLoaded) {
+            if (sound.file.readyState > 0 || sound.isLoaded) {
                 sound.file.pause();
                 sound.file.currentTime = 0;
                 sound.isLoaded = true;

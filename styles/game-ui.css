@@ -34,6 +34,12 @@ button {
     justify-content: center;
     pointer-events: none;
     z-index: 3;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: none;
 }
 
 .button-wrapper-ui {
@@ -43,6 +49,12 @@ button {
     justify-content: space-between;
     padding: calc(var(--size-btn-ui) / 10);
     padding-top: calc(var(--size-btn-ui) / 5);
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: none;
 
     .play-wrapper,
     .resize-wrapper {
@@ -135,6 +147,8 @@ button {
     .volume::-webkit-slider-thumb {
         -webkit-appearance: none;
         appearance: none;
+        background-color: transparent;
+        filter: none;
         width: calc(var(--size-btn-ui) * 0.8);
         height: calc(var(--size-btn-ui) * 0.8);
         background: url('../assets/icons/slider-thumb.svg');
@@ -149,6 +163,8 @@ button {
         appearance: none;
         width: calc(var(--size-btn-ui) * 0.8);
         height: calc(var(--size-btn-ui) * 0.8);
+        background-color: transparent;
+        filter: none;
         background: url('../assets/icons/slider-thumb.svg');
         background-size: contain;
         border: none;
