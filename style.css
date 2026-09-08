@@ -250,7 +250,7 @@ input:disabled {
 
 .endscreen-animation {
     animation:
-        grow 3s ease-in-out forwards,
+        grow 2s ease-in-out 1s forwards,
         levitate 3s ease infinite alternate;
 }
 /* #endregion endscreen */
