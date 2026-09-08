@@ -45,7 +45,7 @@ export class Game {
     static restart() {
         TimingHub.clearGame();
         AudioHub.stopAll();
-        Game.world = new World(document.getElementById('canvas'));
+        Game.world = new World();
         Game.world.draw();
         Game.isPaused = false;
     }

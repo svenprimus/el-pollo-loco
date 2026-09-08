@@ -89,7 +89,6 @@ export class Events {
     static restartGameDelayed() {
         TimingHub.setTimeout(() => {
             Events.restartGame();
-            Events.restartGame(); // TODO: Workaround, as body size changes multiple times when leaving fullscreen
         }, 100);
     }
 
