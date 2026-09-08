@@ -39,7 +39,7 @@ button {
 .button-wrapper-ui {
     height: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     padding: calc(var(--size-btn-ui) / 10);
     padding-top: calc(var(--size-btn-ui) / 5);
 
@@ -50,17 +50,23 @@ button {
         flex-wrap: wrap;
         height: var(--size-btn-ui);
         gap: calc(var(--size-btn-ui) * 0.2);
-        flex-grow: 1;
     }
 
-    .spacemaker {
-        flex-grow: 5;
+    .play-wrapper {
+        padding-left: 50px;
     }
 
-    @media screen and (max-width: 300px) {
-        .play-wrapper,
+    .resize-wrapper {
+        padding-right: 50px;
+    }
+
+    @media screen and (max-width: 500px) {
+        .play-wrapper {
+            padding-left: 15px;
+        }
+
         .resize-wrapper {
-            padding: 0;
+            padding-right: 15px;
         }
     }
 
