@@ -149,12 +149,13 @@ button {
         appearance: none;
         background-color: transparent;
         filter: none;
+        box-shadow: none;
         width: calc(var(--size-btn-ui) * 0.8);
         height: calc(var(--size-btn-ui) * 0.8);
         background: url('../assets/icons/slider-thumb.svg');
         background-size: contain;
         border: none;
-        opacity: 0.5;
+        opacity: 1;
         cursor: pointer;
     }
 
@@ -165,10 +166,11 @@ button {
         height: calc(var(--size-btn-ui) * 0.8);
         background-color: transparent;
         filter: none;
+        box-shadow: none;
         background: url('../assets/icons/slider-thumb.svg');
         background-size: contain;
         border: none;
-        opacity: 0.5;
+        opacity: 1;
         cursor: pointer;
     }
 }
