@@ -34,7 +34,7 @@ export function createLevel_1(wCanvas, hCanvas) {
  */
 function createCharacters(hCanvas) {
     let enemies = [];
-    for (let i = 0; i < 13; i++) {
+    for (let i = 0; i < 10; i++) {
         enemies.push(new Chicken(hCanvas));
     }
     for (let i = 0; i < 15; i++) {
