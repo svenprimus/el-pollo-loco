@@ -51,53 +51,6 @@ export class DrawableObject {
     }
 
     /**
-     * Draw a visible frame around the object.
-     * @param {context} ctx - 2d context of canvas
-     */
-    drawFrame(ctx) {
-        if (this.hpMax > 0) {
-            ctx.beginPath();
-            ctx.lineWidth = '1';
-            ctx.strokeStyle = 'blue';
-            ctx.rect(this.x, this.y, this.w, this.h);
-            ctx.stroke();
-
-            this.drawMarker(ctx, this.x, this.y);
-        }
-    }
-
-    /**
-     * Draw a frame with custom bounds into the canvas.
-     * @param {context} ctx - 2d context of canvas
-     * @param {Dimension} bounds
-     */
-    drawCustomFrame(ctx, bounds) {
-        if (this.hpMax > 0) {
-            ctx.beginPath();
-            ctx.lineWidth = '1';
-            ctx.strokeStyle = 'red';
-            ctx.rect(bounds.x, bounds.y, bounds.w, bounds.h);
-            ctx.stroke();
-        }
-    }
-
-    /**
-     * Draw a short line (marker) into canvas.
-     * @param {context} ctx - 2d context of canvas
-     * @param {number} x - x coordinate
-     * @param {number} y - y coordinate
-     * @param {string} color - color of marker
-     * @param {boolean} isVertical - true: vertical marker, false: horizontal marker
-     */
-    drawMarker(ctx, x, y, color = 'red', isVertical = true) {
-        ctx.beginPath();
-        ctx.lineWidth = '1';
-        ctx.strokeStyle = color;
-        ctx.rect(x, y, isVertical ? 1 : 10, isVertical ? 10 : 1);
-        ctx.stroke();
-    }
-
-    /**
      * Write a string with preset style (Font 'Titan One') into the canvas.
      * @param {string} text - Text to write
      * @param {context} ctx - 2d context of canvas

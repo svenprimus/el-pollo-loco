@@ -186,13 +186,4 @@ export class TimingHub {
     static getTimeoutIndexOrigin(id) {
         return TimingHub.timeoutIds.findIndex((timeout) => timeout.idOrigin === id);
     }
-
-    /**
-     * Check if timeout id is set.
-     * @param {number} id - timeout id
-     * @returns {number} index if found, else -1
-     */
-    static isTimeoutSet(id) {
-        return TimingHub.getTimeoutIndex(id) >= 0 || TimingHub.getTimeoutIndexOrigin(id) >= 0;
-    }
 }
