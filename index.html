@@ -22,7 +22,12 @@
                     <canvas id="canvas" width="720" height="480"></canvas>
                     <div id="overlay" class="overlay blur">
                         <aside class="start-menu-settings">
-                            <button id="btn-overlay-fullscreen" class="btn-ui">
+                            <button
+                                id="btn-overlay-fullscreen"
+                                class="btn-ui"
+                                aria-controls="game-wrapper"
+                                aria-label="toggle fullscreen"
+                            >
                                 <img
                                     id="btn-overlay-fullscreen-img"
                                     src="./assets/icons/fullscreen.svg"
@@ -30,7 +35,12 @@
                                 />
                             </button>
                             <section class="audio-wrapper">
-                                <button id="btn-overlay-mute" class="btn-ui">
+                                <button
+                                    id="btn-overlay-mute"
+                                    class="btn-ui"
+                                    aria-controls="overlay-volume"
+                                    aria-label="toggle mute"
+                                >
                                     <img
                                         id="btn-overlay-mute-img"
                                         src="./assets/icons/mute.svg"
@@ -46,6 +56,7 @@
                                         min="0"
                                         max="100"
                                         step="5"
+                                        aria-label="volume"
                                     />
                                 </div>
                             </section>
@@ -65,9 +76,30 @@
                                 <figcaption>Better flip your device, amigo!</figcaption>
                             </figure>
                             <nav class="start-menu-nav">
-                                <button id="btn-overlay-start" class="btn-menu">Start</button>
-                                <button id="btn-overlay-instr" class="btn-menu">Controls</button>
-                                <button id="btn-overlay-imprt" class="btn-menu">Imprint</button>
+                                <button
+                                    id="btn-overlay-start"
+                                    class="btn-menu"
+                                    aria-label="start game"
+                                    aria-controls="game-wrapper"
+                                >
+                                    Start
+                                </button>
+                                <button
+                                    id="btn-overlay-instr"
+                                    class="btn-menu"
+                                    aria-label="open instructions dialog"
+                                    aria-controls="instructions-dialog"
+                                >
+                                    Controls
+                                </button>
+                                <button
+                                    id="btn-overlay-imprt"
+                                    class="btn-menu"
+                                    aria-label="open imprint dialog"
+                                    aria-controls="imprint-dialog"
+                                >
+                                    Imprint
+                                </button>
                             </nav>
                         </section>
                     </div>
@@ -82,6 +114,7 @@
                                     min="0"
                                     max="100"
                                     step="5"
+                                    aria-label="volume"
                                 />
                             </div>
                             <button id="btn-mute" class="btn-ui">
@@ -119,21 +152,21 @@
 
                     <section id="button-wrapper-mobile" class="button-wrapper-mobile">
                         <section class="movements">
-                            <button id="btn-left" class="btn-left btn-mobile">
+                            <button id="btn-left" class="btn-left btn-mobile" aria-label="move left">
                                 <img src="./assets/icons/left.svg" alt="arrow left" />
                             </button>
-                            <button id="btn-right" class="btn-right btn-mobile">
+                            <button id="btn-right" class="btn-right btn-mobile" aria-label="move right">
                                 <img src="./assets/icons/right.svg" alt="arrow right" />
                             </button>
                         </section>
                         <section class="actions">
-                            <button id="btn-jump" class="btn-jump btn-mobile">
+                            <button id="btn-jump" class="btn-jump btn-mobile" aria-label="jump">
                                 <img src="./assets/icons/jump.svg" alt="jumping man" />
                             </button>
-                            <button id="btn-attack" class="btn-attack btn-mobile">
+                            <button id="btn-attack" class="btn-attack btn-mobile" aria-label="attack">
                                 <img src="./assets/icons/attack.svg" alt="flying bottle" />
                             </button>
-                            <button id="btn-drink" class="btn-drink btn-mobile">
+                            <button id="btn-drink" class="btn-drink btn-mobile" aria-label="drink">
                                 <img src="./assets/icons/drink.svg" alt="drinking man" />
                             </button>
                         </section>
@@ -159,40 +192,44 @@
                     src="./assets/img/screen-elements/papel-picado.webp"
                     alt="typical colorfull mexican paper decoration"
                 />
-
                 <img class="sombrero deko-element" src="./assets/img/screen-elements/sombrero.webp" alt="mexican hat" />
                 <img
                     class="feather delay-1 deko-element"
                     src="./assets/img/screen-elements/feathers/feather-1.svg"
                     alt="turquoise feather"
+                    aria-hidden="true"
                 />
                 <img
                     class="feather delay-2 deko-element"
                     src="./assets/img/screen-elements/feathers/feather-2.svg"
                     alt="green feather"
+                    aria-hidden="true"
                 />
                 <img
                     class="feather delay-3 deko-element"
                     src="./assets/img/screen-elements/feathers/feather-3.svg"
                     alt="orange feather"
+                    aria-hidden="true"
                 />
                 <img
                     class="feather delay-4 deko-element"
                     src="./assets/img/screen-elements/feathers/feather-4.svg"
                     alt="red feather"
+                    aria-hidden="true"
                 />
                 <img
                     class="feather delay-5 deko-element"
                     src="./assets/img/screen-elements/feathers/feather-5.svg"
                     alt="purple feather"
+                    aria-hidden="true"
                 />
             </div>
         </main>
 
-        <dialog id="instructions-dialog" aria-label="Open Game Instructions">
+        <dialog id="instructions-dialog" aria-labelledby="instructions-title">
             <article id="instr-dialog-wrapper" class="dialog-wrapper">
                 <header class="dialog-header">
-                    <h1>Instructions</h1>
+                    <h1 id="instructions-title">Instructions</h1>
                     <button
                         id="btn-close-dialog"
                         class="btn-close-dialog"
@@ -238,10 +275,10 @@
             </article>
         </dialog>
 
-        <dialog id="imprint-dialog" aria-label="Open Imprint">
+        <dialog id="imprint-dialog" aria-labelledby="imprint-title">
             <article id="imprt-dialog-wrapper" class="dialog-wrapper">
                 <header class="dialog-header">
-                    <h1>Imprint</h1>
+                    <h1 id="imprint-title">Imprint</h1>
                     <button
                         id="btn-close-imprint"
                         class="btn-close-dialog"
@@ -276,9 +313,17 @@
                         <h4>Credits</h4>
                         <p>
                             Graphics provided by
-                            <a href="https://developerakademie.com/" target="_blank">Developer Akademie</a>.
+                            <a
+                                href="https://developerakademie.com/"
+                                target="_blank"
+                                aria-label="website of developer akademie"
+                                >Developer Akademie</a
+                            >.
                             <br />
-                            Vectors and icons by <a href="https://www.svgrepo.com" target="_blank">SVG Repo</a>.
+                            Vectors and icons by
+                            <a href="https://www.svgrepo.com" target="_blank" aria-label="website of svgrepo"
+                                >SVG Repo</a
+                            >.
                             <br />
                         </p>
                         <p>
@@ -296,7 +341,7 @@
                             Auf der Horst 9 <br />
                             59505 Bad Sassendorf
                         </p>
-                        <a href="https://github.com/svenprimus" target="_blank">
+                        <a href="https://github.com/svenprimus" target="_blank" aria-label="github of creator">
                             <p>GitHub<br />svenprimus</p>
                         </a>
                     </section>
