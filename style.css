@@ -356,6 +356,14 @@ input:disabled {
 }
 /* #endregion start-screen */
 
+.ios-fullscreen {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100svh;
+    border-radius: 0;
+}
+
 .d-desktop {
     display: none;
 }

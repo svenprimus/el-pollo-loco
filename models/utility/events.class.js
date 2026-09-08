@@ -265,6 +265,9 @@ export class Events {
         document.addEventListener('fullscreenchange', () => {
             Events.restartGameDelayed();
         });
+        document.addEventListener('resize', () => {
+            Events.restartGameDelayed();
+        });
     }
 
     /**
