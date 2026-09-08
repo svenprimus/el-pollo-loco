@@ -1,17 +1,30 @@
 import { Level } from '../world/level.class.js';
+
+/**
+ * Custom Audio class to manage Audio with volume multiplier and state of loading/playing.
+ * @class
+ */
 class MyAudio {
     file;
     isLoaded;
     volMult = 1;
     hasPlayed = false;
 
-    constructor(file, volBase, mult) {
+    /**
+     * Create a new MyAudio object.
+     * @param {Audio} file - Audio file to manage
+     * @param {number} mult - multipier to adjust base volume
+     */
+    constructor(file, mult) {
         this.file = new Audio(file);
         this.file.currentTime = 0;
         this.volMult = mult;
     }
 
-    play(volBase) {
+    /**
+     * Play Audio file with adtjusted volume and mark as played.
+     */
+    play() {
         this.file.volume = Math.min(Math.max(AudioHub.volBase * this.volMult, 0), 1);
         const playPromise = this.file.play();
         this.hasPlayed = true;
@@ -25,23 +38,36 @@ class MyAudio {
         }
     }
 
+    /**
+     * Reset hasPlayed property and Audio files currentTime.
+     */
     reset() {
         this.hasPlayed = false;
         this.file.currentTime = 0;
     }
 }
 
+/**
+ * Audio managing class.
+ * @class
+ */
 export class AudioHub {
     static sounds = {};
     static camX = 0;
     static volLast = 0.2;
     static volBase = 0.2;
 
+    /**
+     * Retrieve volume from local storage.
+     */
     static init() {
         AudioHub.getVolumeFromLocalStorage();
     }
 
-    // TODO: play from queue? e.g. multiple equal sounds: coins, chicken
+    /**
+     * Play given audio file if found in cache.
+     * @param {{path: string, mult: number}}} soundJson - from AudioLib, containing path and multiplier for audio.
+     */
     static play(soundJson) {
         const sound = AudioHub.sounds[soundJson.path];
         if (sound) {
@@ -54,8 +80,8 @@ export class AudioHub {
 
     /**
      * Checks if sound has been played at least once and ended.
-     * @param {object} soundJson {path: path, mult: volume factor}
-     * @returns True if played at least once and ended.
+     * @param {SoundFile} soundJson from AudioLib
+     * @returns {boolean} True if played at least once and ended.
      */
     static hasEnded(soundJson) {
         const sound = AudioHub.sounds[soundJson.path];
@@ -65,6 +91,10 @@ export class AudioHub {
         return true;
     }
 
+    /**
+     * Play cached audio file from start.
+     * @param {SoundFile} soundJson from AudioLib
+     */
     static playFromStart(soundJson) {
         const sound = AudioHub.sounds[soundJson.path];
         if (sound) {
@@ -77,6 +107,12 @@ export class AudioHub {
         }
     }
 
+    /**
+     * Play cached audio file if in range of a background width.
+     * @param {SoundFile} soundJson from AudioLib
+     * @param {number} x - coordinate of source object
+     * @param {number} w - width of source object
+     */
     static playIfNearby(soundJson, x, w) {
         const distance = AudioHub.camX + x;
         if (-w < distance && distance < Level.BG_WIDTH) {
@@ -84,6 +120,12 @@ export class AudioHub {
         }
     }
 
+    /**
+     * Play cached audio file from start if in range of a background width.
+     * @param {SoundFile} soundJson from AudioLib
+     * @param {number} x - coordinate of source object
+     * @param {number} w - width of source object
+     */
     static playFromStartIfNearby(soundJson, x, w) {
         const distance = AudioHub.camX + x;
         if (-w < distance && distance < Level.BG_WIDTH) {
@@ -91,21 +133,19 @@ export class AudioHub {
         }
     }
 
-    static resume() {
-        // TODO: only push if not already playing
-        // TODO: remove sounds after playing finished
-        // for (let i = AudioHub.playing.length - 1; i >= 0; i--) {
-        //     AudioHub.playing[i].play();
-        //     AudioHub.playing.splice(i, 1);
-        // }
-    }
-
+    /**
+     * Stop all cached Audios.
+     */
     static stopAll() {
         for (const key in AudioHub.sounds) {
             AudioHub.sounds[key].file.pause();
         }
     }
 
+    /**
+     * Stop a specific cached Audio file.
+     * @param {SoundFile} soundJson from AudioLib
+     */
     static stop(soundJson) {
         const sound = AudioHub.sounds[soundJson.path];
         if (sound) {
@@ -113,6 +153,10 @@ export class AudioHub {
         }
     }
 
+    /**
+     * Stop a specific cached Audio file and reset its currentTime to 0.
+     * @param {SoundFile} soundJson from AudioLib
+     */
     static stopReset(soundJson) {
         const sound = AudioHub.sounds[soundJson.path];
         if (sound) {
@@ -121,6 +165,10 @@ export class AudioHub {
         }
     }
 
+    /**
+     * Load given sound into cache.
+     * @param {SoundFile} soundJson from AudioLib
+     */
     static loadSound(soundJson) {
         const path = soundJson.path;
         if (path && !Object.hasOwn(AudioHub.sounds, path)) {
@@ -128,6 +176,10 @@ export class AudioHub {
         }
     }
 
+    /**
+     * Load given sound into cache, or reset its properties if already present.
+     * @param {SoundFile} soundJson from AudioLib
+     */
     static loadOrResetSound(soundJson) {
         const path = soundJson.path;
         if (path && !Object.hasOwn(AudioHub.sounds, path)) {
@@ -137,16 +189,27 @@ export class AudioHub {
         }
     }
 
+    /**
+     * Load an array of sounds into cache.
+     * @param {SoundFile[]} soundJson from AudioLib
+     */
     static loadSounds(soundJsons) {
         for (const key in soundJsons) {
             AudioHub.loadSound(soundJsons[key]);
         }
     }
 
+    /**
+     * Let AudioHub know where the cam is.
+     * @param {number} camX - current position of camera
+     */
     static setCamX(camX) {
         AudioHub.camX = camX;
     }
 
+    /**
+     * Toggle Mute.
+     */
     static toggleMute() {
         const tempLast = AudioHub.volLast;
         AudioHub.volLast = AudioHub.volBase;
@@ -156,6 +219,10 @@ export class AudioHub {
         AudioHub.saveVolumeToLocalStorage();
     }
 
+    /**
+     * Set the base volume and update it for all sounds.
+     * @param {number} volumePercentage - volume
+     */
     static setVolume(volumePercentage) {
         AudioHub.volBase = volumePercentage / 100;
         AudioHub.volLast = AudioHub.volBase;
@@ -163,6 +230,9 @@ export class AudioHub {
         AudioHub.saveVolumeToLocalStorage();
     }
 
+    /**
+     * Update the volume inside every cached sound file.
+     */
     static updateAllVolumes() {
         for (const key in AudioHub.sounds) {
             const sound = AudioHub.sounds[key];
@@ -170,10 +240,16 @@ export class AudioHub {
         }
     }
 
+    /**
+     * Store current base volume into local storage.
+     */
     static saveVolumeToLocalStorage() {
         localStorage.setItem('AudioHub.volBase', AudioHub.volBase);
     }
 
+    /**
+     * Restore current base volume from local storage.
+     */
     static getVolumeFromLocalStorage() {
         const volume = localStorage.getItem('AudioHub.volBase');
         if (volume != null) {

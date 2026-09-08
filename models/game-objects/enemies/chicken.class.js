@@ -6,6 +6,10 @@ import { AudioLib } from '../../utility/audio-lib.class.js';
 import { AudioHub } from '../../utility/audio-hub.class.js';
 import { Level } from '../../world/level.class.js';
 
+/**
+ * A midsize Chicken enemy with a jump attack.
+ * @class
+ */
 export class Chicken extends Enemy {
     static spread = 0;
     idHandler;
@@ -32,6 +36,10 @@ export class Chicken extends Enemy {
         },
     ];
 
+    /**
+     * Create a new Chicken.
+     * @param {number} hCanvas - height of canvas 
+     */
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.ENEMY.mob_1.walk[2]);
         Chicken.spread = 0; // used in place() after all chicken have been created
@@ -44,9 +52,12 @@ export class Chicken extends Enemy {
         this.applyGravity();
     }
 
+    /**
+     * Place a Chicken evenly spread accross every section (with little randomness), but not near the Hero.
+     */
     place() {
-        const sections = Math.floor(Level.END / Level.BG_WIDTH);
-        const section = Chicken.spread++ % sections;
+        const sections = Math.ceil(Level.END / Level.BG_WIDTH);
+        const section = Chicken.spread++ % (sections + 1);
         if (0 === section) {
             this.x = Level.BG_WIDTH / 2 + Math.random() * Level.BG_WIDTH;
         } else {
@@ -57,10 +68,16 @@ export class Chicken extends Enemy {
         this.setOffset(ImageLib.ENEMY.mob_1.offset, ImageLib.ENEMY.mob_1.wNatural, ImageLib.ENEMY.mob_1.hNatural);
     }
 
+    /**
+     * Resolve steady movement and statushandler
+     */
     resolve() {
         this.idHandler = this.moveLeftSteady(() => this.statusHandler(), Game.FPS, this);
     }
 
+    /**
+     * Resolve status and perform random jump attacks.
+     */
     statusHandler() {
         if (this.isDead() || this.x + this.w < Level.START) {
             TimingHub.stopInterval(this.idAnimate);
@@ -73,6 +90,9 @@ export class Chicken extends Enemy {
         this.resolveAnimation(this.animations);
     }
 
+    /**
+     * Random Jump attack.
+     */
     randomJump() {
         if (Math.random() > 0.99 && !this.isJumping()) {
             const funFactor = Math.random() * 3 + 3;
@@ -85,12 +105,18 @@ export class Chicken extends Enemy {
         }
     }
 
+    /**
+     * Timeout to reset jump attack speed.
+     */
     startResetTimeout() {
         TimingHub.setTimeout(() => {
             this.speedX = Math.random() * 2 + this.speedFlee;
         }, 1000);
     }
 
+    /**
+     * Load related animation sprites into cache.
+     */
     loadImagesToCache() {
         this.loadImages(ImageLib.ENEMY.mob_1.walk);
         this.loadImages(ImageLib.ENEMY.mob_1.jump);

@@ -1,3 +1,8 @@
+/**
+ * TimingHub to manage all timings and intervals.
+ * Make timings and intervals stoppable, pauseable and resumeable.
+ * @class
+ */
 export class TimingHub {
     static intervalIds = [];
     static timeoutIds = [];
@@ -8,7 +13,8 @@ export class TimingHub {
      * Sets an interval that can be paused and resumed.
      * @param {function} fn - function to execute
      * @param {number} time - interval in ms
-     * @returns id of new interval
+     * @param {idOrigin} idOrigin - optional original id, e.g. if a timer is stopped, that contains a modifier to itself
+     * @returns {number} id of new interval
      */
     static setInterval(fn, time, idOrigin = null) {
         const id = setInterval(fn, time);
@@ -19,7 +25,7 @@ export class TimingHub {
     /**
      * Stop the managed interval.
      * @param {number} id - interval id
-     * @returns index of id in managed container, or -1 if not existing
+     * @returns {number} index of id in managed container, or -1 if not existing
      */
     static stopInterval(id) {
         let index = TimingHub.getIntervalIndex(id);
@@ -32,6 +38,11 @@ export class TimingHub {
         return index >= 0;
     }
 
+    /**
+     * Stop an interval by its original id.
+     * @param {number} idOrigin - stop the original interval id
+     * @returns {number} - index of stopped interval, or -1 if nothing happened.
+     */
     static stopIntervalOrigin(idOrigin) {
         const index = TimingHub.getIntervalIndexOrigin(idOrigin);
         if (index >= 0) {
@@ -45,7 +56,8 @@ export class TimingHub {
      * A managed timeout that can be pause, restartet and clears itself.
      * @param {arrow-function} fn - function to be executed after timeout
      * @param {number} time - ms to trigger to timeout
-     * @returns id of new timeout
+     * @param {idOrigin} idOrigin - optional original id, e.g. if a timer is stopped, that contains a modifier to itself
+     * @returns {number} id of new timeout
      */
     static setTimeout(fn, time, idOrigin = null) {
         const id = setTimeout(() => {
@@ -59,7 +71,7 @@ export class TimingHub {
     /**
      * Clears managed timeout and removes it from managed container.
      * @param {number} id - timeout id
-     * @returns
+     * @returns {boolean} - true if a timeout was stopped
      */
     static clearTimeout(id) {
         let index = TimingHub.getTimeoutIndex(id);
@@ -72,6 +84,11 @@ export class TimingHub {
         return index >= 0;
     }
 
+    /**
+     * Stop an timeout by its original id.
+     * @param {number} idOrigin - stop the original timeout id
+     * @returns {number} - index of stopped timeout, or -1 if nothing happened.
+     */
     static stopTimeoutOrigin(idOrigin) {
         const index = TimingHub.getTimeoutIndexOrigin(idOrigin);
         if (index >= 0) {
@@ -89,8 +106,6 @@ export class TimingHub {
             TimingHub.timeoutsBackup = TimingHub.timeoutIds.slice();
             TimingHub.intervalBackup = TimingHub.intervalIds.slice();
         }
-
-        // Important: clear (remove) backwards, as after remove, the start index shifts
         for (let i = TimingHub.timeoutIds.length; i > 0; i--) {
             TimingHub.clearTimeout(TimingHub.timeoutIds[i - 1].id);
         }
@@ -125,12 +140,17 @@ export class TimingHub {
     /**
      * Get the index of id from managed container.
      * @param {number} id - interval id
-     * @returns index of id from managed container
+     * @returns {number} index of id from managed container, or -1 if nothing found
      */
     static getIntervalIndex(id) {
         return TimingHub.intervalIds.findIndex((interval) => interval.id === id);
     }
 
+    /**
+     * Get the index of original id from managed container.
+     * @param {number} idOrigin - original interval id
+     * @returns {number} index of id from managed container, or -1 if nothing found
+     */
     static getIntervalIndexOrigin(idOrigin) {
         return TimingHub.intervalIds.findIndex((interval) => interval.idOrigin === idOrigin);
     }
@@ -138,7 +158,7 @@ export class TimingHub {
     /**
      * Check if interval id is set.
      * @param {number} id - interval id
-     * @returns index if found, else -1
+     * @returns {number} index if found, else -1
      */
     static isIntervalSet(id) {
         // return TimingHub.getIntervalIndex(id) >= 0 || TimingHub.getIntervalIndexOrigin(id) >= 0;
@@ -152,12 +172,17 @@ export class TimingHub {
     /**
      * Get the index of id from managed container.
      * @param {number} id
-     * @returns  index of id from managed container
+     * @returns {number} index of id from managed container, or -1 if not found
      */
     static getTimeoutIndex(id) {
         return TimingHub.timeoutIds.findIndex((timeout) => timeout.id === id);
     }
 
+    /**
+     * Get the index of original id from managed container.
+     * @param {number} original id
+     * @returns {number} index of id from managed container, or -1 if not found
+     */
     static getTimeoutIndexOrigin(id) {
         return TimingHub.timeoutIds.findIndex((timeout) => timeout.idOrigin === id);
     }
@@ -165,7 +190,7 @@ export class TimingHub {
     /**
      * Check if timeout id is set.
      * @param {number} id - timeout id
-     * @returns index if found, else -1
+     * @returns {number} index if found, else -1
      */
     static isTimeoutSet(id) {
         return TimingHub.getTimeoutIndex(id) >= 0 || TimingHub.getTimeoutIndexOrigin(id) >= 0;

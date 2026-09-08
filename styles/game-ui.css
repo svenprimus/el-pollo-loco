@@ -38,8 +38,9 @@ button {
 
 .button-wrapper-ui {
     height: 100%;
+    width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     padding: calc(var(--size-btn-ui) / 10);
     padding-top: calc(var(--size-btn-ui) / 5);
 
@@ -50,17 +51,35 @@ button {
         flex-wrap: wrap;
         height: var(--size-btn-ui);
         gap: calc(var(--size-btn-ui) * 0.2);
-        flex-grow: 1;
     }
 
-    .spacemaker {
-        flex-grow: 5;
+    .play-wrapper {
+        padding-left: 50px;
     }
 
-    @media screen and (max-width: 300px) {
+    .resize-wrapper {
+        padding-right: 50px;
+    }
+
+    @media screen and (max-width: 500px) {
+        .btn-ui {
+            height: calc(var(--size-btn-ui) * 0.8);
+            width: calc(var(--size-btn-ui) * 0.8);
+            min-height: calc(var(--size-btn-ui) * 0.8);
+            min-width: calc(var(--size-btn-ui) * 0.8);
+        }
+
         .play-wrapper,
         .resize-wrapper {
-            padding: 0;
+            gap: 0;
+        }
+
+        .play-wrapper {
+            padding-left: 10px;
+        }
+
+        .resize-wrapper {
+            padding-right: 10px;
         }
     }
 

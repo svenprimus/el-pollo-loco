@@ -1,3 +1,13 @@
+/**
+ * @typedef {Object} SoundFile
+ * @property {string} path
+ * @property {number} mult
+ */
+
+/**
+ * Library containing paths and volume multiplier of sounds.
+ * @class
+ */
 export class AudioLib {
     static HERO = {
         idle: {
@@ -138,7 +148,7 @@ export class AudioLib {
         },
         catrina: {
             path: './assets/audio/game/catrina.mp3',
-            mult: 1.5,
+            mult: 2,
         },
     };
 }

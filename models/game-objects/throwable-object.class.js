@@ -5,12 +5,20 @@ import { AudioHub } from '../utility/audio-hub.class.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 import { Game } from '../utility/game.class.js';
 
+/**
+ * A throwable object that can impact.
+ * @class
+ */
 export class ThrowableObject extends MovableObject {
     isImpacting = false;
     isFinished = false;
     isCollided = false;
     hpMax = 1;
 
+    /**
+     * Constructs a ThrowableObject.
+     * @param {number} hCanvas - height of canvas
+     */
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.AMMO.midair.imgs[0]);
         this.loadImagesToCache();
@@ -20,12 +28,22 @@ export class ThrowableObject extends MovableObject {
         this.animate(ImageLib.AMMO.midair.imgs);
     }
 
+    /**
+     * Load related animation sprites into cache.
+     */
     loadImagesToCache() {
         this.loadImages(ImageLib.AMMO.midair.imgs);
         this.loadImages(ImageLib.AMMO.impact.imgs);
         this.loadImages(ImageLib.AMMO.collectable.imgs);
     }
 
+    /**
+     * Throw the object from starting point. On impact start impact animation and stop after 1000ms.
+     * @param {number} x - starting coordinate
+     * @param {number} y - starting coordinate
+     * @param {number} relativeSpeed - starting speed (should consider hero speed)
+     * @param {boolean} isReversed - true: throw left, false: throw right
+     */
     throw(x, y, relativeSpeed, isReversed) {
         this.setDimension(x, y, relativeSpeed, isReversed);
         const idInterval = TimingHub.setInterval(() => {
@@ -38,6 +56,10 @@ export class ThrowableObject extends MovableObject {
         }, 1000 / Game.FPS);
     }
 
+    /**
+     * Play impact animation and play audio. Mark as finished (to be cleaned up by Level).
+     * @param {number} idInterval - impact animation interval to be stopped after impact animation
+     */
     impact(idInterval) {
         if (false === this.isImpacting) {
             this.isImpacting = true;
@@ -52,6 +74,11 @@ export class ThrowableObject extends MovableObject {
         }
     }
 
+    /**
+     * Resolve collsition from projectile and enemy.
+     * @param {MovableObject} enemy - enemy that may have been hit
+     * @param {number} damage - damage to apply on impact with enemy
+     */
     resolveCollision(enemy, damage) {
         if (false == enemy.hitByAmmo && this.isCollidingForAmmo(enemy)) {
             enemy.hit(damage);
@@ -60,10 +87,21 @@ export class ThrowableObject extends MovableObject {
         }
     }
 
+    /**
+     * Return finished state of object.
+     * @returns true if object finished its job
+     */
     hasFinished() {
         return this.isFinished;
     }
 
+    /**
+     * Set dimentions and placement of object.
+     * @param {number} x - starting coordinate
+     * @param {number} y - starting coordinate
+     * @param {number} relativeSpeed - starting speed (should consider hero speed)
+     * @param {boolean} isReversed - true: throw left, false: throw right
+     */
     setDimension(x, y, relativeSpeed, isReversed) {
         const factor = isReversed ? 1 : -1;
 

@@ -2,6 +2,10 @@ import { Collectable } from './collectable.class.js';
 import { ImageLib } from '../../utility/image-lib.class.js';
 import { Level } from '../../world/level.class.js';
 
+/**
+ * A collectable Coin.
+ * @class
+ */
 export class Coin extends Collectable {
     static WALL_SIZE = 3;
     static wallAmount = 0;
@@ -19,7 +23,11 @@ export class Coin extends Collectable {
     static bowReverse = false;
 
     static totalCoinCount = 0;
-    
+
+    /**
+     * Create a Coin.
+     * @param {number} hCanvas - height of canvas
+     */
     constructor(hCanvas) {
         super(hCanvas).loadImage(ImageLib.COIN.rotate[2]);
         this.resetStatics();
@@ -30,6 +38,10 @@ export class Coin extends Collectable {
         this.applyGravity();
     }
 
+    /**
+     * Place the coin either inside Wall or Bow formation, or randomly spread across sections.
+     * Amount of Walls or Bows must be set by Level.
+     */
     place() {
         const section = this.getSection();
         if (Coin.wallCount < Coin.wallAmount) {
@@ -44,10 +56,17 @@ export class Coin extends Collectable {
         Coin.totalCoinCount++;
     }
 
+    /**
+     * Load related animation sprites into cache.
+     */
     loadImagesToCache() {
         this.loadImages(ImageLib.COIN.rotate);
     }
 
+    /**
+     * Place Coin as part of a wall.
+     * @param {number} section - current section
+     */
     placeWall(section) {
         if (Coin.wallItems > 0 && Coin.wallItems < Coin.WALL_SIZE) {
             this.x = Coin.wallLastX;
@@ -60,6 +79,10 @@ export class Coin extends Collectable {
         this.snapshotWall();
     }
 
+    /**
+     * Place Coin as part of a bow with random left/right direction.
+     * @param {number} section - current section
+     */
     placeBow(section) {
         if (Coin.bowItems > 0 && Coin.bowItems < Coin.BOW_SIZE) {
             this.x = Coin.bowLastX + this.w * 0.35 * Coin.bowItems * Coin.bowReverse;
@@ -73,6 +96,10 @@ export class Coin extends Collectable {
         this.snapshotBow();
     }
 
+    /**
+     * Animate collect and calls hero.collet()
+     * @param {Hero} hero - related Hero
+     */
     collect(hero) {
         if (false === this.isCollecting) {
             super.collect(ImageLib.COIN.rotate, 40, 1500);
@@ -83,6 +110,9 @@ export class Coin extends Collectable {
         }
     }
 
+    /**
+     * Memorize current state of wall to be continued to be build on further placements.
+     */
     snapshotWall() {
         Coin.wallLastX = this.x;
         Coin.wallLastY = this.y;
@@ -90,6 +120,9 @@ export class Coin extends Collectable {
         Coin.wallCount = Coin.wallItems === Coin.WALL_SIZE ? Coin.wallCount + 1 : Coin.wallCount;
     }
 
+    /**
+     * Memorize current state of bow to be continued to be build on further placements.
+     */
     snapshotBow() {
         Coin.bowLastX = this.x;
         Coin.bowLastY = this.y;
@@ -97,6 +130,9 @@ export class Coin extends Collectable {
         Coin.bowCount = Coin.bowItems === Coin.BOW_SIZE ? Coin.bowCount + 1 : Coin.bowCount;
     }
 
+    /**
+     * Reset snapshots of walls and bows. E.g. when level is recreated.
+     */
     resetStatics() {
         Coin.wallItems = 0;
         Coin.wallLastX = 0;

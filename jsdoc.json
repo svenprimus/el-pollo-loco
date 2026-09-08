@@ -1,0 +1,39 @@
+{
+    "source": {
+        "include": [
+            "./js/fullscreen.js",
+            "./levels/level-1.js",
+            "./models/game-objects/collectables/bottle.class.js",
+            "./models/game-objects/collectables/coin.class.js",
+            "./models/game-objects/collectables/collectable.class.js",
+            "./models/game-objects/enemies/boss.class.js",
+            "./models/game-objects/enemies/chicken.class.js",
+            "./models/game-objects/enemies/enemy.class.js",
+            "./models/game-objects/enemies/hatchling.class.js",
+            "./models/game-objects/background.class.js",
+            "./models/game-objects/cloud.class.js",
+            "./models/game-objects/hero.class.js",
+            "./models/game-objects/lost-coin.class.js",
+            "./models/game-objects/start-limiter.class.js",
+            "./models/game-objects/status-bar.class.js",
+            "./models/game-objects/status-collectables.class.js",
+            "./models/game-objects/throwable-object.class.js",
+            "./models/utility/audio-hub.class.js",
+            "./models/utility/audio-lib.class.js",
+            "./models/utility/controls.class.js",
+            "./models/utility/dialog.js",
+            "./models/utility/events.class.js",
+            "./models/utility/game.class.js",
+            "./models/utility/image-lib.class.js",
+            "./models/utility/timing-hub.class.js",
+            "./models/world/drawable-object.class.js",
+            "./models/world/level.class.js",
+            "./models/world/movable-object.class.js",
+            "./models/world/world.class.js",
+            "./script.js"
+        ]
+    },
+    "opts": {
+        "destination": "./out"
+    }
+}

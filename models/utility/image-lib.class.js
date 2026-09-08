@@ -1,3 +1,23 @@
+/**
+ * @typedef {Object} Offset
+ * @property {number} top - pixel offset from top
+ * @property {number} right -  pixel offset from right
+ * @property {number} bottom - pixel offset from bottom
+ * @property {number} left - pixel offset from left
+ */
+
+/**
+ * @typedef {Object} Dimension
+ * @property {number} x -pixel offset from top
+ * @property {number} y -  pixel offset from right
+ * @property {number} w - pixel offset from bottom
+ * @property {number} h - pixel offset from left
+ */
+
+/**
+ * Library containing paths, natural size, and offset of grouped sequences.
+ * @class
+ */
 export class ImageLib {
     static HERO = {
         wNatural: 610,
@@ -302,18 +322,5 @@ export class ImageLib {
             './assets/sprites/8_coin/rotate/R-4.webp',
             './assets/sprites/8_coin/rotate/R-5.webp',
         ],
-    };
-
-    static SCREENS = {
-        // gameOver: {
-        //     wNatural: 1143,
-        //     hNatural: 674,
-        //     img: './assets/sprites/You won, you lost/Game Over.webp',
-        // },
-        // won: {
-        //     wNatural: 987,
-        //     hNatural: 879,
-        //     img: './assets/sprites/You won, you lost/You won A.webp',
-        // },
     };
 }
