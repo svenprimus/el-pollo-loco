@@ -78,6 +78,11 @@ canvas {
             height: var(--size-btn-ui);
         }
 
+        figcaption {
+            text-align: center;
+            width: 100%;
+        }
+
         position: relative;
         .turn-phone {
             top: 0;
