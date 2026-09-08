@@ -233,24 +233,24 @@ input:disabled {
 }
 
 .optin-0 {
-    animation: optin 1s ease-in-out 2s forwards;
-}
-
-.optin-1 {
-    animation: optin 1s ease-in-out 2.5s forwards;
-}
-
-.optin-2 {
     animation: optin 1s ease-in-out 3s forwards;
 }
 
+.optin-1 {
+    animation: optin 1s ease-in-out 3.5s forwards;
+}
+
+.optin-2 {
+    animation: optin 1s ease-in-out 4s forwards;
+}
+
 .optin-3 {
-    animation: optin 1s ease-in 3.5s forwards;
+    animation: optin 1s ease-in 4.5s forwards;
 }
 
 .endscreen-animation {
     animation:
-        grow 2s ease-in-out forwards,
+        grow 3s ease-in-out forwards,
         levitate 3s ease infinite alternate;
 }
 /* #endregion endscreen */
