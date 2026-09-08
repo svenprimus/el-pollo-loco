@@ -195,14 +195,6 @@ export class MovableObject extends DrawableObject {
     }
 
     /**
-     * Returns the new x coordinate if we would move further right.
-     * @returns {number} - x coordinates of next potential right movement iteration.
-     */
-    getFutureRight() {
-        return this.x + this.getSpeedInPixel();
-    }
-
-    /**
      * Returns the new x coordinate if we would move further left.
      * @returns {number} - x coordinates of next potential left movement iteration.
      */
