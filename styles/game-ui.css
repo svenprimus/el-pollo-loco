@@ -34,6 +34,12 @@ button {
     justify-content: center;
     pointer-events: none;
     z-index: 3;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: none;
 }
 
 .button-wrapper-ui {
@@ -43,6 +49,12 @@ button {
     justify-content: space-between;
     padding: calc(var(--size-btn-ui) / 10);
     padding-top: calc(var(--size-btn-ui) / 5);
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: none;
 
     .play-wrapper,
     .resize-wrapper {
