@@ -153,16 +153,18 @@ export class Controls {
      * Swipe gestures and click-jump.
      */
     static addEventsMobileGestures() {
-        document.getElementById('canvas').addEventListener('touchstart', Controls.handleTouchStart);
-        document.getElementById('canvas').addEventListener('touchmove', Controls.handleTouchMove);
-        document.getElementById('canvas').addEventListener('touchend', Controls.handleTouchEnd);
-        document.getElementById('canvas').addEventListener('touchcancel', Controls.handleTouchEnd);
-        document.getElementById('canvas').addEventListener('click', () => {
-            Controls.UP = true;
-            TimingHub.setTimeout(() => {
-                Controls.UP = false;
-            }, 50);
-        });
+        if (false === window.matchMedia('(hover: hover)').matches) {
+            document.getElementById('canvas').addEventListener('touchstart', Controls.handleTouchStart);
+            document.getElementById('canvas').addEventListener('touchmove', Controls.handleTouchMove);
+            document.getElementById('canvas').addEventListener('touchend', Controls.handleTouchEnd);
+            document.getElementById('canvas').addEventListener('touchcancel', Controls.handleTouchEnd);
+            document.getElementById('canvas').addEventListener('click', () => {
+                Controls.UP = true;
+                TimingHub.setTimeout(() => {
+                    Controls.UP = false;
+                }, 50);
+            });
+        }
     }
 
     /**
@@ -182,11 +184,9 @@ export class Controls {
      */
     static handleTouchMove(event) {
         event.preventDefault();
-
         for (const changedTouch of event.changedTouches) {
             const start = Controls.ongoingTouches.get(changedTouch.identifier);
             if (false === start) {
-                console.error('Touch ID does not exist ', changedTouch.identifier);
                 continue;
             }
             if (start.x > changedTouch.pageX && Math.abs(start.x - changedTouch.pageX) > Controls.minDelta) {
@@ -212,10 +212,8 @@ export class Controls {
         for (const changedTouch of event.changedTouches) {
             const touch = Controls.ongoingTouches.get(changedTouch.identifier);
             if (false === touch) {
-                console.error('Touch ID cant be canceled ', changedTouch.identifier);
                 continue;
             }
-
             if (false === touch.moved) {
                 Controls.UP = true;
                 TimingHub.setTimeout(() => {
@@ -225,7 +223,6 @@ export class Controls {
                 Controls.LEFT = false;
                 Controls.RIGHT = false;
             }
-
             Controls.ongoingTouches.delete(changedTouch.identifier);
         }
     }
