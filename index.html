@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="./styles/keyframes.css" />
         <link rel="stylesheet" href="./styles/dialogs.css" />
         <link rel="stylesheet" href="./styles/game-ui.css" />
+        <link rel="stylesheet" href="./styles/startscreen.css" />
         <link rel="stylesheet" href="./style.css" />
         <script type="module" src="./script.js" defer></script>
     </head>
@@ -29,6 +30,7 @@
                                 aria-label="toggle fullscreen"
                             >
                                 <img
+                                    class="btn-img"
                                     id="btn-overlay-fullscreen-img"
                                     src="./assets/icons/fullscreen.svg"
                                     alt="pause button"
@@ -42,6 +44,7 @@
                                     aria-label="toggle mute"
                                 >
                                     <img
+                                        class="btn-img"
                                         id="btn-overlay-mute-img"
                                         src="./assets/icons/mute.svg"
                                         alt="toggle mute button"
@@ -118,15 +121,25 @@
                                 />
                             </div>
                             <button id="btn-mute" class="btn-ui">
-                                <img id="btn-mute-img" src="./assets/icons/mute.svg" alt="toggle mute button" />
+                                <img
+                                    class="btn-img"
+                                    id="btn-mute-img"
+                                    src="./assets/icons/mute.svg"
+                                    alt="toggle mute button"
+                                />
                             </button>
                         </section>
                         <section class="play-wrapper">
                             <button id="btn-resume" class="btn-ui">
-                                <img id="btn-resume-img" src="./assets/icons/start.svg" alt="pause and resume button" />
+                                <img
+                                    class="btn-img"
+                                    id="btn-resume-img"
+                                    src="./assets/icons/start.svg"
+                                    alt="pause and resume button"
+                                />
                             </button>
                             <button id="btn-restart" class="btn-ui">
-                                <img src="./assets/icons/restart.svg" alt="start button" />
+                                <img class="btn-img" src="./assets/icons/restart.svg" alt="start button" />
                             </button>
                         </section>
                         <section class="resize-wrapper">
@@ -136,18 +149,56 @@
                                 aria-controls="instructions-dialog"
                                 aria-label="open instructions dialog"
                             >
-                                <img src="./assets/icons/show.svg" alt="show and hide instructions button" />
+                                <img
+                                    class="btn-img"
+                                    src="./assets/icons/controlls.svg"
+                                    alt="show and hide instructions button"
+                                />
                             </button>
                             <button id="btn-return" class="btn-ui">
-                                <img id="btn-return-img" src="./assets/icons/return.svg" alt="pause button" />
+                                <img class="btn-img" src="./assets/icons/return.svg" alt="pause button" />
                             </button>
                             <button id="btn-fullscreen" class="btn-ui">
-                                <img id="btn-fullscreen-img" src="./assets/icons/fullscreen.svg" alt="pause button" />
+                                <img
+                                    class="btn-img"
+                                    id="btn-fullscreen-img"
+                                    src="./assets/icons/fullscreen.svg"
+                                    alt="pause button"
+                                />
                             </button>
                         </section>
                     </section>
 
-                    <div id="overlay-endscreen" class="overlay overlay-endscreen deko-element"></div>
+                    <div id="overlay-endscreen" class="overlay overlay-endscreen deko-element d-none">
+                        <img
+                            id="end-message"
+                            class="end-message"
+                            src="./assets/img/muerto.webp"
+                            alt="endscreen message"
+                        />
+                        <div class="score">
+                            <img id="star-0" src="./assets/icons/star-empty.svg" alt="star image" />
+                            <img id="star-1" src="./assets/icons/star-empty.svg" alt="star image" />
+                            <img id="star-2" src="./assets/icons/star-empty.svg" alt="star image" />
+                        </div>
+                        <p id="current-score" class="current-score"></p>
+                        <nav id="endscreen-nav" class="endscreen-nav">
+                            <button id="btn-endscreen-restart" class="btn-endscreen">
+                                <p class="endscreen-btn-txt">Restart</p>
+                                <img class="btn-img" src="./assets/icons/restart.svg" alt="start button" />
+                            </button>
+                            <img
+                                id="end-img"
+                                class="end-img"
+                                src="./assets/img/skull.webp"
+                                alt="Tequile poured into a shot glass"
+                            />
+                            <button id="btn-endscreen-return" class="btn-endscreen">
+                                <p class="endscreen-btn-txt">To Menu</p>
+                                <img class="btn-img" src="./assets/icons/return.svg" alt="pause button" />
+                            </button>
+                        </nav>
+                    </div>
 
                     <section id="button-wrapper-mobile" class="button-wrapper-mobile">
                         <section class="movements">

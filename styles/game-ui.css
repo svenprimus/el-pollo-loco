@@ -113,14 +113,14 @@ button {
     border-radius: 50%;
     background-color: var(--color-btn-passive);
     pointer-events: auto;
+}
 
-    img {
-        width: calc(var(--size-btn-ui) * 0.8);
-        height: calc(var(--size-btn-ui) * 0.8);
-        min-width: calc(var(--size-btn-ui) * 0.8);
-        min-height: calc(var(--size-btn-ui) * 0.8);
-        opacity: 0.5;
-    }
+.btn-img {
+    width: calc(var(--size-btn-ui) * 0.8);
+    height: calc(var(--size-btn-ui) * 0.8);
+    min-width: calc(var(--size-btn-ui) * 0.8);
+    min-height: calc(var(--size-btn-ui) * 0.8);
+    opacity: 0.5;
 }
 
 .volume-wrapper {

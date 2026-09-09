@@ -185,11 +185,44 @@ input:disabled {
         object-fit: contain;
     }
 
-    .end-img {
+    .endscreen-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        opacity: 0;
         height: 20%;
+        width: 100%;
+
+        .btn-endscreen {
+            display: flex;
+            justify-content: space-between;
+            width: calc(var(--size-btn-ui) * 3.5);
+            height: var(--size-btn-ui);
+            min-width: var(--size-btn-ui);
+            min-height: var(--size-btn-ui);
+            border-radius: var(--size-btn-ui);
+            background-color: var(--color-btn-active);
+            pointer-events: none;
+            padding-right: calc(var(--size-btn-ui) * 0.2);
+
+            .endscreen-btn-txt {
+                font-size: calc(var(--size-btn-ui) * 0.4);
+                text-align: center;
+                line-height: 100%;
+                width: 100%;
+                color: var(--color-soft-black);
+                margin: 0;
+                padding: 5px 10px;
+                padding-right: 0;
+            }
+        }
+    }
+
+    .end-img {
+        height: 100%;
         max-width: 100%;
         object-fit: contain;
-        opacity: 0;
     }
 
     .score {
@@ -218,13 +251,13 @@ input:disabled {
         }
     }
 
-    p {
+    .current-score {
         font-family: 'Titan One';
         font-size: calc(var(--size-btn-ui) * 0.4);
         text-align: center;
         line-height: 150%;
         color: var(--color-soft-black);
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         background-color: var(--color-btn-menu-active);
         padding: 5px 10px;
         border-radius: 10px;
@@ -233,131 +266,40 @@ input:disabled {
 }
 
 .optin-0 {
-    animation: optin 1s ease-in-out 3s forwards;
+    animation: optin 1s ease-in-out 1s forwards;
 }
 
 .optin-1 {
-    animation: optin 1s ease-in-out 3.5s forwards;
+    animation: optin 1s ease-in-out 1.5s forwards;
 }
 
 .optin-2 {
-    animation: optin 1s ease-in-out 4s forwards;
+    animation: optin 1s ease-in-out 2s forwards;
 }
 
 .optin-3 {
-    animation: optin 1s ease-in 4.5s forwards;
+    animation: optin 1s ease-in 2.5s forwards;
 }
 
 .endscreen-animation {
     animation:
-        grow 2s ease-in-out 1s forwards,
-        levitate 3s ease infinite alternate;
+        grow 2s ease-in-out forwards,
+        levitate 2s ease infinite alternate;
 }
 /* #endregion endscreen */
 
-/* #region start-screen */
-.headline {
-    height: 15svh;
-    width: auto;
-    max-width: 90svw;
-    object-fit: contain;
-    z-index: 15;
-
-    mask: linear-gradient(-60deg, white 30%, rgba(255, 255, 255, 0.333), white 70%) right/350% 100%;
-    animation: levitate 5s ease infinite alternate;
-}
-
-.deko-element {
-    position: absolute;
-    pointer-events: none;
-}
-
-.dark-chicken {
-    left: 20%;
-    bottom: calc(46% - 6.6% * 100vw / 100vh);
-    height: auto;
-    width: 10%;
-    animation: slender 40s ease-in-out infinite;
-    z-index: 1;
-}
-
-.bar-chicken {
-    width: 40%;
-    object-fit: contain;
-    left: 0;
-    bottom: 0;
-    z-index: 10;
-}
-
-.town-chicken {
-    right: -20%;
-    bottom: 0;
-    object-fit: contain;
-    width: 60%;
-    z-index: 11;
-}
-
-.sombrero {
-    width: 25%;
-    height: auto;
-    object-fit: contain;
-    right: 30%;
-    bottom: 0%;
-    z-index: 12;
-    transform-origin: bottom center;
-    animation: shake 5s ease-in-out infinite;
-}
-
-.feather {
-    z-index: 11;
-    width: 15%;
-    height: auto;
-    bottom: 0;
-    right: 30%;
-}
-
-.delay-1 {
-    animation: spit 5s ease-in-out infinite;
-    animation-delay: 0;
-}
-
-.delay-2 {
-    animation: spit-2 5s ease-in-out infinite;
-    animation-delay: 100ms;
-}
-
-.delay-3 {
-    animation: spit 5s ease-in-out infinite;
-    animation-delay: 2200ms;
-}
-
-.delay-4 {
-    animation: spit-2 5s ease-in-out infinite;
-    animation-delay: 2300ms;
-}
-
-.delay-5 {
-    animation: spit 5s ease-in-out infinite;
-    animation-delay: 2400ms;
-}
-
-.papel-picado {
-    position: absolute;
-    z-index: 13;
-    height: 100%;
-    min-width: 100%;
-    object-fit: fill;
-
-    top: -25px;
-
-    pointer-events: none;
-    transform-origin: top center;
-    animation: wind 10s ease-in-out infinite alternate;
-}
-/* #endregion start-screen */
-
 .d-desktop {
     display: none;
+}
+
+.d-hide {
+    opacity: 0;
+    pointer-events: none;
+    transition: all 1s ease-in-out;
+}
+
+.point-enable {
+    pointer-events: all !important;
 }
 
 @media (hover: hover) {

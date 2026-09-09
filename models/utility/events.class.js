@@ -4,7 +4,7 @@ import { AudioHub } from '../utility/audio-hub.class.js';
 import { TimingHub } from './timing-hub.class.js';
 import { toggleFullscreen, renderScreenButton } from '../../js/fullscreen.js';
 import { InstrDialog, ImprintDialog } from './dialog.js';
-
+import { Level } from '../world/level.class.js';
 /**
  * Manages all events from UI, buttons, touches, orientation.
  * Connection to script.js.
@@ -72,10 +72,21 @@ export class Events {
     };
 
     /**
-     * Resets the state of the game to start.
+     * Restart the game.
      */
     static restartGame() {
-        Events.hideEndScreen();
+        Level.hideEndScreen();
+        Game.restart();
+        document.getElementById('btn-resume-img').src = './assets/icons/pause.svg';
+        renderScreenButton();
+        Events.unfocusButton('btn-restart');
+    }
+
+    /**
+     * Reset and pause the game.
+     */
+    static resetGame() {
+        Level.hideEndScreen();
         Game.restart();
         Game.pause();
         document.getElementById('btn-resume-img').src = './assets/icons/start.svg';
@@ -86,9 +97,9 @@ export class Events {
     /**
      * Restart a game after a small delay.
      */
-    static restartGameDelayed() {
+    static resetGameDelayed() {
         TimingHub.setTimeout(() => {
-            Events.restartGame();
+            Events.resetGame();
         }, 100);
     }
 
@@ -108,9 +119,9 @@ export class Events {
      * Return from game to game menu. Brings the actual game (canvas) to back and enables game menu overlay.
      */
     static returnToMenu() {
-        Events.restartGame();
+        Events.resetGame();
         document.getElementById('overlay').classList.remove('d-none');
-        Events.hideEndScreen();
+        Level.hideEndScreen();
         document.getElementById('canvas').style.zIndex = '2';
         document.getElementById('button-wrapper-ui').style.zIndex = '2';
         document.getElementById('button-wrapper-mobile').style.zIndex = '2';
@@ -180,7 +191,7 @@ export class Events {
      * Restart game and render landscape hint for mobile, if in portrait mode.
      */
     static processOrientationChange() {
-        Events.restartGameDelayed();
+        Events.resetGameDelayed();
         Events.renderMobileLandscapeHint();
     }
 
@@ -207,10 +218,12 @@ export class Events {
     static initGameEvents() {
         document.getElementById('btn-resume').addEventListener('click', Events.toggleResumePauseGame);
         document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
+        document.getElementById('btn-endscreen-restart').addEventListener('click', Events.restartGame);
         document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
         document.getElementById('volume').addEventListener('input', Events.setVolume);
         document.getElementById('volume').addEventListener('change', Events.playVolumeProbe);
         document.getElementById('btn-return').addEventListener('click', Events.returnToMenu);
+        document.getElementById('btn-endscreen-return').addEventListener('click', Events.returnToMenu);
         document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
         AudioHub.init();
     }
@@ -263,7 +276,7 @@ export class Events {
             Events.processOrientationChange();
         });
         document.addEventListener('fullscreenchange', () => {
-            Events.restartGameDelayed();
+            Events.resetGameDelayed();
         });
     }
 
@@ -283,12 +296,5 @@ export class Events {
         document.getElementById('btn-jump').disabled = disable;
         document.getElementById('btn-attack').disabled = disable;
         document.getElementById('btn-drink').disabled = disable;
-    }
-
-    /**
-     * Clear End Screen HTML (e.g. new game).
-     */
-    static hideEndScreen() {
-        document.getElementById('overlay-endscreen').innerHTML = '';
     }
 }

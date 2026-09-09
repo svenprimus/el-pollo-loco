@@ -1,0 +1,98 @@
+.headline {
+    height: 15svh;
+    width: auto;
+    max-width: 90svw;
+    object-fit: contain;
+    z-index: 15;
+
+    mask: linear-gradient(-60deg, white 30%, rgba(255, 255, 255, 0.333), white 70%) right/350% 100%;
+    animation: levitate 5s ease infinite alternate;
+}
+
+.deko-element {
+    position: absolute;
+    pointer-events: none;
+}
+
+.dark-chicken {
+    left: 20%;
+    bottom: calc(46% - 6.6% * 100vw / 100vh);
+    height: auto;
+    width: 10%;
+    animation: slender 40s ease-in-out infinite;
+    z-index: 1;
+}
+
+.bar-chicken {
+    width: 40%;
+    object-fit: contain;
+    left: 0;
+    bottom: 0;
+    z-index: 10;
+}
+
+.town-chicken {
+    right: -20%;
+    bottom: 0;
+    object-fit: contain;
+    width: 60%;
+    z-index: 11;
+}
+
+.sombrero {
+    width: 25%;
+    height: auto;
+    object-fit: contain;
+    right: 30%;
+    bottom: 0%;
+    z-index: 12;
+    transform-origin: bottom center;
+    animation: shake 5s ease-in-out infinite;
+}
+
+.feather {
+    z-index: 11;
+    width: 15%;
+    height: auto;
+    bottom: 0;
+    right: 30%;
+}
+
+.delay-1 {
+    animation: spit 5s ease-in-out infinite;
+    animation-delay: 0;
+}
+
+.delay-2 {
+    animation: spit-2 5s ease-in-out infinite;
+    animation-delay: 100ms;
+}
+
+.delay-3 {
+    animation: spit 5s ease-in-out infinite;
+    animation-delay: 2200ms;
+}
+
+.delay-4 {
+    animation: spit-2 5s ease-in-out infinite;
+    animation-delay: 2300ms;
+}
+
+.delay-5 {
+    animation: spit 5s ease-in-out infinite;
+    animation-delay: 2400ms;
+}
+
+.papel-picado {
+    position: absolute;
+    z-index: 13;
+    height: 100%;
+    min-width: 100%;
+    object-fit: fill;
+
+    top: -25px;
+
+    pointer-events: none;
+    transform-origin: top center;
+    animation: wind 10s ease-in-out infinite alternate;
+}
