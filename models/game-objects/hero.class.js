@@ -37,8 +37,6 @@ export class Hero extends MovableObject {
     isWinner = false;
 
     camOffset = 0;
-    camEaseLeft = 3;
-    camEaseRight = 3;
     camMax = 0;
     camMin = 0;
     bossSpawnX = 0;
@@ -252,7 +250,6 @@ export class Hero extends MovableObject {
     runLeft() {
         this.setRunning();
         this.reverseDirection = true;
-        this.camEaseRight = 3;
         if (this.isAfterStart() && false === this.world.level.boss.isSpawning) {
             this.moveLeft();
             this.world.followCamLeft();
@@ -279,7 +276,6 @@ export class Hero extends MovableObject {
     runRight() {
         this.setRunning();
         this.reverseDirection = false;
-        this.camEaseLeft = 3;
         if (this.isBeforeEnd() && false === this.world.level.boss.isSpawning) {
             this.resolveSpawnpoint();
             if (false === this.world.level.boss.isSpawning) {

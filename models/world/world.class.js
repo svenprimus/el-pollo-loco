@@ -225,8 +225,7 @@ export class World {
      * Resolve and set camera position when hero is moving right.
      */
     followCamRight() {
-        this.level.hero.camEaseRight = Math.max(this.level.hero.camEaseRight - 0.2, 1);
-        const onRunnAdjust = this.camX - this.level.hero.camEaseRight * this.level.hero.getSpeedInPixel() - 10;
+        const onRunnAdjust = this.camX - this.level.hero.getSpeedInPixel() - 5;
         const onRunnStatic = -this.level.hero.x + this.level.hero.camOffset;
         this.setCamX(
             this.level.boss.hasSpawned
@@ -240,8 +239,7 @@ export class World {
      * Resolve and set camera position when hero is moving left.
      */
     followCamLeft() {
-        this.level.hero.camEaseLeft = Math.max(this.level.hero.camEaseLeft - 0.2, 1);
-        const onRunnAdjust = this.camX + this.level.hero.camEaseLeft * this.level.hero.getSpeedInPixel() + 10;
+        const onRunnAdjust = this.camX + this.level.hero.getSpeedInPixel() + 5;
         const onRunnStatic = -this.level.hero.x + Level.wCanvas - this.level.hero.w - this.level.hero.camOffset;
         this.setCamX(
             this.level.boss.hasSpawned
