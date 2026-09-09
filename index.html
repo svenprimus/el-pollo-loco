@@ -39,7 +39,7 @@
                             <section class="audio-wrapper">
                                 <button
                                     id="btn-overlay-mute"
-                                    class="btn-ui"
+                                    class="btn-ui btn-mute-horizontal"
                                     aria-controls="overlay-volume"
                                     aria-label="toggle mute"
                                 >
@@ -50,11 +50,12 @@
                                         alt="toggle mute button"
                                     />
                                 </button>
+                                <hr />
                                 <div class="volume-wrapper">
                                     <input
                                         type="range"
                                         id="overlay-volume"
-                                        class="volume"
+                                        class="volume volume-horizontal"
                                         name="volume"
                                         min="0"
                                         max="100"
@@ -112,7 +113,7 @@
                                 <input
                                     type="range"
                                     id="volume"
-                                    class="volume"
+                                    class="volume volume-vertical"
                                     name="volume"
                                     min="0"
                                     max="100"
@@ -120,7 +121,8 @@
                                     aria-label="volume"
                                 />
                             </div>
-                            <button id="btn-mute" class="btn-ui">
+                            <hr />
+                            <button id="btn-mute" class="btn-ui btn-mute-vertical">
                                 <img
                                     class="btn-img"
                                     id="btn-mute-img"

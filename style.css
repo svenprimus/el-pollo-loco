@@ -122,7 +122,6 @@ canvas {
         .audio-wrapper {
             display: flex;
             flex-wrap: wrap;
-            gap: calc(var(--size-btn-ui) * 0.2);
         }
 
         .volume-wrapper {

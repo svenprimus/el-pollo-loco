@@ -19,6 +19,10 @@
     background: lightgray;
 }
 
+hr {
+    border: 1px solid transparent;
+}
+
 .d-none {
     display: none !important;
 }
