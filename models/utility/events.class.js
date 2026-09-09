@@ -2,7 +2,7 @@ import { Game } from './game.class.js';
 import { AudioLib } from './audio-lib.class.js';
 import { AudioHub } from '../utility/audio-hub.class.js';
 import { TimingHub } from './timing-hub.class.js';
-import { toggleFullscreen, renderScreenButton } from '../../js/fullscreen.js';
+import { toggleFullscreen, renderScreenButtons } from '../../js/fullscreen.js';
 import { InstrDialog, ImprintDialog } from './dialog.js';
 import { Level } from '../world/level.class.js';
 /**
@@ -78,7 +78,7 @@ export class Events {
         Level.hideEndScreen();
         Game.restart();
         document.getElementById('btn-resume-img').src = './assets/icons/pause.svg';
-        renderScreenButton();
+        renderScreenButtons();
         Events.unfocusButton('btn-restart');
     }
 
@@ -90,7 +90,7 @@ export class Events {
         Game.restart();
         Game.pause();
         document.getElementById('btn-resume-img').src = './assets/icons/start.svg';
-        renderScreenButton();
+        renderScreenButtons();
         Events.unfocusButton('btn-restart');
     }
 

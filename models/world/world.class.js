@@ -186,9 +186,11 @@ export class World {
      */
     setButtonSize() {
         const doc = document.documentElement;
+        const cWidth = Math.min(window.innerWidth, document.documentElement.clientWidth);
+        const cHeight = Math.min(window.innerHeight, document.documentElement.clientHeight);
         const mobileBase = getComputedStyle(doc).getPropertyValue('--size-btn-mobile-base-factor');
         const uiBase = getComputedStyle(doc).getPropertyValue('--size-btn-ui-base-factor');
-        doc.style.setProperty('--size-btn-mobile', `${Math.min(this.canvas.width, this.canvas.height) * mobileBase}px`);
+        doc.style.setProperty('--size-btn-mobile', `${Math.min(cWidth, cHeight) * mobileBase}px`);
         doc.style.setProperty('--size-btn-ui', `${this.canvas.height * uiBase}px`);
     }
 

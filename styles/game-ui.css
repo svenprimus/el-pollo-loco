@@ -28,7 +28,6 @@ button {
 
 .button-wrapper-ui,
 .button-wrapper-mobile {
-    position: absolute;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -43,6 +42,7 @@ button {
 }
 
 .button-wrapper-ui {
+    position: absolute;
     height: 100%;
     width: 100%;
     display: flex;
@@ -176,6 +176,7 @@ button {
 }
 
 .button-wrapper-mobile {
+    position: fixed;
     bottom: 2.5svw;
     display: flex;
     justify-content: space-between;
@@ -210,7 +211,7 @@ button {
         min-width: var(--size-btn-mobile);
         min-height: var(--size-btn-mobile);
         border-radius: 50%;
-        background-color: var(--color-btn-passive);
+        background-color: var(--color-btn-screen-based);
         pointer-events: auto;
 
         img {

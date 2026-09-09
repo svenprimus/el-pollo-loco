@@ -7,19 +7,21 @@ export function toggleFullscreen() {
     } else {
         closeFullscreen();
     }
-    renderScreenButton();
+    renderScreenButtons();
 }
 
 /**
  * Render Fullscreen/Fullscreen-Exit button graphic.
  */
-export function renderScreenButton() {
+export function renderScreenButtons() {
     if (!document.fullscreenElement) {
         document.getElementById('btn-fullscreen-img').src = './assets/icons/fullscreen.svg';
         document.getElementById('btn-overlay-fullscreen-img').src = './assets/icons/fullscreen.svg';
+        document.documentElement.style.setProperty('--color-btn-screen-based', 'rgba(245, 245, 245, 0.6)');
     } else {
         document.getElementById('btn-fullscreen-img').src = './assets/icons/fullscreen-exit.svg';
         document.getElementById('btn-overlay-fullscreen-img').src = './assets/icons/fullscreen-exit.svg';
+        document.documentElement.style.setProperty('--color-btn-screen-based', 'rgba(245, 245, 245, 0.4)');
     }
 }
 /**
