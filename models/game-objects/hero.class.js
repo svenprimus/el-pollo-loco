@@ -29,7 +29,7 @@ export class Hero extends MovableObject {
     hp = 100;
     hpMax = 100;
     atk = 90;
-    atkJump = 45;
+    atkJump = 50;
 
     isAttackingAtr = false;
     isDrinkingAtr = false;
