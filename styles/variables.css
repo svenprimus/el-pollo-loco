@@ -1,7 +1,7 @@
 :root {
     --color-btn-passive: rgba(245, 245, 245, 0.2);
     --color-btn-active: rgba(245, 245, 245, 0.4);
-    --color-btn-screen-based: rgba(245, 245, 245, 0.6);
+    --color-btn-screen-based: rgba(245, 245, 245, 0.8);
 
     --color-btn-menu-passive: rgba(245, 245, 245, 0.6);
     --color-btn-menu-hover: rgba(245, 245, 245, 0.8);
@@ -18,6 +18,8 @@
     --padding-page: 2.5svw;
 
     --z-index-dark-chicken: 1;
+    --z-index-papel-picado: 1;
+    --z-index-game-back: 2;
     --z-index-canvas-back: 2;
     --z-index-mobile-back: 2;
     --z-index-overlay: 4;
@@ -25,12 +27,13 @@
     --z-index-town-chicken: 11;
     --z-index-feather: 11;
     --z-index-sombrero: 12;
-    --z-index-papel-picado: 13;
     --z-index-headline: 15;
     --z-index-start-menu-nav: 15;
+    --z-index-game-front: 20;
     --z-index-canvas-front: 20;
     --z-index-mobile-front: 20;
     --z-index-overlay-endscreen: 21;
+    --z-index-controls: 22;
 }
 
 @media screen and (max-width: 500px) {

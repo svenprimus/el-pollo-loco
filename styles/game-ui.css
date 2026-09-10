@@ -29,7 +29,6 @@ button {
 .button-wrapper-ui,
 .btn-wrapper-mobile {
     width: 100%;
-    display: flex;
     justify-content: center;
     pointer-events: none;
     z-index: var(--z-index-mobile-front);
@@ -43,7 +42,7 @@ button {
 
 .button-wrapper-ui {
     position: fixed;
-    top: calc(var(--padding-page)/2);
+    top: calc(var(--padding-page) / 2);
     height: 100%;
     width: 100%;
     display: flex;
@@ -71,14 +70,19 @@ button {
     .resize-wrapper {
         padding-right: var(--padding-page);
     }
+}
 
-    .audio-wrapper {
-        position: absolute;
-        padding-left: var(--padding-page);
-        bottom: 30%;
-        display: flex;
-        flex-direction: column;
-    }
+.audio-wrapper {
+    position: absolute;
+    padding-left: var(--padding-page);
+    bottom: 30%;
+    display: flex;
+    flex-direction: column;
+    z-index: var(--z-index-controls);
+}
+
+.iphone-controls {
+    bottom: 28%;
 }
 
 .btn-ui {
@@ -89,6 +93,13 @@ button {
     border-radius: 50%;
     background-color: var(--color-btn-screen-based);
     pointer-events: auto;
+}
+
+.mid-canvas {
+    position: absolute;
+    left: calc(50% - var(--size-btn-ui) / 2);
+    bottom: calc(50% - var(--size-btn-ui) / 2);
+    z-index: var(--z-index-controls);
 }
 
 .btn-img {

@@ -34,7 +34,7 @@ canvas {
     background-color: black;
     border-radius: var(--border-radius-default);
     box-shadow: 0 0 5px 0 var(--color-soft-black);
-    z-index: var(--z-index-canvas);
+    z-index: var(--z-index-canvas-back);
 }
 
 .blur {
@@ -268,6 +268,14 @@ input:disabled {
         levitate 2s ease infinite alternate;
 }
 /* #endregion endscreen */
+
+.ios-fullscreen {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100svh;
+    border-radius: 0;
+}
 
 .d-desktop {
     display: none;

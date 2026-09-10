@@ -6,6 +6,7 @@ import { createLevel_1 } from '../../levels/level-1.js';
 import { TimingHub } from '../utility/timing-hub.class.js';
 import { AudioHub } from '../utility/audio-hub.class.js';
 import { AudioLib } from '../utility/audio-lib.class.js';
+import { isFullscreenOpen } from '../../js/fullscreen.js';
 
 /**
  * Creats a World. Class to load leven, draw it, and update interactions.
@@ -174,14 +175,10 @@ export class World {
         this.canvas = canvas;
         const cWidth = Math.min(window.innerWidth, document.documentElement.clientWidth);
         const cHeight = Math.min(window.innerHeight, document.documentElement.clientHeight);
-        this.canvas.width = document.fullscreenElement ? cWidth : Math.max(Math.min(cWidth * 0.6, 1920), 320);
-        this.canvas.height = document.fullscreenElement ? cHeight : Math.min(cHeight * 0.6, 1080);
-        document.getElementById('canvas').style.borderRadius = document.fullscreenElement
-            ? 0
-            : 'var(--border-radius-default)';
-        document.getElementById('overlay').style.borderRadius = document.fullscreenElement
-            ? 0
-            : 'var(--border-radius-default)';
+        this.canvas.width = isFullscreenOpen() ? cWidth : Math.max(Math.min(cWidth * 0.6, 1920), 320);
+        this.canvas.height = isFullscreenOpen() ? cHeight : Math.min(cHeight * 0.6, 1080);
+        document.getElementById('canvas').style.borderRadius = isFullscreenOpen() ? 0 : 'var(--border-radius-default)';
+        document.getElementById('overlay').style.borderRadius = isFullscreenOpen() ? 0 : 'var(--border-radius-default)';
     }
 
     /**
