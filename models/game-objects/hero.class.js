@@ -106,7 +106,7 @@ export class Hero extends MovableObject {
         this.setOffset(ImageLib.HERO.offset, ImageLib.HERO.wNatural, ImageLib.HERO.hNatural);
         this.y = this.ground - this.h;
         this.x = 0;
-        this.camOffset = Level.BG_WIDTH / 8;
+        this.camOffset = Level.wCanvas / 4;
         this.camMax = Level.wCanvas - Level.END;
         this.camMin = Level.BG_WIDTH - 1;
         this.bossSpawnX = Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas) + this.camOffset;
