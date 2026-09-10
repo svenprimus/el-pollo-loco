@@ -65,7 +65,7 @@
                         </section>
                     </div>
                     <section id="button-wrapper-ui" class="button-wrapper-ui content-limit-1920p">
-                        <section class="audio-wrapper">
+                        <section id="audio-wrapper-standard" class="audio-wrapper">
                             <div class="volume-wrapper">
                                 <input
                                     type="range"
@@ -119,10 +119,10 @@
                             </button>
                             <button id="btn-fullscreen" class="btn-ui">
                                 <img
-                                class="btn-img"
-                                id="btn-fullscreen-img"
-                                src="./assets/icons/fullscreen.svg"
-                                alt="pause button"
+                                    class="btn-img"
+                                    id="btn-fullscreen-img"
+                                    src="./assets/icons/fullscreen.svg"
+                                    alt="pause button"
                                 />
                             </button>
                         </section>
@@ -233,6 +233,24 @@
                     aria-hidden="true"
                 />
             </div>
+            <section id="audio-wrapper-iphone" class="audio-wrapper iphone-controls d-none">
+                <div class="volume-wrapper">
+                    <input
+                        type="range"
+                        id="volume-iphone"
+                        class="volume volume-vertical"
+                        name="volume"
+                        min="0"
+                        max="100"
+                        step="5"
+                        aria-label="volume"
+                    />
+                </div>
+                <hr />
+                <button id="btn-mute-iphone" class="btn-ui btn-mute-vertical">
+                    <img class="btn-img" id="btn-mute-iphone-img" src="./assets/icons/mute.svg" alt="toggle mute button" />
+                </button>
+            </section>
         </main>
 
         <dialog id="instructions-dialog" aria-labelledby="instructions-title">

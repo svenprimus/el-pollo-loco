@@ -109,6 +109,9 @@ export class Events {
     static async startGameFromMenu() {
         document.getElementById('overlay').classList.add('d-none');
         const cstyle = getComputedStyle(document.documentElement);
+        if (false === document.getElementById('audio-wrapper-iphone').classList.contains('d-none')) {
+            document.getElementById('game-wrapper').style.zIndex = 'var(--z-index-game-front)';
+        }
         document.getElementById('canvas').style.zIndex = cstyle.getPropertyValue('--z-index-canvas-front');
         document.getElementById('btn-wrapper-mobile').style.zIndex = cstyle.getPropertyValue('--z-index-mobile-front');
         await AudioHub.userInit();
@@ -123,6 +126,9 @@ export class Events {
         Events.resetGame();
         document.getElementById('overlay').classList.remove('d-none');
         Level.hideEndScreen();
+        if (false === document.getElementById('audio-wrapper-iphone').classList.contains('d-none')) {
+            document.getElementById('game-wrapper').style.zIndex = 'var(--z-index-game-back)';
+        }
         const cstyle = getComputedStyle(document.documentElement);
         document.getElementById('canvas').style.zIndex = cstyle.getPropertyValue('--z-index-canvas-back');
         document.getElementById('btn-wrapper-mobile').style.zIndex = cstyle.getPropertyValue('--z-index-mobile-back');
@@ -138,6 +144,7 @@ export class Events {
         await AudioHub.userInit();
         Events.renderUpdateVolumeElements();
         Events.unfocusButton('btn-mute');
+        Events.unfocusButton('btn-mute-iphone');
     }
 
     /**
@@ -165,10 +172,13 @@ export class Events {
         // const vol = AudioHub.volBase * 100;
         const vol = Math.round(AudioHub.masterGain.gain.value * 100);
         document.getElementById('volume').value = vol;
+        document.getElementById('volume-iphone').value = vol;
         if (0 === vol) {
             document.getElementById('btn-mute-img').src = './assets/icons/unmute.svg';
+            document.getElementById('btn-mute-iphone-img').src = './assets/icons/unmute.svg';
         } else {
             document.getElementById('btn-mute-img').src = './assets/icons/mute.svg';
+            document.getElementById('btn-mute-iphone-img').src = './assets/icons/mute.svg';
         }
     }
 
@@ -221,8 +231,11 @@ export class Events {
         document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
         document.getElementById('btn-endscreen-restart').addEventListener('click', Events.restartGame);
         document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
+        document.getElementById('btn-mute-iphone').addEventListener('click', Events.toggleMute);
         document.getElementById('volume').addEventListener('input', Events.setVolume);
         document.getElementById('volume').addEventListener('change', Events.playVolumeProbe);
+        document.getElementById('volume-iphone').addEventListener('input', Events.setVolume);
+        document.getElementById('volume-iphone').addEventListener('change', Events.playVolumeProbe);
         document.getElementById('btn-return').addEventListener('click', Events.returnToMenu);
         document.getElementById('btn-endscreen-return').addEventListener('click', Events.returnToMenu);
         document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
@@ -273,6 +286,9 @@ export class Events {
             Events.processOrientationChange();
         });
         document.addEventListener('fullscreenchange', () => {
+            Events.resetGameDelayed();
+        });
+        document.addEventListener('resize', () => {
             Events.resetGameDelayed();
         });
     }
