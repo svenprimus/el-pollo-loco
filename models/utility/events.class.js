@@ -2,9 +2,9 @@ import { Game } from './game.class.js';
 import { AudioLib } from './audio-lib.class.js';
 import { AudioHub } from '../utility/audio-hub.class.js';
 import { TimingHub } from './timing-hub.class.js';
-import { toggleFullscreen, renderScreenButton } from '../../js/fullscreen.js';
+import { toggleFullscreen, renderScreenButtons } from '../../js/fullscreen.js';
 import { InstrDialog, ImprintDialog } from './dialog.js';
-
+import { Level } from '../world/level.class.js';
 /**
  * Manages all events from UI, buttons, touches, orientation.
  * Connection to script.js.
@@ -72,23 +72,34 @@ export class Events {
     };
 
     /**
-     * Resets the state of the game to start.
+     * Restart the game.
      */
     static restartGame() {
-        Events.hideEndScreen();
+        Level.hideEndScreen();
+        Game.restart();
+        document.getElementById('btn-resume-img').src = './assets/icons/pause.svg';
+        renderScreenButtons();
+        Events.unfocusButton('btn-restart');
+    }
+
+    /**
+     * Reset and pause the game.
+     */
+    static resetGame() {
+        Level.hideEndScreen();
         Game.restart();
         Game.pause();
         document.getElementById('btn-resume-img').src = './assets/icons/start.svg';
-        renderScreenButton();
+        renderScreenButtons();
         Events.unfocusButton('btn-restart');
     }
 
     /**
      * Restart a game after a small delay.
      */
-    static restartGameDelayed() {
+    static resetGameDelayed() {
         TimingHub.setTimeout(() => {
-            Events.restartGame();
+            Events.resetGame();
         }, 100);
     }
 
@@ -97,9 +108,9 @@ export class Events {
      */
     static startGameFromMenu() {
         document.getElementById('overlay').classList.add('d-none');
-        document.getElementById('canvas').style.zIndex = '20';
-        document.getElementById('button-wrapper-ui').style.zIndex = '20';
-        document.getElementById('button-wrapper-mobile').style.zIndex = '20';
+        const cstyle = getComputedStyle(document.documentElement);
+        document.getElementById('canvas').style.zIndex = cstyle.getPropertyValue('--z-index-canvas-front');
+        document.getElementById('btn-wrapper-mobile').style.zIndex = cstyle.getPropertyValue('--z-index-mobile-front');
         Events.setControls(false);
         Events.resumeGame();
     }
@@ -108,12 +119,12 @@ export class Events {
      * Return from game to game menu. Brings the actual game (canvas) to back and enables game menu overlay.
      */
     static returnToMenu() {
-        Events.restartGame();
+        Events.resetGame();
         document.getElementById('overlay').classList.remove('d-none');
-        Events.hideEndScreen();
-        document.getElementById('canvas').style.zIndex = '2';
-        document.getElementById('button-wrapper-ui').style.zIndex = '2';
-        document.getElementById('button-wrapper-mobile').style.zIndex = '2';
+        Level.hideEndScreen();
+        const cstyle = getComputedStyle(document.documentElement);
+        document.getElementById('canvas').style.zIndex = cstyle.getPropertyValue('--z-index-canvas-back');
+        document.getElementById('btn-wrapper-mobile').style.zIndex = cstyle.getPropertyValue('--z-index-mobile-back');
         Events.focusButton('btn-overlay-start');
         Events.setControls(true);
     }
@@ -150,13 +161,10 @@ export class Events {
     static renderUpdateVolumeElements() {
         const vol = AudioHub.volBase * 100;
         document.getElementById('volume').value = vol;
-        document.getElementById('overlay-volume').value = vol;
         if (0 === vol) {
             document.getElementById('btn-mute-img').src = './assets/icons/unmute.svg';
-            document.getElementById('btn-overlay-mute-img').src = './assets/icons/unmute.svg';
         } else {
             document.getElementById('btn-mute-img').src = './assets/icons/mute.svg';
-            document.getElementById('btn-overlay-mute-img').src = './assets/icons/mute.svg';
         }
     }
 
@@ -180,7 +188,7 @@ export class Events {
      * Restart game and render landscape hint for mobile, if in portrait mode.
      */
     static processOrientationChange() {
-        Events.restartGameDelayed();
+        Events.resetGameDelayed();
         Events.renderMobileLandscapeHint();
     }
 
@@ -207,10 +215,12 @@ export class Events {
     static initGameEvents() {
         document.getElementById('btn-resume').addEventListener('click', Events.toggleResumePauseGame);
         document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
+        document.getElementById('btn-endscreen-restart').addEventListener('click', Events.restartGame);
         document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
         document.getElementById('volume').addEventListener('input', Events.setVolume);
         document.getElementById('volume').addEventListener('change', Events.playVolumeProbe);
         document.getElementById('btn-return').addEventListener('click', Events.returnToMenu);
+        document.getElementById('btn-endscreen-return').addEventListener('click', Events.returnToMenu);
         document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
         AudioHub.init();
     }
@@ -221,10 +231,6 @@ export class Events {
      */
     static initMenuEvents() {
         document.getElementById('btn-overlay-start').addEventListener('click', Events.startGameFromMenu);
-        document.getElementById('btn-overlay-mute').addEventListener('click', Events.toggleMute);
-        document.getElementById('overlay-volume').addEventListener('input', Events.setVolume);
-        document.getElementById('overlay-volume').addEventListener('change', Events.playVolumeProbe);
-        document.getElementById('btn-overlay-fullscreen').addEventListener('click', toggleFullscreen);
         document.getElementById('instr-dialog-wrapper').addEventListener('click', InstrDialog.stopDialogPropagation);
         document.getElementById('imprt-dialog-wrapper').addEventListener('click', ImprintDialog.stopDialogPropagation);
         Events.renderUpdateVolumeElements();
@@ -263,7 +269,7 @@ export class Events {
             Events.processOrientationChange();
         });
         document.addEventListener('fullscreenchange', () => {
-            Events.restartGameDelayed();
+            Events.resetGameDelayed();
         });
     }
 
@@ -274,21 +280,10 @@ export class Events {
     static setControls(disable) {
         document.getElementById('btn-resume').disabled = disable;
         document.getElementById('btn-restart').disabled = disable;
-        document.getElementById('btn-mute').disabled = disable;
-        document.getElementById('volume').disabled = disable;
-        document.getElementById('btn-fullscreen').disabled = disable;
-        document.getElementById('btn-instructions').disabled = disable;
         document.getElementById('btn-left').disabled = disable;
         document.getElementById('btn-right').disabled = disable;
         document.getElementById('btn-jump').disabled = disable;
         document.getElementById('btn-attack').disabled = disable;
         document.getElementById('btn-drink').disabled = disable;
-    }
-
-    /**
-     * Clear End Screen HTML (e.g. new game).
-     */
-    static hideEndScreen() {
-        document.getElementById('overlay-endscreen').innerHTML = '';
     }
 }

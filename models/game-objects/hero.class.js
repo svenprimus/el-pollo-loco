@@ -29,7 +29,7 @@ export class Hero extends MovableObject {
     hp = 100;
     hpMax = 100;
     atk = 90;
-    atkJump = 45;
+    atkJump = 50;
 
     isAttackingAtr = false;
     isDrinkingAtr = false;
@@ -37,8 +37,6 @@ export class Hero extends MovableObject {
     isWinner = false;
 
     camOffset = 0;
-    camEaseLeft = 3;
-    camEaseRight = 3;
     camMax = 0;
     camMin = 0;
     bossSpawnX = 0;
@@ -252,7 +250,6 @@ export class Hero extends MovableObject {
     runLeft() {
         this.setRunning();
         this.reverseDirection = true;
-        this.camEaseRight = 3;
         if (this.isAfterStart() && false === this.world.level.boss.isSpawning) {
             this.moveLeft();
             this.world.followCamLeft();
@@ -279,7 +276,6 @@ export class Hero extends MovableObject {
     runRight() {
         this.setRunning();
         this.reverseDirection = false;
-        this.camEaseLeft = 3;
         if (this.isBeforeEnd() && false === this.world.level.boss.isSpawning) {
             this.resolveSpawnpoint();
             if (false === this.world.level.boss.isSpawning) {
@@ -399,7 +395,7 @@ export class Hero extends MovableObject {
         const timeNow = new Date().getTime();
         if (timeNow - this.lastDrinkTime > 1000) {
             this.hp = Math.min(this.hp + 10, this.hpMax);
-            this.lastDrinkTime = 0;
+            this.lastDrinkTime = new Date().getTime();
             this.statusBar.setPercentage((100 * this.hp) / this.hpMax);
         }
         this.isDrinkingAtr = true;

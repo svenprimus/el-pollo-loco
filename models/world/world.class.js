@@ -164,7 +164,6 @@ export class World {
     setDimensions() {
         this.ctx = canvas.getContext('2d');
         this.setCanvasSize();
-        this.setButtonSize();
         Level.BG_WIDTH = Math.round(Background.NATURAL_WIDTH / (Background.NATURAL_HEIGHT / this.canvas.height));
     }
 
@@ -175,21 +174,14 @@ export class World {
         this.canvas = canvas;
         const cWidth = Math.min(window.innerWidth, document.documentElement.clientWidth);
         const cHeight = Math.min(window.innerHeight, document.documentElement.clientHeight);
-        this.canvas.width = document.fullscreenElement ? cWidth : Math.min(cWidth * 0.6, 1920);
+        this.canvas.width = document.fullscreenElement ? cWidth : Math.max(Math.min(cWidth * 0.6, 1920), 320);
         this.canvas.height = document.fullscreenElement ? cHeight : Math.min(cHeight * 0.6, 1080);
-        document.getElementById('canvas').style.borderRadius = document.fullscreenElement ? 0 : '50px';
-        document.getElementById('overlay').style.borderRadius = document.fullscreenElement ? 0 : '50px';
-    }
-
-    /**
-     * Set the button size variables according to canvas size.
-     */
-    setButtonSize() {
-        const doc = document.documentElement;
-        const mobileBase = getComputedStyle(doc).getPropertyValue('--size-btn-mobile-base-factor');
-        const uiBase = getComputedStyle(doc).getPropertyValue('--size-btn-ui-base-factor');
-        doc.style.setProperty('--size-btn-mobile', `${Math.min(this.canvas.width, this.canvas.height) * mobileBase}px`);
-        doc.style.setProperty('--size-btn-ui', `${this.canvas.height * uiBase}px`);
+        document.getElementById('canvas').style.borderRadius = document.fullscreenElement
+            ? 0
+            : 'var(--border-radius-default)';
+        document.getElementById('overlay').style.borderRadius = document.fullscreenElement
+            ? 0
+            : 'var(--border-radius-default)';
     }
 
     /**
@@ -225,8 +217,7 @@ export class World {
      * Resolve and set camera position when hero is moving right.
      */
     followCamRight() {
-        this.level.hero.camEaseRight = Math.max(this.level.hero.camEaseRight - 0.2, 1);
-        const onRunnAdjust = this.camX - this.level.hero.camEaseRight * this.level.hero.getSpeedInPixel() - 10;
+        const onRunnAdjust = this.camX - this.level.hero.getSpeedInPixel() - 5;
         const onRunnStatic = -this.level.hero.x + this.level.hero.camOffset;
         this.setCamX(
             this.level.boss.hasSpawned
@@ -240,8 +231,7 @@ export class World {
      * Resolve and set camera position when hero is moving left.
      */
     followCamLeft() {
-        this.level.hero.camEaseLeft = Math.max(this.level.hero.camEaseLeft - 0.2, 1);
-        const onRunnAdjust = this.camX + this.level.hero.camEaseLeft * this.level.hero.getSpeedInPixel() + 10;
+        const onRunnAdjust = this.camX + this.level.hero.getSpeedInPixel() + 5;
         const onRunnStatic = -this.level.hero.x + Level.wCanvas - this.level.hero.w - this.level.hero.camOffset;
         this.setCamX(
             this.level.boss.hasSpawned
@@ -278,7 +268,7 @@ export class World {
      * Update the hero status bars (health, coins, bottles).
      */
     setStatusBarHero() {
-        const pos = this.canvas.height * 0.075;
+        const pos = this.canvas.height * 0.1;
         this.level.hero.statusBar = new StatusBar(this.canvas.width, canvas.height, this.level.hero, pos, false);
         this.level.hero.statusCoins = new StatusCoins(this.canvas.height, this.level.hero);
         this.level.hero.statusBottles = new StatusBottles(this.canvas.height, this.level.hero);
@@ -288,7 +278,7 @@ export class World {
      * Update the boss status bar.
      */
     setStatusBarBoss() {
-        const y = this.canvas.height * 0.075;
+        const y = this.canvas.height * 0.1;
         this.level.boss.statusBar = new StatusBar(this.canvas.width, this.canvas.height, this.level.boss, y, true);
     }
 }

@@ -263,36 +263,78 @@ export class Level {
      * @param {{scored: number, total: number, percentage: number, highscore: number}} score - score object
      */
     static renderEndscreen(msgImg, endImg, score) {
-        document.getElementById('overlay-endscreen').innerHTML = Level.getEndscreen(msgImg, endImg);
-        const stars = Math.floor(score.percentage / (100 / 3));
+        Level.renderEndHead(msgImg);
+        Level.renderStars(score);
+        Level.renderScore(score);
+        Level.renderEndNav(endImg);
+        document.getElementById('btn-wrapper-mobile').classList.add('d-hide');
+        document.getElementById('overlay-endscreen').classList.remove('d-none');
+    }
 
-        for (let i = 0; i < stars; i++) {
-            document.getElementById(`star-${i}`).src = './assets/icons/star.svg';
+    /**
+     * Remove animations from Endscreen, so that it goes to it default state (opacity 0).
+     * On mobile: show mobile buttons again.
+     */
+    static hideEndScreen() {
+        document.getElementById('overlay-endscreen').classList.add('d-none');
+        document.getElementById('end-message').classList.remove('endscreen-animation');
+        for (let i = 0; i < 3; i++) {
+            document.getElementById(`star-${i}`).classList.remove(`optin-${i}`);
         }
-        document.getElementById('current-score').innerHTML =
-            `Score: ${score.scored} / ${score.total} (${score.percentage} %)
+        document.getElementById('current-score').classList.remove('optin-3');
+        document.getElementById('endscreen-nav').classList.remove('optin-3');
+        document.getElementById('btn-endscreen-restart').classList.remove('point-enable');
+        document.getElementById('btn-endscreen-return').classList.remove('point-enable');
+        document.getElementById('btn-wrapper-mobile').classList.remove('d-hide');
+    }
+
+    /**
+     * Render endscreen header as image.
+     * @param {string} msgImg - image url to cosmetic endscreen message
+     */
+    static renderEndHead(msgImg) {
+        const msgRef = document.getElementById('end-message');
+        msgRef.src = msgImg;
+        msgRef.classList.add('endscreen-animation');
+    }
+
+    /**
+     * Render up to three filled stars (100% / 3), based on score. Rest stars are empty.
+     * @param {{scored: number, total: number, percentage: number, highscore: number}} score - score object
+     */
+    static renderStars(score) {
+        const stars = Math.floor(score.percentage / (100 / 3));
+        for (let i = 0; i < 3; i++) {
+            const starRef = document.getElementById(`star-${i}`);
+            starRef.src = i < stars ? './assets/icons/star.svg' : './assets/icons/star-empty.svg';
+            starRef.classList.add(`optin-${i}`);
+        }
+    }
+
+    /**
+     * Render score text with actual / possible score and percentage based on highscore.
+     * @param {{scored: number, total: number, percentage: number, highscore: number}} score - score object
+     */
+    static renderScore(score) {
+        const scoreRef = document.getElementById('current-score');
+        scoreRef.innerHTML = `Score: ${score.scored} / ${score.total} (${score.percentage} %)
             <br/>
             ${score.percentage > score.highscore ? 'NEW' : ''} Best: ${
                 score.percentage > score.highscore ? score.percentage : score.highscore
             } %`;
+        scoreRef.classList.add('optin-3');
     }
 
     /**
-     * Template for Endscreen
-     * @param {string} msgImg - path to end image, e.g. containing a "congrats" message
-     * @param {string} endImg - path to end image, e.g. containing a "skull" image
-     * @returns {string} - HTML string
+     * Render restart/back to menu buttons with centered image.
+     * @param {string} endImg - image url to cosmetic endscreen image
      */
-    static getEndscreen(msgImg, endImg) {
-        return /*html*/ `
-            <img class="end-message endscreen-animation" src="${msgImg}" alt="endscreen message" />
-            <div class="score">
-                <img id="star-0" class="optin-0" src="./assets/icons/star-empty.svg" alt="star image">
-                <img id="star-1" class="optin-1" src="./assets/icons/star-empty.svg" alt="star image">
-                <img id="star-2" class="optin-2" src="./assets/icons/star-empty.svg" alt="star image">
-            </div>
-            <p id="current-score" class="optin-3"></p>
-            <img class="end-img optin-3" src="${endImg}" alt="Tequile poured into a shot glass" /> 
-        `;
+    static renderEndNav(endImg) {
+        document.getElementById('end-img').src = endImg;
+        document.getElementById('endscreen-nav').classList.add('optin-3');
+        TimingHub.setTimeout(() => {
+            document.getElementById('btn-endscreen-restart').classList.add('point-enable');
+            document.getElementById('btn-endscreen-return').classList.add('point-enable');
+        }, 3500);
     }
 }

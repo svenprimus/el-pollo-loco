@@ -1,6 +1,7 @@
 :root {
     --color-btn-passive: rgba(245, 245, 245, 0.2);
     --color-btn-active: rgba(245, 245, 245, 0.4);
+    --color-btn-screen-based: rgba(245, 245, 245, 0.6);
 
     --color-btn-menu-passive: rgba(245, 245, 245, 0.6);
     --color-btn-menu-hover: rgba(245, 245, 245, 0.8);
@@ -8,10 +9,30 @@
     --color-soft-black: rgba(0, 0, 0, 0.5);
 
     --border-btn-menu: none;
-    --border-radius-default: 50px;
-    --size-btn-mobile-base-factor: 0.18;
-    --size-btn-ui-base-factor: 0.075;
-    --size-btn-mobile: min(18svh, 18svw);
+    --border-radius-default: 20px;
+    --size-btn-mobile: clamp(54px, min(18svh, 18svw), 100px);
     --size-btn-ui: 7.5svh;
     --size-dialog-close-btn: clamp(28px, calc((100svw - 300px) * 22 / 1140 + 38px), 60px);
+    --padding-page: 2.5svw;
+
+    --z-index-dark-chicken: 1;
+    --z-index-canvas-back: 2;
+    --z-index-mobile-back: 2;
+    --z-index-overlay: 4;
+    --z-index-bar-chicken: 10;
+    --z-index-town-chicken: 11;
+    --z-index-feather: 11;
+    --z-index-sombrero: 12;
+    --z-index-papel-picado: 13;
+    --z-index-headline: 15;
+    --z-index-start-menu-nav: 15;
+    --z-index-canvas-front: 20;
+    --z-index-mobile-front: 20;
+    --z-index-overlay-endscreen: 21;
+}
+
+@media screen and (max-width: 500px) {
+    :root {
+        --size-btn-ui: calc(7.5svh * 0.8);
+    }
 }

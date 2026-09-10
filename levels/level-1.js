@@ -12,8 +12,8 @@ import { ImageLib } from '../models/utility/image-lib.class.js';
 
 /**
  * Creates a new Level.
- * @param {number} wCanvas - width of canvas 
- * @param {number} hCanvas - height of canvas 
+ * @param {number} wCanvas - width of canvas
+ * @param {number} hCanvas - height of canvas
  * @returns {Level} - Level Object
  */
 export function createLevel_1(wCanvas, hCanvas) {
