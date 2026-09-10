@@ -280,6 +280,7 @@ export class Events {
     static setControls(disable) {
         document.getElementById('btn-resume').disabled = disable;
         document.getElementById('btn-restart').disabled = disable;
+        document.getElementById('btn-return').disabled = disable;
         document.getElementById('btn-left').disabled = disable;
         document.getElementById('btn-right').disabled = disable;
         document.getElementById('btn-jump').disabled = disable;
