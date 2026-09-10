@@ -172,7 +172,7 @@ export class AudioHub {
     static loadSound(soundJson) {
         const path = soundJson.path;
         if (path && !Object.hasOwn(AudioHub.sounds, path)) {
-            AudioHub.sounds[soundJson.path] = new MyAudio(soundJson.path, AudioHub.volBase, soundJson.mult);
+            AudioHub.sounds[soundJson.path] = new MyAudio(soundJson.path, soundJson.mult);
         }
     }
 
@@ -183,7 +183,7 @@ export class AudioHub {
     static loadOrResetSound(soundJson) {
         const path = soundJson.path;
         if (path && !Object.hasOwn(AudioHub.sounds, path)) {
-            AudioHub.sounds[soundJson.path] = new MyAudio(soundJson.path, AudioHub.volBase, soundJson.mult);
+            AudioHub.sounds[soundJson.path] = new MyAudio(soundJson.path, soundJson.mult);
         } else if (path && Object.hasOwn(AudioHub.sounds, path)) {
             AudioHub.sounds[soundJson.path].reset();
         }
@@ -237,6 +237,7 @@ export class AudioHub {
         for (const key in AudioHub.sounds) {
             const sound = AudioHub.sounds[key];
             sound.file.volume = Math.min(Math.max(AudioHub.volBase * sound.volMult, 0), 1);
+            sound.file.mute = 0 === sound.file.volume ? true : false;
         }
     }
 
