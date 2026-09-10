@@ -47,6 +47,7 @@ export class Events {
     static pauseGame = () => {
         Game.pause();
         document.getElementById('btn-resume-img').src = './assets/icons/start.svg';
+        document.getElementById('btn-resume-on-demand').classList.remove('d-none');
         Events.unfocusButton('btn-resume');
     };
 
@@ -56,6 +57,7 @@ export class Events {
     static resumeGame = () => {
         Game.resume();
         document.getElementById('btn-resume-img').src = './assets/icons/pause.svg';
+        document.getElementById('btn-resume-on-demand').classList.add('d-none');
         Events.unfocusButton('btn-resume');
         Events.setControls(false);
     };
@@ -90,6 +92,7 @@ export class Events {
         Game.restart();
         Game.pause();
         document.getElementById('btn-resume-img').src = './assets/icons/start.svg';
+        document.getElementById('btn-resume-on-demand').classList.remove('d-none');
         renderScreenButtons();
         Events.unfocusButton('btn-restart');
     }
@@ -228,6 +231,7 @@ export class Events {
      */
     static initGameEvents() {
         document.getElementById('btn-resume').addEventListener('click', Events.toggleResumePauseGame);
+        document.getElementById('btn-resume-on-demand').addEventListener('click', Events.toggleResumePauseGame);
         document.getElementById('btn-restart').addEventListener('click', Events.restartGame);
         document.getElementById('btn-endscreen-restart').addEventListener('click', Events.restartGame);
         document.getElementById('btn-mute').addEventListener('click', Events.toggleMute);
@@ -299,6 +303,7 @@ export class Events {
      */
     static setControls(disable) {
         document.getElementById('btn-resume').disabled = disable;
+        document.getElementById('btn-resume-on-demand').disabled = disable;
         document.getElementById('btn-restart').disabled = disable;
         document.getElementById('btn-return').disabled = disable;
         document.getElementById('btn-left').disabled = disable;
