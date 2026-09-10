@@ -106,11 +106,12 @@ export class Events {
     /**
      * Start the game from game menu. Brings the actual game (canvas) to front and disables the game menu overlay.
      */
-    static startGameFromMenu() {
+    static async startGameFromMenu() {
         document.getElementById('overlay').classList.add('d-none');
         const cstyle = getComputedStyle(document.documentElement);
         document.getElementById('canvas').style.zIndex = cstyle.getPropertyValue('--z-index-canvas-front');
         document.getElementById('btn-wrapper-mobile').style.zIndex = cstyle.getPropertyValue('--z-index-mobile-front');
+        await AudioHub.userInit();
         Events.setControls(false);
         Events.resumeGame();
     }
@@ -132,8 +133,9 @@ export class Events {
     /**
      * Toggle mute and update related button.
      */
-    static toggleMute() {
+    static async toggleMute() {
         Game.toggleMute();
+        await AudioHub.userInit();
         Events.renderUpdateVolumeElements();
         Events.unfocusButton('btn-mute');
     }
@@ -142,7 +144,7 @@ export class Events {
      * Update volume and render related elements.
      * @param {Event} event
      */
-    static setVolume(event) {
+    static async setVolume(event) {
         Game.setVolume(event.target.value);
         Events.renderUpdateVolumeElements();
     }
@@ -150,7 +152,8 @@ export class Events {
     /**
      * Play a short volume probe. Useful for volume slider.
      */
-    static playVolumeProbe() {
+    static async playVolumeProbe() {
+        await AudioHub.userInit();
         AudioHub.loadSound(AudioLib.COLLECTABLE.bottle.collect);
         AudioHub.playFromStart(AudioLib.COLLECTABLE.bottle.collect);
     }
@@ -159,7 +162,8 @@ export class Events {
      * Render volume elements width updated volume.
      */
     static renderUpdateVolumeElements() {
-        const vol = AudioHub.volBase * 100;
+        // const vol = AudioHub.volBase * 100;
+        const vol = Math.round(AudioHub.masterGain.gain.value * 100);
         document.getElementById('volume').value = vol;
         if (0 === vol) {
             document.getElementById('btn-mute-img').src = './assets/icons/unmute.svg';

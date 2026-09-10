@@ -11,7 +11,7 @@ export class Controls {
     static RIGHT = false;
     static ATTACK = false;
     static ongoingTouches = new Map();
-    static minDelta = 50;
+    static minDelta = 10;
 
     /**
      * Initialize all events.
@@ -190,15 +190,15 @@ export class Controls {
                 continue;
             }
             if (start.x > changedTouch.pageX && Math.abs(start.x - changedTouch.pageX) > Controls.minDelta) {
-                Controls.LEFT = true;
-                Controls.RIGHT = false;
+                Controls.setLeftRight(true, false);
             } else if (start.x < changedTouch.pageX && Math.abs(start.x - changedTouch.pageX) > Controls.minDelta) {
-                Controls.LEFT = false;
-                Controls.RIGHT = true;
+                Controls.setLeftRight(false, true);
+            } else {
+                Controls.setLeftRight(false, false);
             }
             Controls.ongoingTouches.set(changedTouch.identifier, {
                 x: start.x,
-                moved: start.moved || false === (Controls.LEFT || Controls.RIGHT),
+                moved: start.moved || true === (Controls.LEFT || Controls.RIGHT),
             });
         }
     }
@@ -220,10 +220,19 @@ export class Controls {
                     Controls.UP = false;
                 }, 50);
             } else {
-                Controls.LEFT = false;
-                Controls.RIGHT = false;
+                Controls.setLeftRight(false, false);
             }
             Controls.ongoingTouches.delete(changedTouch.identifier);
         }
+    }
+
+    /**
+     * Set Control.LEFT and Control.RIGHT in one command.
+     * @param {boolean} left - Control.LEFT to be set to true?
+     * @param {boolean} right  - Control.RIGHT to be set to true?
+     */
+    static setLeftRight(left, right) {
+        Controls.LEFT = left;
+        Controls.RIGHT = right;
     }
 }

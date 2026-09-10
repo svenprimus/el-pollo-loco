@@ -35,7 +35,7 @@ body:has(dialog[open]) {
     align-items: center;
 
     padding: 20px;
-    gap: 20px;
+    gap: var(--size-gap-dialog);
     background-color: rgba(217, 217, 217, 0.8);
     backdrop-filter: blur(5px);
     overflow: auto;
@@ -46,11 +46,11 @@ body:has(dialog[open]) {
     color: var(--color-soft-black);
 
     h1 {
-        font-size: clamp(28px, calc((100svw - 300px) * 10 / 1140 + 28px), 38px);
+        font-size: var(--size-h1-dialog);
     }
 
     h2 {
-        font-size: clamp(22px, calc((100svw - 300px) * 10 / 1140 + 22px), 32px);
+        font-size: var(--size-h2-dialog);
     }
 
     .dialog-header {
@@ -62,10 +62,10 @@ body:has(dialog[open]) {
     }
 
     .btn-close-dialog {
-        width: var(--size-dialog-close-btn);
-        height: var(--size-dialog-close-btn);
-        min-width: var(--size-dialog-close-btn);
-        min-height: var(--size-dialog-close-btn);
+        width: var(--size-h1-dialog);
+        height: var(--size-h1-dialog);
+        min-width: var(--size-h1-dialog);
+        min-height: var(--size-h1-dialog);
         border-radius: 50%;
         background-color: rgba(217, 217, 217, 0.5);
         right: 30px;
@@ -109,7 +109,7 @@ body:has(dialog[open]) {
     align-items: center;
     flex-wrap: wrap;
     width: 100%;
-    gap: 40px;
+    gap: clamp(10px, 2svw, 40px);
     overflow: auto;
 }
 
@@ -118,13 +118,13 @@ body:has(dialog[open]) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: var(--size-gap-dialog);
 
     .dialog-img {
-        width: clamp(200px, 100%, 400px);
-        height: clamp(200px, 35svh, 400px);
-        min-height: 200px;
-        min-width: 200px;
+        width: clamp(120px, 100%, 400px);
+        height: clamp(120px, 35svh, 400px);
+        min-height: 120px;
+        min-width: 120px;
         border: 5px solid black;
         border-radius: 10%;
         padding: 5px;

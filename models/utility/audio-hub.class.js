@@ -8,6 +8,7 @@ class MyAudio {
     file;
     isLoaded;
     volMult = 1;
+    gain = null;
     hasPlayed = false;
 
     /**
@@ -19,13 +20,16 @@ class MyAudio {
         this.file = new Audio(file);
         this.file.currentTime = 0;
         this.volMult = mult;
+        this.gain = AudioHub.ctxAudio.createGain();
+        this.gain.gain.value = mult;
+        AudioHub.ctxAudio.createMediaElementSource(this.file).connect(this.gain);
+        this.gain.connect(AudioHub.masterGain);
     }
 
     /**
      * Play Audio file with adtjusted volume and mark as played.
      */
     play() {
-        this.file.volume = Math.min(Math.max(AudioHub.volBase * this.volMult, 0), 1);
         const playPromise = this.file.play();
         this.hasPlayed = true;
 
@@ -57,11 +61,61 @@ export class AudioHub {
     static volLast = 0.2;
     static volBase = 0.2;
 
+    static ctxAudio = new AudioContext();
+    static masterGain = null;
+
     /**
      * Retrieve volume from local storage.
      */
     static init() {
+        AudioHub.masterGain = AudioHub.ctxAudio.createGain();
+        AudioHub.masterGain.connect(AudioHub.ctxAudio.destination);
+        AudioHub.masterGain.gain.value = 0.2;
         AudioHub.getVolumeFromLocalStorage();
+    }
+
+    /**
+     * Must be called by user-action. Resume (enable) Audio-Context.
+     */
+    static async userInit() {
+        if (AudioHub.ctxAudio.state === 'suspended') {
+            await AudioHub.ctxAudio.resume();
+        }
+    }
+
+    /**
+     * Load given sound into cache.
+     * @param {SoundFile} soundJson from AudioLib
+     */
+    static loadSound(soundJson) {
+        const path = soundJson.path;
+        if (path && !Object.hasOwn(AudioHub.sounds, path)) {
+            const sound = new MyAudio(soundJson.path, soundJson.mult);
+            AudioHub.sounds[soundJson.path] = sound;
+        }
+    }
+
+    /**
+     * Load given sound into cache, or reset its properties if already present.
+     * @param {SoundFile} soundJson from AudioLib
+     */
+    static loadOrResetSound(soundJson) {
+        const path = soundJson.path;
+        if (path && !Object.hasOwn(AudioHub.sounds, path)) {
+            AudioHub.sounds[soundJson.path] = new MyAudio(soundJson.path, soundJson.mult);
+        } else if (path && Object.hasOwn(AudioHub.sounds, path)) {
+            AudioHub.sounds[soundJson.path].reset();
+        }
+    }
+
+    /**
+     * Load an array of sounds into cache.
+     * @param {SoundFile[]} soundJson from AudioLib
+     */
+    static loadSounds(soundJsons) {
+        for (const key in soundJsons) {
+            AudioHub.loadSound(soundJsons[key]);
+        }
     }
 
     /**
@@ -166,40 +220,6 @@ export class AudioHub {
     }
 
     /**
-     * Load given sound into cache.
-     * @param {SoundFile} soundJson from AudioLib
-     */
-    static loadSound(soundJson) {
-        const path = soundJson.path;
-        if (path && !Object.hasOwn(AudioHub.sounds, path)) {
-            AudioHub.sounds[soundJson.path] = new MyAudio(soundJson.path, AudioHub.volBase, soundJson.mult);
-        }
-    }
-
-    /**
-     * Load given sound into cache, or reset its properties if already present.
-     * @param {SoundFile} soundJson from AudioLib
-     */
-    static loadOrResetSound(soundJson) {
-        const path = soundJson.path;
-        if (path && !Object.hasOwn(AudioHub.sounds, path)) {
-            AudioHub.sounds[soundJson.path] = new MyAudio(soundJson.path, AudioHub.volBase, soundJson.mult);
-        } else if (path && Object.hasOwn(AudioHub.sounds, path)) {
-            AudioHub.sounds[soundJson.path].reset();
-        }
-    }
-
-    /**
-     * Load an array of sounds into cache.
-     * @param {SoundFile[]} soundJson from AudioLib
-     */
-    static loadSounds(soundJsons) {
-        for (const key in soundJsons) {
-            AudioHub.loadSound(soundJsons[key]);
-        }
-    }
-
-    /**
      * Let AudioHub know where the cam is.
      * @param {number} camX - current position of camera
      */
@@ -212,10 +232,8 @@ export class AudioHub {
      */
     static toggleMute() {
         const tempLast = AudioHub.volLast;
-        AudioHub.volLast = AudioHub.volBase;
-        AudioHub.volBase = AudioHub.volBase === 0 ? tempLast : 0;
-
-        AudioHub.updateAllVolumes();
+        AudioHub.volLast = AudioHub.masterGain.gain.value;
+        AudioHub.masterGain.gain.value = 0 === AudioHub.masterGain.gain.value ? tempLast : 0;
         AudioHub.saveVolumeToLocalStorage();
     }
 
@@ -224,36 +242,25 @@ export class AudioHub {
      * @param {number} volumePercentage - volume
      */
     static setVolume(volumePercentage) {
-        AudioHub.volBase = volumePercentage / 100;
-        AudioHub.volLast = AudioHub.volBase;
-        AudioHub.updateAllVolumes();
+        AudioHub.masterGain.gain.value = volumePercentage / 100;
+        AudioHub.volLast = AudioHub.masterGain.gain.value;
         AudioHub.saveVolumeToLocalStorage();
-    }
-
-    /**
-     * Update the volume inside every cached sound file.
-     */
-    static updateAllVolumes() {
-        for (const key in AudioHub.sounds) {
-            const sound = AudioHub.sounds[key];
-            sound.file.volume = Math.min(Math.max(AudioHub.volBase * sound.volMult, 0), 1);
-        }
     }
 
     /**
      * Store current base volume into local storage.
      */
     static saveVolumeToLocalStorage() {
-        localStorage.setItem('AudioHub.volBase', AudioHub.volBase);
+        localStorage.setItem('AudioHub.masterGain', Math.round(100 * AudioHub.masterGain.gain.value) / 100);
     }
 
     /**
      * Restore current base volume from local storage.
      */
     static getVolumeFromLocalStorage() {
-        const volume = localStorage.getItem('AudioHub.volBase');
+        const volume = localStorage.getItem('AudioHub.masterGain');
         if (volume != null) {
-            AudioHub.volBase = volume;
+            AudioHub.masterGain.gain.value = volume;
         }
     }
 }
