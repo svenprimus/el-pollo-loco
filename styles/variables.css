@@ -12,7 +12,9 @@
     --border-radius-default: 20px;
     --size-btn-mobile: clamp(54px, min(18svh, 18svw), 100px);
     --size-btn-ui: 7.5svh;
-    --size-dialog-close-btn: clamp(28px, calc((100svw - 300px) * 22 / 1140 + 38px), 60px);
+    --size-h1-dialog: clamp(22px, calc((100svh - 300px) * 16 / 400 + 22px), 38px);
+    --size-h2-dialog: clamp(18px, calc((100svh - 300px) * 14 / 400 + 18px), 32px);
+    --size-gap-dialog: clamp(7.5px, 2.5dvh, 20px);
     --padding-page: 2.5svw;
 
     --z-index-dark-chicken: 1;
