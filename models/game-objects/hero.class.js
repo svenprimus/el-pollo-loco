@@ -110,6 +110,7 @@ export class Hero extends MovableObject {
         this.camMax = Level.wCanvas - Level.END;
         this.camMin = Level.BG_WIDTH - 1;
         this.bossSpawnX = Level.END - Math.min(Level.BG_WIDTH, Level.wCanvas) + this.camOffset;
+        this.isWinner = false;
     }
 
     // #region resolve
