@@ -267,7 +267,7 @@ export class Level {
         Level.renderStars(score);
         Level.renderScore(score);
         Level.renderEndNav(endImg);
-        document.getElementById('button-wrapper-mobile').classList.add('d-hide');
+        document.getElementById('btn-wrapper-mobile').classList.add('d-hide');
         document.getElementById('overlay-endscreen').classList.remove('d-none');
     }
 
@@ -285,7 +285,7 @@ export class Level {
         document.getElementById('endscreen-nav').classList.remove('optin-3');
         document.getElementById('btn-endscreen-restart').classList.remove('point-enable');
         document.getElementById('btn-endscreen-return').classList.remove('point-enable');
-        document.getElementById('button-wrapper-mobile').classList.remove('d-hide');
+        document.getElementById('btn-wrapper-mobile').classList.remove('d-hide');
     }
 
     /**

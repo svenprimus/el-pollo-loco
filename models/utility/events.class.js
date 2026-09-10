@@ -108,9 +108,9 @@ export class Events {
      */
     static startGameFromMenu() {
         document.getElementById('overlay').classList.add('d-none');
-        document.getElementById('canvas').style.zIndex = '20';
-        document.getElementById('button-wrapper-ui').style.zIndex = '20';
-        document.getElementById('button-wrapper-mobile').style.zIndex = '20';
+        const cstyle = getComputedStyle(document.documentElement);
+        document.getElementById('canvas').style.zIndex = cstyle.getPropertyValue('--z-index-canvas-front');
+        document.getElementById('btn-wrapper-mobile').style.zIndex = cstyle.getPropertyValue('--z-index-mobile-front');
         Events.setControls(false);
         Events.resumeGame();
     }
@@ -122,9 +122,9 @@ export class Events {
         Events.resetGame();
         document.getElementById('overlay').classList.remove('d-none');
         Level.hideEndScreen();
-        document.getElementById('canvas').style.zIndex = '2';
-        document.getElementById('button-wrapper-ui').style.zIndex = '2';
-        document.getElementById('button-wrapper-mobile').style.zIndex = '2';
+        const cstyle = getComputedStyle(document.documentElement);
+        document.getElementById('canvas').style.zIndex = cstyle.getPropertyValue('--z-index-canvas-back');
+        document.getElementById('btn-wrapper-mobile').style.zIndex = cstyle.getPropertyValue('--z-index-mobile-back');
         Events.focusButton('btn-overlay-start');
         Events.setControls(true);
     }
@@ -161,13 +161,10 @@ export class Events {
     static renderUpdateVolumeElements() {
         const vol = AudioHub.volBase * 100;
         document.getElementById('volume').value = vol;
-        document.getElementById('overlay-volume').value = vol;
         if (0 === vol) {
             document.getElementById('btn-mute-img').src = './assets/icons/unmute.svg';
-            document.getElementById('btn-overlay-mute-img').src = './assets/icons/unmute.svg';
         } else {
             document.getElementById('btn-mute-img').src = './assets/icons/mute.svg';
-            document.getElementById('btn-overlay-mute-img').src = './assets/icons/mute.svg';
         }
     }
 
@@ -234,10 +231,6 @@ export class Events {
      */
     static initMenuEvents() {
         document.getElementById('btn-overlay-start').addEventListener('click', Events.startGameFromMenu);
-        document.getElementById('btn-overlay-mute').addEventListener('click', Events.toggleMute);
-        document.getElementById('overlay-volume').addEventListener('input', Events.setVolume);
-        document.getElementById('overlay-volume').addEventListener('change', Events.playVolumeProbe);
-        document.getElementById('btn-overlay-fullscreen').addEventListener('click', toggleFullscreen);
         document.getElementById('instr-dialog-wrapper').addEventListener('click', InstrDialog.stopDialogPropagation);
         document.getElementById('imprt-dialog-wrapper').addEventListener('click', ImprintDialog.stopDialogPropagation);
         Events.renderUpdateVolumeElements();
@@ -287,10 +280,6 @@ export class Events {
     static setControls(disable) {
         document.getElementById('btn-resume').disabled = disable;
         document.getElementById('btn-restart').disabled = disable;
-        document.getElementById('btn-mute').disabled = disable;
-        document.getElementById('volume').disabled = disable;
-        document.getElementById('btn-fullscreen').disabled = disable;
-        document.getElementById('btn-instructions').disabled = disable;
         document.getElementById('btn-left').disabled = disable;
         document.getElementById('btn-right').disabled = disable;
         document.getElementById('btn-jump').disabled = disable;

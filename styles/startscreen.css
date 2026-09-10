@@ -3,7 +3,7 @@
     width: auto;
     max-width: 90svw;
     object-fit: contain;
-    z-index: 15;
+    z-index: var(--z-index-headline);
 
     mask: linear-gradient(-60deg, white 30%, rgba(255, 255, 255, 0.333), white 70%) right/350% 100%;
     animation: levitate 5s ease infinite alternate;
@@ -20,7 +20,7 @@
     height: auto;
     width: 10%;
     animation: slender 40s ease-in-out infinite;
-    z-index: 1;
+    z-index: var(--z-index-dark-chicken);
 }
 
 .bar-chicken {
@@ -28,7 +28,7 @@
     object-fit: contain;
     left: 0;
     bottom: 0;
-    z-index: 10;
+    z-index: var(--z-index-bar-chicken);
 }
 
 .town-chicken {
@@ -36,7 +36,7 @@
     bottom: 0;
     object-fit: contain;
     width: 60%;
-    z-index: 11;
+    z-index: var(--z-index-town-chicken);
 }
 
 .sombrero {
@@ -45,13 +45,13 @@
     object-fit: contain;
     right: 30%;
     bottom: 0%;
-    z-index: 12;
+    z-index: var(--z-index-sombrero);
     transform-origin: bottom center;
     animation: shake 5s ease-in-out infinite;
 }
 
 .feather {
-    z-index: 11;
+    z-index: var(--z-index-feather);
     width: 15%;
     height: auto;
     bottom: 0;
@@ -85,7 +85,7 @@
 
 .papel-picado {
     position: absolute;
-    z-index: 13;
+    z-index: var(--z-index-papel-picado);
     height: 100%;
     min-width: 100%;
     object-fit: fill;

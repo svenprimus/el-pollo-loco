@@ -22,50 +22,7 @@
                 <article id="game-wrapper" class="game-wrapper">
                     <canvas id="canvas" width="720" height="480"></canvas>
                     <div id="overlay" class="overlay blur">
-                        <aside class="start-menu-settings">
-                            <button
-                                id="btn-overlay-fullscreen"
-                                class="btn-ui"
-                                aria-controls="game-wrapper"
-                                aria-label="toggle fullscreen"
-                            >
-                                <img
-                                    class="btn-img"
-                                    id="btn-overlay-fullscreen-img"
-                                    src="./assets/icons/fullscreen.svg"
-                                    alt="pause button"
-                                />
-                            </button>
-                            <section class="audio-wrapper">
-                                <button
-                                    id="btn-overlay-mute"
-                                    class="btn-ui btn-mute-horizontal"
-                                    aria-controls="overlay-volume"
-                                    aria-label="toggle mute"
-                                >
-                                    <img
-                                        class="btn-img"
-                                        id="btn-overlay-mute-img"
-                                        src="./assets/icons/mute.svg"
-                                        alt="toggle mute button"
-                                    />
-                                </button>
-                                <hr />
-                                <div class="volume-wrapper">
-                                    <input
-                                        type="range"
-                                        id="overlay-volume"
-                                        class="volume volume-horizontal"
-                                        name="volume"
-                                        min="0"
-                                        max="100"
-                                        step="5"
-                                        aria-label="volume"
-                                    />
-                                </div>
-                            </section>
-                        </aside>
-                        <section class="start-menu-content">
+                        <section id="start-menu-content" class="start-menu-content">
                             <figure id="mobile-landscape-hint" class="mobile-landscape-hint d-mobile">
                                 <img
                                     class="turn-arrow"
@@ -107,7 +64,7 @@
                             </nav>
                         </section>
                     </div>
-                    <section id="button-wrapper-ui" class="button-wrapper-ui">
+                    <section id="button-wrapper-ui" class="button-wrapper-ui content-limit-1920p">
                         <section class="audio-wrapper">
                             <div class="volume-wrapper">
                                 <input
@@ -202,7 +159,7 @@
                         </nav>
                     </div>
 
-                    <section id="button-wrapper-mobile" class="button-wrapper-mobile">
+                    <section id="btn-wrapper-mobile" class="btn-wrapper-mobile">
                         <section class="movements">
                             <button id="btn-left" class="btn-left btn-mobile" aria-label="move left">
                                 <img src="./assets/icons/left.svg" alt="arrow left" />
