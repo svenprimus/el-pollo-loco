@@ -395,7 +395,7 @@ export class Hero extends MovableObject {
         const timeNow = new Date().getTime();
         if (timeNow - this.lastDrinkTime > 1000) {
             this.hp = Math.min(this.hp + 10, this.hpMax);
-            this.lastDrinkTime = 0;
+            this.lastDrinkTime = new Date().getTime();
             this.statusBar.setPercentage((100 * this.hp) / this.hpMax);
         }
         this.isDrinkingAtr = true;
