@@ -295,6 +295,9 @@ export class Events {
         document.addEventListener('resize', () => {
             Events.resetGameDelayed();
         });
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
     }
 
     /**
