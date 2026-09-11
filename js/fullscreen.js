@@ -20,11 +20,11 @@ export function renderScreenButtons() {
     if (!document.fullscreenElement && false === isFullscreen) {
         document.getElementById('start-menu-content').style.justifyContent = 'flex-start';
         document.getElementById('btn-fullscreen-img').src = './assets/icons/fullscreen.svg';
-        document.documentElement.style.setProperty('--color-btn-screen-based', 'rgba(245, 245, 245, 0.8)');
+        document.documentElement.style.setProperty('--color-btn-screen-based', 'var(--color-btn-strong)');
     } else {
         document.getElementById('start-menu-content').style.justifyContent = 'center';
         document.getElementById('btn-fullscreen-img').src = './assets/icons/fullscreen-exit.svg';
-        document.documentElement.style.setProperty('--color-btn-screen-based', 'rgba(245, 245, 245, 0.3)');
+        document.documentElement.style.setProperty('--color-btn-screen-based', 'var(--color-btn-weak)');
     }
 }
 
