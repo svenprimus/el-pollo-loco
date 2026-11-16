@@ -111,6 +111,7 @@ export class Events {
      */
     static async startGameFromMenu() {
         document.getElementById('overlay').classList.add('d-none');
+        document.getElementById('canvas').classList.remove('d-opacity');
         const cstyle = getComputedStyle(document.documentElement);
         if (false === document.getElementById('audio-wrapper-iphone').classList.contains('d-none')) {
             document.getElementById('game-wrapper').style.zIndex = 'var(--z-index-game-front)';
@@ -128,6 +129,7 @@ export class Events {
     static returnToMenu() {
         Events.resetGame();
         document.getElementById('overlay').classList.remove('d-none');
+        document.getElementById('canvas').classList.add('d-opacity');
         Level.hideEndScreen();
         if (false === document.getElementById('audio-wrapper-iphone').classList.contains('d-none')) {
             document.getElementById('game-wrapper').style.zIndex = 'var(--z-index-game-back)';

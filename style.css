@@ -37,6 +37,10 @@ canvas {
     z-index: var(--z-index-canvas-back);
 }
 
+.d-opacity {
+    opacity: 0.5;
+}
+
 .blur {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(5px);

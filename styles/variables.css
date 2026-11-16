@@ -11,7 +11,7 @@
     --color-soft-black: rgba(0, 0, 0, 0.5);
 
     --border-btn-menu: none;
-    --border-radius-default: 20px;
+    --border-radius-default: 40px;
     --size-btn-mobile: clamp(54px, min(18svh, 18svw), 100px);
     --size-btn-ui: 7.5svh;
     --size-h1-dialog: clamp(22px, calc((100svh - 300px) * 16 / 400 + 22px), 38px);
